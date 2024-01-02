@@ -1,0 +1,25 @@
+# Paste the following content into a file
+# /etc/systemd/system/dreams-ui.service
+# Run service by: 
+# sudo systemctl start dreams-ui
+# Stop service by:
+# sudo systemctl stop dreams-ui
+# Status check:
+# sudo systemctl status dreams-ui
+# Enable auto start by:
+# sudo systemctl enable dreams-ui
+
+
+[Unit]
+Description=dreams UI
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/Documents/dreams
+ExecStart=serve -s build -l 3005 --cors
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
