@@ -5,10 +5,12 @@ import SaveIcon from '@mui/icons-material/Save'
 import { DreamRequestBody } from '../../../store/interface'
 import useDream from '../../../store/dream'
 import { dreamURL } from '../../../store/url'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function SaveButton() {
     const dreamStore = useDream()
+    const navigate = useNavigate()
 
     const saveDream = async () => {
         const body: DreamRequestBody = {
@@ -20,7 +22,10 @@ export default function SaveButton() {
             body: JSON.stringify(body),
             method: 'PATCH',
         }
-        await fetch(url, init)
+        const resp = await fetch(url, init)
+        if (resp.ok) {
+            navigate('/')
+        }
     }
 
     return (

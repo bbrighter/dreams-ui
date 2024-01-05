@@ -9,3 +9,11 @@ export async function get<T>(url: URL | string, validateResponse: (r: unknown) =
     }
     return json
 }
+
+export async function _delete(url: URL | string): Promise<boolean> {
+    const init: RequestInit = {
+        method: 'DELETE'
+    }
+    const resp = await fetch(url, init)
+    return resp.ok
+}

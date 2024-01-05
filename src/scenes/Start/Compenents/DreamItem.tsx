@@ -1,8 +1,12 @@
 import * as React from 'react'
 import styled from "@emotion/styled";
-import { ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { IconButton, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import CloudIcon from '@mui/icons-material/Cloud';
 import { useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import useDreams from '../../../store/dreams';
+
 
 const StyledListItem = styled(ListItem)`
     :hover{
@@ -15,6 +19,7 @@ export default function DreamItem(props: {
     id: number
     date: Date
 }) {
+    const deleteDream = useDreams(state => state.delete)
     const navigate = useNavigate()
 
     const navigateTo = (dreamId: number) => {
@@ -23,7 +28,19 @@ export default function DreamItem(props: {
 
 
     return (
-        <StyledListItem onClick={() => navigateTo(props.id)}>
+        <StyledListItem
+            onClick={() => navigateTo(props.id)}
+            secondaryAction={
+                <IconButton
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        deleteDream(props.id)
+                    }}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            }
+        >
             <ListItemAvatar >
                 <CloudIcon />
             </ListItemAvatar>
