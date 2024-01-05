@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Container, Input, TextField } from '@mui/material'
+import { Box, Container, TextField } from '@mui/material'
 
 import useDream from '../../store/dream'
-import SaveButton from './Components/SaveButton'
-import BackButton from './Components/BackButton'
+import Header from './Components/Header';
+import RecordText from './Components/RecordText';
 
 
 export default function Edit() {
@@ -19,29 +19,16 @@ export default function Edit() {
         }
     }, [])
 
-    const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        dreamStore.setDate(e.currentTarget.value)
-    }
     const onChangeDesription = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         dreamStore.setDescription(e.currentTarget.value)
     }
 
 
     return (
-        <Container sx={{ mt: '1rem' }}>
+        <Container >
             <Box component='form'>
-                <BackButton />
-                <Input
-                    sx={{
-                        position: 'absolute',
-                        width: '140px',
-                        left: 'calc(50vw - 70px)'
-                    }}
-                    type='date'
-                    value={dreamStore.date.toISOString().substring(0, 10)}
-                    onChange={onChangeDate}
-                />
-                <SaveButton />
+                <Header />
+                <RecordText />
                 <TextField
                     sx={{
                         width: '100%',

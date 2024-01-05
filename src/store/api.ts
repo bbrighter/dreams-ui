@@ -17,3 +17,12 @@ export async function _delete(url: URL | string): Promise<boolean> {
     const resp = await fetch(url, init)
     return resp.ok
 }
+
+export async function patch<T>(url: URL | string, body: T): Promise<boolean> {
+    const init: RequestInit = {
+        method: 'PATCH',
+        body: JSON.stringify(body)
+    }
+    const resp = await fetch(url, init)
+    return resp.ok
+}
