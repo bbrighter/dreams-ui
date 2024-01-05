@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Fab } from "@mui/material";
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
+import MicNoneIcon from '@mui/icons-material/MicNone';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import useDream from '../../../store/dream';
 import styled from '@emotion/styled';
@@ -21,7 +22,8 @@ export default function RecordText() {
         finalTranscript,
         listening,
         resetTranscript,
-        browserSupportsSpeechRecognition
+        browserSupportsSpeechRecognition,
+        isMicrophoneAvailable,
     } = useSpeechRecognition()
 
     if (!browserSupportsSpeechRecognition) {
@@ -51,14 +53,16 @@ export default function RecordText() {
 
     }
 
+    const color = !isMicrophoneAvailable ? 'warning' : listening ? 'error' : 'primary'
+    const icon = !isMicrophoneAvailable ? <MicNoneIcon /> : listening ? <MicIcon /> : <MicOffIcon />
+
     return (
         <ShadowFab
             isHighlight={listening}
-            color={listening ? 'error' : 'primary'}
+            color={color}
             onClick={changeListening}
         >
-            {listening && <MicOffIcon />}
-            {!listening && <MicIcon />}
+            {icon}
         </ShadowFab>
     )
 }
