@@ -5,6 +5,7 @@ import { Box, Container, TextField } from '@mui/material'
 import useDream from '../../store/dream'
 import Header from './Components/Header';
 import RecordText from './Components/RecordText';
+import Tags from './Components/Tags';
 
 
 export default function Edit() {
@@ -28,6 +29,7 @@ export default function Edit() {
         <Container >
             <Box component='form'>
                 <Header />
+                <Tags />
                 <RecordText />
                 <TextField
                     sx={{

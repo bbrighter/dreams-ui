@@ -15,6 +15,9 @@ export async function _delete(url: URL | string): Promise<boolean> {
         method: 'DELETE'
     }
     const resp = await fetch(url, init)
+    if (!resp.ok) {
+        throw new Error(resp.statusText)
+    }
     return resp.ok
 }
 
@@ -24,5 +27,20 @@ export async function patch<T>(url: URL | string, body: T): Promise<boolean> {
         body: JSON.stringify(body)
     }
     const resp = await fetch(url, init)
+    if (!resp.ok) {
+        throw new Error(resp.statusText)
+    }
     return resp.ok
+}
+
+export async function put(url: URL | string): Promise<number> {
+    const init: RequestInit = {
+        method: 'PUT',
+    }
+    const resp = await fetch(url, init)
+    if (!resp.ok) {
+        throw new Error(resp.statusText)
+    }
+    const id = await resp.json()
+    return id
 }

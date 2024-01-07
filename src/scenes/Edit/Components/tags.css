@@ -1,0 +1,72 @@
+.ReactTags__tagInput {
+    width: 500px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .ReactTags__tagInput input.ReactTags__tagInputField{
+    height: 31px;
+    margin: 5px;
+    width: fit-content;
+    min-width: 50%;
+    font-size: inherit;
+    font-family: inherit;
+    background-color: transparent;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+  } 
+  .ReactTags__tagInput input.ReactTags__tagInputField:hover{
+    cursor: pointer;
+    box-shadow: 0 0 10px rgb(37, 0, 204);
+  } 
+  .ReactTags__tagInput input.ReactTags__tagInputField:focus {
+    outline: none;
+    background-color: #686868;
+  }
+  
+  .ReactTags__selected span.ReactTags__tag {
+    border: 1px solid #ddd;
+    background: #686868;
+    color: white;
+    display: inline-block;
+    padding: 5px 20px 5px 20px;
+    margin: 5px 5px;
+    border-radius: 20px;
+  }
+  .ReactTags__selected a.ReactTags__remove {
+    color: #686868;
+    margin-left: 30px;
+    cursor: pointer;
+  }
+
+  .ReactTags__suggestions {
+    position: absolute;
+  }
+  .ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+    background: white;
+    width: 200px;
+  }
+  .ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+  }
+  .ReactTags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+  }
+  .ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+    background: #b7cfe0;
+    cursor: pointer;
+  }
+  
+  .ReactTags__remove {
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: white;
+  }
+  

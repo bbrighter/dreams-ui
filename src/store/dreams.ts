@@ -32,9 +32,9 @@ const useDreams = create<DreamsStore>((set) => ({
     get: async () => {
         const url = dreamsURL()
         const resp = await get(url, isDreamsResponse);
-        set({
-            dreams: resp.dreams.map((d) => ({ id: d.id, date: new Date(d.date) })),
-        });
+        const dreams = resp.dreams.map((d) => ({ id: d.id, date: new Date(d.date) }))
+        dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
+        set({ dreams: dreams });
     },
     delete: async (id: number) => {
         const url = dreamURL(id)

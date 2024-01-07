@@ -2,11 +2,16 @@ import { create } from "zustand"
 import { get } from "./api"
 import { DreamRequestBody, isDreamResponse } from "./interface"
 import { dreamURL, dreamsURL } from "./url"
+import { produce } from "immer"
 
 interface State {
     id: number
     date: Date
     description: string
+    tags: Array<{
+        id: number
+        title: string
+    }>
 }
 
 interface Actions {
@@ -14,6 +19,8 @@ interface Actions {
     setDescription: (description: string) => void,
     get: (id: number | string) => Promise<void>,
     create: () => Promise<number>,
+    addTag: (id: number, text: string) => void,
+    removeTag: (tagId: number) => void,
 }
 
 interface DreamStore extends State, Actions { }
@@ -21,7 +28,8 @@ interface DreamStore extends State, Actions { }
 const initialState: State = {
     id: 0,
     date: new Date(),
-    description: ""
+    description: "",
+    tags: [],
 }
 
 const useDream = create<DreamStore>((set) => ({
@@ -40,7 +48,8 @@ const useDream = create<DreamStore>((set) => ({
         set({
             id: resp.id,
             date: new Date(resp.date),
-            description: resp.description
+            description: resp.description,
+            tags: resp.tags.map(t => ({ title: t.title, id: t.id })),
         })
     },
     create: async () => {
@@ -60,6 +69,19 @@ const useDream = create<DreamStore>((set) => ({
             date: date
         })
         return id
+    },
+    addTag: (id: number, text: string) => {
+        set(produce((draft: State) => {
+            draft.tags.push({ id: id, title: text })
+        }))
+    },
+    removeTag: (id: number) => {
+        console.log('removeTag', id)
+        set(produce((draft: State) => {
+            const results = draft.tags.filter(t => t.id != id)
+            draft.tags = results
+        }
+        ))
     },
 }))
 
