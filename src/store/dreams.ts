@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import { _delete, get } from "./api";
-import { isDreamsResponse } from "./interface";
-import { dreamURL, dreamsURL } from "./url";
+import api from "../api/api";
+
 
 interface State {
     dreams: Array<{
@@ -30,16 +29,14 @@ const useDreams = create<DreamsStore>((set) => ({
     ...initialState,
 
     get: async () => {
-        const url = dreamsURL()
-        const resp = await get(url, isDreamsResponse);
-        const dreams = resp.dreams.map((d) => ({ id: d.id, date: new Date(d.date) }))
+        const resp = await api.dreams.dreamsList()
+        const dreams = resp.data.dreams.map((d) => ({ id: d.id, date: new Date(d.date) }))
         dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
         set({ dreams: dreams });
     },
     delete: async (id: number) => {
-        const url = dreamURL(id)
-        const ok = await _delete(url)
-        if (ok) {
+        const resp = await api.dreams.dreamsDelete(id.toString())
+        if (resp.ok) {
             set((state) => ({
                 dreams: state.dreams.filter(d => d.id != id)
             }))

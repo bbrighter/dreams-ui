@@ -3,11 +3,8 @@ import { IconButton, Input, Toolbar } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import useDream from '../../../store/dream';
-import { DreamRequestBody } from '../../../store/interface';
-import { dreamURL } from '../../../store/url';
+import useDream, { updateDream } from '../../../store/dream';
 import { useNavigateHomePage } from '../../../hooks/navigate';
-import { patch } from '../../../store/api';
 
 export default function Header() {
     const date = useDream(state => state.date)
@@ -39,12 +36,7 @@ function SaveButton() {
     const navigate = useNavigateHomePage()
 
     const saveDream = async () => {
-        const body: DreamRequestBody = {
-            date: dreamStore.date.toISOString(),
-            description: dreamStore.description,
-        }
-        const url = dreamURL(dreamStore.id)
-        const ok = await patch(url, body)
+        const ok = await updateDream(dreamStore.id, dreamStore.date, dreamStore.description)
         if (ok) {
             navigate()
         }

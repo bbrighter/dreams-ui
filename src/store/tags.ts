@@ -1,7 +1,6 @@
 import { create } from "zustand"
-import { _delete, get, put } from "./api"
-import { addTagURL, deleteTagURL, getTagsURL } from "./url"
-import { isTagsResponse } from "./interface"
+import api from "../api/api"
+
 
 interface State {
     tags: Array<{
@@ -30,25 +29,29 @@ const useTags = create<DreamStore>((set) => ({
     ...initialState,
 
     getTags: async () => {
-        const url = getTagsURL()
-        const resp = await get(url, isTagsResponse)
-        set({ tags: resp.map(t => ({ id: t.id, title: t.title })) })
+        const resp = await api.tags.tagsList()
+        const tags = resp.data.tags
+        console.log('get', tags)
+        set({ tags: tags.map(t => ({ id: t.id, title: t.title })) })
     },
 
     addTag: async (dreamId: number, title: string) => {
-        const url = addTagURL(dreamId, title)
-        const id = await put(url)
-        set((state) => ({ tags: [...state.tags, { id: id, title: title }] }))
+        const resp = await api.dreams.tagsUpdate(dreamId.toString(), { title: title })
+        if (!resp.ok) {
+            alert(resp.statusText)
+            return
+        }
+        set({ tags: resp.data.tags.map(t => ({ id: t.id, title: t.title })) })
     },
 
-    removeTag: async (dreamId: number, tagId: number): Promise<boolean> => {
-        try {
-            const url = deleteTagURL(dreamId, tagId)
-            return await _delete(url)
-        } catch (e) {
-            alert(e)
-            return true
+    removeTag: async (dreamId: number, tagId: number) => {
+        const resp = await api.dreams.tagsDelete(dreamId.toString(), tagId.toString())
+        if (!resp.ok) {
+            alert(resp.statusText)
+            return resp.ok
         }
+        set({ tags: resp.data.tags.map(t => ({ id: t.id, title: t.title })) })
+        return resp.ok
     }
 }))
 

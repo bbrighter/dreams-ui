@@ -13,9 +13,14 @@ export default function Tags() {
     const addTagToDream = useDream(state => state.addTag)
     const removeTagFromDream = useDream(state => state.removeTag)
 
+    const [doUpdateTags, setDoUpdateTags] = React.useState(true)
+
     React.useEffect(() => {
-        tagsStore.getTags
-    }, [])
+        if (doUpdateTags) {
+            tagsStore.getTags()
+            setDoUpdateTags(false)
+        }
+    }, [doUpdateTags])
 
     const tagsToReactTags = (tags: Array<{ id: number, title: string }>): Array<Tag> => {
         return tags.map(t => ({ id: t.id.toString(), text: t.title }))
@@ -24,6 +29,7 @@ export default function Tags() {
     const handleAddition = async (tag: { id: string, text: string }) => {
         await tagsStore.addTag(dreamId, tag.text)
         addTagToDream(dreamId, tag.text)
+        setDoUpdateTags(true)
     }
 
     const handleDelete = async (i: number) => {
@@ -31,8 +37,12 @@ export default function Tags() {
         const ok = await tagsStore.removeTag(dreamId, deleteTagId)
         if (ok) {
             removeTagFromDream(deleteTagId)
+            setDoUpdateTags(true)
         }
     }
+
+    console.log('suggestions', suggestions)
+    console.log('tags', tags)
 
     return (
         <ReactTags

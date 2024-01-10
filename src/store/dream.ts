@@ -1,8 +1,9 @@
 import { create } from "zustand"
-import { get } from "./api"
-import { DreamRequestBody, isDreamResponse } from "./interface"
-import { dreamURL, dreamsURL } from "./url"
 import { produce } from "immer"
+
+
+import { ControllerDreamRequestBody } from "../api/generated_api"
+import api from "../api/api"
 
 interface State {
     id: number
@@ -43,27 +44,28 @@ const useDream = create<DreamStore>((set) => ({
         set((state) => ({ ...state, description: description }))
     },
     get: async (id: number | string) => {
-        const url = dreamURL(id)
-        const resp = await get(url, isDreamResponse)
+        const resp = await api.dreams.dreamsDetail(id.toString())
+        if (!resp.ok) {
+            alert(resp.statusText)
+        }
+        const dream = resp.data
         set({
-            id: resp.id,
-            date: new Date(resp.date),
-            description: resp.description,
-            tags: resp.tags.map(t => ({ title: t.title, id: t.id })),
+            id: dream.id,
+            date: new Date(dream.date),
+            description: dream.description,
+            tags: dream.tags.map(t => ({ title: t.title, id: t.id })),
         })
     },
     create: async () => {
         const date = new Date()
-        const body: DreamRequestBody = {
+        const body: ControllerDreamRequestBody = {
             date: date.toISOString(),
         }
-        const url = dreamsURL()
-        const init: RequestInit = {
-            method: 'POST',
-            body: JSON.stringify(body)
+        const resp = await api.dreams.dreamsCreate(body)
+        if (!resp.ok) {
+            alert(resp.statusText)
         }
-        const resp = await fetch(url, init)
-        const id = await resp.json()
+        const id = resp.data
         set({
             id: id,
             date: date
@@ -76,7 +78,6 @@ const useDream = create<DreamStore>((set) => ({
         }))
     },
     removeTag: (id: number) => {
-        console.log('removeTag', id)
         set(produce((draft: State) => {
             const results = draft.tags.filter(t => t.id != id)
             draft.tags = results
@@ -84,5 +85,14 @@ const useDream = create<DreamStore>((set) => ({
         ))
     },
 }))
+
+export async function updateDream(dreamId: number, date: Date, description: string): Promise<boolean> {
+    const body: ControllerDreamRequestBody = {
+        date: date.toISOString(),
+        description: description,
+    }
+    const resp = await api.dreams.dreamsPartialUpdate(dreamId.toString(), body)
+    return resp.ok
+}
 
 export default useDream
