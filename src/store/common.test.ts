@@ -1,13 +1,13 @@
-import { ControllerTagsResponse } from "../api/generated_api"
-import { TagResponseToTags } from "./tags"
+import { ControllerTagResponse, } from "../api/generated_api"
+import { TagResponseToTags } from "./common"
 
 test('tagResponseToTags', () => {
-    const resp: ControllerTagsResponse = {
-        tags: [
+    const resp: Array<ControllerTagResponse> =
+        [
             { id: 1, title: "Title" },
             { id: 2, title: "Title 2" },
         ]
-    }
+
 
     const tags = TagResponseToTags(resp)
 

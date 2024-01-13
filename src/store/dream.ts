@@ -1,14 +1,10 @@
 import { create } from "zustand"
 import { produce } from "immer"
 
-
 import { ControllerDreamRequestBody } from "../api/generated_api"
 import api from "../api/api"
+import { Tag, TagResponseToTags } from "./common"
 
-interface Tag {
-    id: number
-    title: string
-}
 
 interface State {
     id: number
@@ -55,7 +51,7 @@ const useDream = create<DreamStore>((set) => ({
             id: dream.id,
             date: new Date(dream.date),
             description: dream.description,
-            tags: dream.tags.map(t => ({ title: t.title, id: t.id })),
+            tags: TagResponseToTags(resp.data.tags),
         })
     },
     create: async () => {

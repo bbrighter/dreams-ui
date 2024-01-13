@@ -1,11 +1,6 @@
 import { create } from "zustand"
 import api from "../api/api"
-import { ControllerTagsResponse } from "../api/generated_api"
-
-interface Tag {
-    id: number
-    title: string
-}
+import { Tag, TagResponseToTags } from "./common"
 
 interface State {
     tags: Array<Tag>
@@ -20,10 +15,7 @@ interface Actions {
 interface DreamStore extends State, Actions { }
 
 const initialState: State = {
-    tags: [
-
-
-    ]
+    tags: []
 }
 
 const useTags = create<DreamStore>((set) => ({
@@ -31,7 +23,7 @@ const useTags = create<DreamStore>((set) => ({
 
     getTags: async () => {
         const resp = await api.tags.tagsList()
-        set({ tags: TagResponseToTags(resp.data) })
+        set({ tags: TagResponseToTags(resp.data.tags) })
     },
 
     addTag: async (dreamId: number, title: string): Promise<boolean> => {
@@ -40,7 +32,7 @@ const useTags = create<DreamStore>((set) => ({
             alert(resp.statusText)
             return resp.ok
         }
-        set({ tags: TagResponseToTags(resp.data) })
+        set({ tags: TagResponseToTags(resp.data.tags) })
         return resp.ok
     },
 
@@ -50,13 +42,10 @@ const useTags = create<DreamStore>((set) => ({
             alert(resp.statusText)
             return resp.ok
         }
-        set({ tags: TagResponseToTags(resp.data) })
+        set({ tags: TagResponseToTags(resp.data.tags) })
         return resp.ok
     }
 }))
 
 export default useTags
 
-export function TagResponseToTags(resp: ControllerTagsResponse): Array<Tag> {
-    return resp.tags.map(t => ({ id: t.id, title: t.title }))
-}
