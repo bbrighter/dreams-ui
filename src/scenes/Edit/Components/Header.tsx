@@ -59,7 +59,8 @@ function SaveButton() {
 
 function BackButton() {
     const navigate = useNavigateHomePage()
-    const goBack = () => {
+
+    const handleClick = () => {
         navigate()
     }
 
@@ -69,9 +70,9 @@ function BackButton() {
                 position: 'absolute',
                 left: 0
             }}
-            onClick={goBack}
+            onClick={handleClick}
         >
             <ArrowBackIcon />
-        </IconButton>
+        </IconButton >
     )
 }

@@ -5,14 +5,16 @@ import { produce } from "immer"
 import { ControllerDreamRequestBody } from "../api/generated_api"
 import api from "../api/api"
 
+interface Tag {
+    id: number
+    title: string
+}
+
 interface State {
     id: number
     date: Date
     description: string
-    tags: Array<{
-        id: number
-        title: string
-    }>
+    tags: Array<Tag>
 }
 
 interface Actions {
@@ -20,7 +22,7 @@ interface Actions {
     setDescription: (description: string) => void,
     get: (id: number | string) => Promise<void>,
     create: () => Promise<number>,
-    addTag: (id: number, text: string) => void,
+    addTag: (tag: Tag) => void,
     removeTag: (tagId: number) => void,
 }
 
@@ -72,15 +74,15 @@ const useDream = create<DreamStore>((set) => ({
         })
         return id
     },
-    addTag: (id: number, text: string) => {
+    addTag: (tag: Tag) => {
         set(produce((draft: State) => {
-            draft.tags.push({ id: id, title: text })
+            draft.tags.push(tag)
         }))
     },
-    removeTag: (id: number) => {
+    removeTag: (tagId: number) => {
         set(produce((draft: State) => {
-            const results = draft.tags.filter(t => t.id != id)
-            draft.tags = results
+            const results = draft.tags.filter(t => t.id != tagId)
+            draft.tags = [...results]
         }
         ))
     },
