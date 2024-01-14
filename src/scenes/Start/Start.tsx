@@ -1,17 +1,18 @@
 import * as React from "react"
 import { useEffect } from "react";
 import { Button, Container, List } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 import useDreams from "../../store/dreams";
 import useDream from "../../store/dream";
 import DreamItem from "./Compenents/DreamItem";
+import { useNavigateToDream } from "../../hooks/navigate";
 
 
 export default function Start() {
     const dreamsStore = useDreams()
     const createDream = useDream(state => state.create)
-    const navigate = useNavigate()
+    const navigate = useNavigateToDream()
+
 
     useEffect(() => {
         dreamsStore.get().catch(
@@ -19,13 +20,9 @@ export default function Start() {
         )
     }, [])
 
-    const navigateTo = (dreamId: number) => {
-        navigate('/dreams/' + dreamId)
-    }
-
     const handleClick = async () => {
         const dreamId = await createDream()
-        navigateTo(dreamId)
+        navigate(dreamId)
     }
 
     return (
@@ -41,7 +38,6 @@ export default function Start() {
                     (<DreamItem key={d.id} date={d.date} id={d.id} />)
                 )}
             </List>
-
         </Container>
     )
 }

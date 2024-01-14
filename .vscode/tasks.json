@@ -16,9 +16,7 @@
         "icon": {"id": "beaker"},
         "presentation": {
           "clear": true
-        }
-          
-        
+        }    
       },
       {
         "label": "Build",

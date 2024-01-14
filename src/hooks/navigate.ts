@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-export function useNavigateHomePage() {
+export const useNavigateHomePage = () => {
     const navigate = useNavigate()
     return () => navigate('/')
+}
+
+export const useNavigateToDream = () => {
+    const navigate = useNavigate()
+    return (dreamId: number) => navigate('/dreams/' + dreamId)
 }
