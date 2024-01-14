@@ -58,6 +58,8 @@ export default function Tags() {
                 allowDragDrop={false}
                 autocomplete={true}
                 inputFieldPosition='bottom'
+                allowDeleteFromEmptyInput={false}
+                autofocus={false}
             />
         </>
     )
