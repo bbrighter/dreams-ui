@@ -11,20 +11,12 @@ import Tags from './Components/Tags';
 
 const DEBOUNCE_TIME = 5_000
 
-const saveDream = async (dreamId: number, dreamDate: Date, dreamDescription: string) => {
-    const ok = await updateDream(dreamId, dreamDate, dreamDescription)
-    console.log('saved')
-    if (!ok) {
-        alert("not ok")
-    }
-}
-
-const debouncedSave = debounce(saveDream, DEBOUNCE_TIME)
-
+const debouncedSave = (func: () => void) => debounce(func, DEBOUNCE_TIME)
 
 export default function Edit() {
     const dreamStore = useDream()
     const { id: urlId } = useParams()
+    const [isSaved, setIsSaved] = React.useState(true)
 
     React.useEffect(() => {
         if (urlId) {
@@ -34,16 +26,22 @@ export default function Edit() {
         }
     }, [])
 
+    const saveDream = async () => {
+        const ok = await updateDream(dreamStore.id, dreamStore.date, dreamStore.description)
+        if (ok) setIsSaved(true)
+    }
+
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const value = e.currentTarget.value
+        setIsSaved(false)
         dreamStore.setDescription(value)
-        debouncedSave(dreamStore.id, dreamStore.date, dreamStore.description)
+        debouncedSave(saveDream)()
     }
 
     return (
         <Container >
             <Box component='form'>
-                <Header />
+                <Header isSaved={isSaved} />
                 <Tags />
                 <RecordText />
                 <TextField
