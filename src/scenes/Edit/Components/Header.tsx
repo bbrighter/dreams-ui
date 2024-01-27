@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useDream, { updateDream } from '../../../store/dream';
 import { useNavigateHomePage } from '../../../hooks/navigate';
 
-export default function Header() {
+export default function Header(props: { isSaved: boolean }) {
     const date = useDream(state => state.date)
     const setDate = useDream(state => state.setDate)
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -26,12 +26,12 @@ export default function Header() {
                 value={date.toISOString().substring(0, 10)}
                 onChange={onChangeDate}
             />
-            <SaveButton />
+            <SaveButton isSaved={props.isSaved} />
         </Toolbar>
     )
 }
 
-function SaveButton() {
+function SaveButton(props: { isSaved: boolean }) {
     const dreamStore = useDream()
     const navigate = useNavigateHomePage()
 
@@ -41,15 +41,15 @@ function SaveButton() {
             navigate()
         }
     }
-
+    const color = props.isSaved ? 'success' : 'error'
     return (
+
         <IconButton
             sx={{
                 position: 'absolute',
                 right: 0
             }}
-
-            color='success'
+            color={color}
             onClick={saveDream}
         >
             <SaveIcon />
