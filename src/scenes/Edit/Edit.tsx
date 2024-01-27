@@ -27,8 +27,13 @@ export default function Edit() {
     }, [])
 
     const saveDream = async () => {
-        const ok = await updateDream(dreamStore.id, dreamStore.date, dreamStore.description)
-        if (ok) setIsSaved(true)
+        let ok = false
+        if (isSaved) {
+            ok = await updateDream(dreamStore.id, dreamStore.date, dreamStore.description)
+        }
+        if (ok) {
+            setIsSaved(true)
+        }
     }
 
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
