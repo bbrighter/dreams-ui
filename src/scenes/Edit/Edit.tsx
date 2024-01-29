@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Box, Container, TextField } from '@mui/material'
 import debounce from 'lodash.debounce'
 
-import useDream, { updateDream } from '../../store/dream'
+import useDream from '../../store/dream'
 import Header from './Components/Header';
 import RecordText from './Components/RecordText';
 import Tags from './Components/Tags';
@@ -16,7 +16,7 @@ const debouncedSave = (func: () => void) => debounce(func, DEBOUNCE_TIME)
 export default function Edit() {
     const dreamStore = useDream()
     const { id: urlId } = useParams()
-    const [isSaved, setIsSaved] = React.useState(true)
+    const isSaved = dreamStore.isSaved
 
     React.useEffect(() => {
         if (urlId) {
@@ -27,18 +27,13 @@ export default function Edit() {
     }, [])
 
     const saveDream = async () => {
-        let ok = false
         if (isSaved) {
-            ok = await updateDream(dreamStore.id, dreamStore.date, dreamStore.description)
-        }
-        if (ok) {
-            setIsSaved(true)
+            await dreamStore.update()
         }
     }
 
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const value = e.currentTarget.value
-        setIsSaved(false)
         dreamStore.setDescription(value)
         debouncedSave(saveDream)()
     }

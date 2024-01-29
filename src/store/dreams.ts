@@ -17,12 +17,7 @@ interface Actions {
 interface DreamsStore extends State, Actions { }
 
 const initialState: State = {
-    dreams: [
-        {
-            id: 0,
-            date: new Date(),
-        },
-    ],
+    dreams: [],
 };
 
 const useDreams = create<DreamsStore>((set) => ({

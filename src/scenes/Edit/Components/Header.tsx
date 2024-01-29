@@ -3,7 +3,7 @@ import { IconButton, Input, Toolbar } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import useDream, { updateDream } from '../../../store/dream';
+import useDream from '../../../store/dream';
 import { useNavigateHomePage } from '../../../hooks/navigate';
 
 export default function Header(props: { isSaved: boolean }) {
@@ -32,15 +32,13 @@ export default function Header(props: { isSaved: boolean }) {
 }
 
 function SaveButton(props: { isSaved: boolean }) {
-    const dreamStore = useDream()
     const navigate = useNavigateHomePage()
-
+    const updateDream = useDream(state => state.update)
     const saveDream = async () => {
-        const ok = await updateDream(dreamStore.id, dreamStore.date, dreamStore.description)
-        if (ok) {
-            navigate()
-        }
+        const ok = await updateDream()
+        if (ok) navigate()
     }
+
     const color = props.isSaved ? 'success' : 'error'
     return (
 
