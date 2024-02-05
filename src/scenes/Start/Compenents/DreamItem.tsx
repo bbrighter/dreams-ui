@@ -4,8 +4,9 @@ import { IconButton, ListItem, ListItemAvatar, ListItemText } from "@mui/materia
 import CloudIcon from '@mui/icons-material/Cloud';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
+import useDreams from '../../../store/store';
 
-import useDreams from '../../../store/dreams';
+
 
 
 const StyledListItem = styled(ListItem)`
@@ -19,7 +20,7 @@ export default function DreamItem(props: {
     id: number
     date: Date
 }) {
-    const deleteDream = useDreams(state => state.delete)
+    const deleteDream = useDreams(state => state.deleteDream)
     const navigate = useNavigate()
 
     const navigateTo = (dreamId: number) => {

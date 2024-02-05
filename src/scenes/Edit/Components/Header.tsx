@@ -3,12 +3,12 @@ import { IconButton, Input, Toolbar } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import useDream from '../../../store/dream';
 import { useNavigateHomePage } from '../../../hooks/navigate';
+import useDreams from '../../../store/store';
 
 export default function Header(props: { isSaved: boolean }) {
-    const date = useDream(state => state.date)
-    const setDate = useDream(state => state.setDate)
+    const date = useDreams(state => state.dream.date)
+    const setDate = useDreams(state => state.setDate)
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setDate(e.currentTarget.value)
     }
@@ -33,7 +33,7 @@ export default function Header(props: { isSaved: boolean }) {
 
 function SaveButton(props: { isSaved: boolean }) {
     const navigate = useNavigateHomePage()
-    const updateDream = useDream(state => state.update)
+    const updateDream = useDreams(state => state.updateDream)
     const saveDream = async () => {
         const ok = await updateDream()
         if (ok) navigate()
