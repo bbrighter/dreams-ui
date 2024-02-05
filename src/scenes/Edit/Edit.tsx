@@ -46,9 +46,7 @@ export default function Edit() {
         <Container >
             <Box component='form'>
                 <Header isSaved={isSaved} />
-                <Tags />
                 <RecordText />
-                <Persons />
                 <TextField
                     sx={{
                         width: '100%',
@@ -60,6 +58,8 @@ export default function Edit() {
                     value={description}
                     onChange={onChangeDescriptionDebounce}
                 />
+                <Tags />
+                <Persons />
             </Box>
         </Container>
     )

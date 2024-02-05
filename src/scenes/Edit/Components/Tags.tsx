@@ -1,8 +1,10 @@
 import * as React from 'react'
-import { WithContext as ReactTags, Tag } from 'react-tag-input';
 
 import './tags.css'
 import useDreams from '../../../store/store';
+import { Tag, isTag } from '../../../store/tags';
+import TagInput from './TagInput';
+import { AutocompleteChangeReason } from '@mui/material';
 
 
 export default function Tags() {
@@ -17,33 +19,43 @@ export default function Tags() {
     }, [])
 
 
-    const tagsToReactTags = (tags: Array<{ id: number, title: string }>): Array<Tag> => {
-        return tags.map(t => ({ id: t.id.toString(), text: t.title }))
+    const handleChange = async (_: React.SyntheticEvent<Element, Event>, values: (string | Tag | null)[], changeReason: AutocompleteChangeReason) => {
+        const newValue = values.at(-1)
+        console.log(changeReason, values)
+        if (changeReason == 'createOption' && typeof (newValue) == 'string') {
+            addTagToDream(newValue)
+        } else if (changeReason == 'selectOption' && isTag(newValue)) {
+            addTagToDream(newValue.title)
+        } else {
+            alert("Invalid handleChange:" + changeReason + newValue)
+        }
     }
 
-    const handleAddition = async (tag: { id: string, text: string }) => {
-        await addTagToDream(tag.text)
+    const handleDelete = async (tag: Tag) => {
+        await removeTagFromDream(tag.id)
     }
 
-    const handleDelete = async (i: number) => {
-        const deleteTagId = dreamTags[i].id
-        await removeTagFromDream(deleteTagId)
+    const getValue = (option: string | Tag): string => {
+        if (typeof (option) == 'string') {
+            return option
+        } else if (isTag(option)) {
+            return option.title
+        }
+        else {
+            alert("getValue failed")
+            return ""
+        }
     }
 
     return (
-        <>
+        <TagInput
+            label='Kategorien'
+            options={suggestions}
+            values={dreamTags}
+            getValue={getValue}
+            onChange={handleChange}
+            onDelete={handleDelete}
 
-            <ReactTags
-                tags={tagsToReactTags(dreamTags)}
-                suggestions={tagsToReactTags(suggestions)}
-                handleAddition={handleAddition}
-                handleDelete={handleDelete}
-                allowDragDrop={false}
-                autocomplete={true}
-                inputFieldPosition='bottom'
-                allowDeleteFromEmptyInput={false}
-                autofocus={false}
-            />
-        </>
+        />
     )
 }

@@ -3,6 +3,7 @@ import { Autocomplete, AutocompleteChangeReason, Chip, TextField } from '@mui/ma
 
 import useDreams from '../../../store/store'
 import { Person, isPerson } from '../../../store/persons'
+import TagInput from './TagInput'
 
 
 export default function Persons() {
@@ -46,33 +47,13 @@ export default function Persons() {
     }
 
     return (
-        <Autocomplete
-            sx={{ paddingTop: '10px' }}
-            disablePortal
-            value={usedPersons}
-            onChange={handleChange}
-            freeSolo
-            multiple
-            disableClearable
+        <TagInput<Person>
+            label='Beteiligte Personen'
+            values={usedPersons}
             options={personSuggestions}
-            clearOnBlur
-            getOptionLabel={getValue}
-            renderTags={(value: Person[]) =>
-                value.map(option =>
-                (<Chip
-                    key={option.id}
-                    variant='outlined'
-                    label={option.name}
-                    onDelete={() => handleDelete(option)}
-                />)
-                )
-            }
-            renderInput={params => (
-                <TextField
-                    {...params}
-                    label="Beteiligte Personen"
-                />
-            )}
+            onChange={handleChange}
+            onDelete={handleDelete}
+            getValue={getValue}
         />
     )
 }
