@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Autocomplete, AutocompleteChangeReason, Chip, TextField } from '@mui/material'
+import { AutocompleteChangeReason } from '@mui/material'
 
 import useDreams from '../../../store/store'
 import { Person, isPerson } from '../../../store/persons'
