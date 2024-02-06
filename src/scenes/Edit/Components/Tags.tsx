@@ -1,10 +1,9 @@
 import * as React from 'react'
-
-import './tags.css'
-import useDreams from '../../../store/store';
-import { Tag, isTag } from '../../../store/tags';
-import TagInput from './TagInput';
 import { AutocompleteChangeReason } from '@mui/material';
+
+import useDreams from '../../../store/store';
+import TagInputs from './TagInputs';
+import { TagValue, isTagValue, tagsToTagValue } from './tagValues';
 
 
 export default function Tags() {
@@ -19,43 +18,28 @@ export default function Tags() {
     }, [])
 
 
-    const handleChange = async (_: React.SyntheticEvent<Element, Event>, values: (string | Tag | null)[], changeReason: AutocompleteChangeReason) => {
+    const handleChange = async (_: React.SyntheticEvent<Element, Event>, values: (string | TagValue | null)[], changeReason: AutocompleteChangeReason) => {
         const newValue = values.at(-1)
-        console.log(changeReason, values)
         if (changeReason == 'createOption' && typeof (newValue) == 'string') {
             addTagToDream(newValue)
-        } else if (changeReason == 'selectOption' && isTag(newValue)) {
-            addTagToDream(newValue.title)
+        } else if (changeReason == 'selectOption' && isTagValue(newValue)) {
+            addTagToDream(newValue.label)
         } else {
             alert("Invalid handleChange:" + changeReason + newValue)
         }
     }
 
-    const handleDelete = async (tag: Tag) => {
+    const handleDelete = async (tag: TagValue) => {
         await removeTagFromDream(tag.id)
     }
 
-    const getValue = (option: string | Tag): string => {
-        if (typeof (option) == 'string') {
-            return option
-        } else if (isTag(option)) {
-            return option.title
-        }
-        else {
-            alert("getValue failed")
-            return ""
-        }
-    }
-
     return (
-        <TagInput
-            label='Kategorien'
-            options={suggestions}
-            values={dreamTags}
-            getValue={getValue}
+        <TagInputs
+            type='Tag'
+            options={tagsToTagValue(suggestions)}
+            values={tagsToTagValue(dreamTags)}
             onChange={handleChange}
             onDelete={handleDelete}
-
         />
     )
 }

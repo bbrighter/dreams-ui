@@ -2,8 +2,8 @@ import * as React from 'react'
 import { AutocompleteChangeReason } from '@mui/material'
 
 import useDreams from '../../../store/store'
-import { Person, isPerson } from '../../../store/persons'
-import TagInput from './TagInput'
+import TagInputs from './TagInputs'
+import { TagValue, isTagValue, personsToTagValue } from './tagValues'
 
 
 export default function Persons() {
@@ -19,41 +19,28 @@ export default function Persons() {
         getPersons().catch(e => alert(e))
     }, [])
 
-    const handleChange = async (_: React.SyntheticEvent<Element, Event>, values: (string | Person | null)[], changeReason: AutocompleteChangeReason) => {
+    const handleChange = async (_: React.SyntheticEvent<Element, Event>, values: (string | TagValue | null)[], changeReason: AutocompleteChangeReason) => {
         const newValue = values.at(-1)
-        console.log(changeReason, values)
         if (changeReason == 'createOption' && typeof (newValue) == 'string') {
             addPerson(newValue)
-        } else if (changeReason == 'selectOption' && isPerson(newValue)) {
-            addPerson(newValue.name)
+        } else if (changeReason == 'selectOption' && isTagValue(newValue)) {
+            addPerson(newValue.label)
         } else {
             alert("Invalid handleChange:" + changeReason + newValue)
         }
     }
 
-    const getValue = (option: string | Person): string => {
-        if (typeof (option) == 'string') {
-            return option
-        } else if (isPerson(option)) {
-            return option.name
-        } else {
-            alert("getValue failed")
-            return ""
-        }
-    }
-
-    const handleDelete = async (person: Person) => {
+    const handleDelete = async (person: TagValue) => {
         await removePerson(person.id)
     }
 
     return (
-        <TagInput<Person>
-            label='Beteiligte Personen'
-            values={usedPersons}
-            options={personSuggestions}
+        <TagInputs
+            type='Person'
+            values={personsToTagValue(usedPersons)}
+            options={personsToTagValue(personSuggestions)}
             onChange={handleChange}
             onDelete={handleDelete}
-            getValue={getValue}
         />
     )
 }
