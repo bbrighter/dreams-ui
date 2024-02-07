@@ -22,9 +22,8 @@ export default function TagInputs(props: {
     return (
         <Autocomplete
             sx={{
-                padding: '10px',
-                width: '50%',
-                display: 'inline-block',
+                paddingTop: '1rem',
+                paddingBottom: '1rem',
             }}
             disablePortal
             value={props.values}
