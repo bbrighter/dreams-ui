@@ -4,8 +4,8 @@ import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import useDream from '../../../store/dream';
 import styled from '@emotion/styled';
+import useDreams from '../../../store/store';
 
 
 const ShadowFab = styled(Fab) <{ isHighlight: boolean }>`
@@ -14,8 +14,8 @@ const ShadowFab = styled(Fab) <{ isHighlight: boolean }>`
 `
 
 export default function RecordText() {
-    const setDescription = useDream(state => state.setDescription)
-    const description = useDream(state => state.description)
+    const setDescription = useDreams(state => state.setDescription)
+    const description = useDreams(state => state.dream.description)
 
     const {
         transcript,

@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom'
 import { Box, Container, TextField } from '@mui/material'
 import debounce from 'lodash.debounce'
 
-import useDream from '../../store/dream'
 import Header from './Components/Header';
 import RecordText from './Components/RecordText';
 import Tags from './Components/Tags';
+import Persons from './Components/Persons'
+import useDreams from '../../store/store'
 
 
 const DEBOUNCE_TIME = 5_000
@@ -14,13 +15,16 @@ const DEBOUNCE_TIME = 5_000
 const debouncedSave = (func: () => void) => debounce(func, DEBOUNCE_TIME)
 
 export default function Edit() {
-    const dreamStore = useDream()
+    const setDescription = useDreams(state => state.setDescription)
+    const getDream = useDreams(state => state.getDream)
+    const updateDream = useDreams(state => state.updateDream)
+    const isSaved = useDreams(state => state.dream.isSaved)
+    const description = useDreams(state => state.dream.description)
     const { id: urlId } = useParams()
-    const isSaved = dreamStore.isSaved
 
     React.useEffect(() => {
         if (urlId) {
-            dreamStore.get(urlId)
+            getDream(urlId)
         } else {
             alert("No url Id found")
         }
@@ -28,13 +32,13 @@ export default function Edit() {
 
     const saveDream = async () => {
         if (isSaved) {
-            await dreamStore.update()
+            await updateDream()
         }
     }
 
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const value = e.currentTarget.value
-        dreamStore.setDescription(value)
+        setDescription(value)
         debouncedSave(saveDream)()
     }
 
@@ -42,7 +46,6 @@ export default function Edit() {
         <Container >
             <Box component='form'>
                 <Header isSaved={isSaved} />
-                <Tags />
                 <RecordText />
                 <TextField
                     sx={{
@@ -52,9 +55,11 @@ export default function Edit() {
                     label="Beschreibung"
                     multiline
                     minRows={20}
-                    value={dreamStore.description}
+                    value={description}
                     onChange={onChangeDescriptionDebounce}
                 />
+                <Tags />
+                <Persons />
             </Box>
         </Container>
     )

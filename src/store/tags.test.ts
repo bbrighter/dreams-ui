@@ -1,5 +1,5 @@
 import { ControllerTagResponse, } from "../api/generated_api"
-import { TagResponseToTags } from "./common"
+import { tagResponseToTags } from "./tags"
 
 test('tagResponseToTags', () => {
     const resp: Array<ControllerTagResponse> =
@@ -9,7 +9,7 @@ test('tagResponseToTags', () => {
         ]
 
 
-    const tags = TagResponseToTags(resp)
+    const tags = tagResponseToTags(resp)
 
     expect(tags).toHaveLength(2)
     expect(tags[0].id).toBe(1)

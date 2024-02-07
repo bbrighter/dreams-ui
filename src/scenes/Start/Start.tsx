@@ -2,22 +2,21 @@ import * as React from "react"
 import { useEffect } from "react";
 import { Button, Container, List } from "@mui/material";
 
-import useDreams from "../../store/dreams";
-import useDream from "../../store/dream";
 import DreamItem from "./Compenents/DreamItem";
 import { useNavigateToDream } from "../../hooks/navigate";
+import useDreams from "../../store/store";
 
 
 export default function Start() {
-    const dreamsStore = useDreams()
-    const createDream = useDream(state => state.create)
+    const getDreams = useDreams(state => state.getDreams)
+    const createDream = useDreams(state => state.createDream)
+    const dreams = useDreams(state => state.dreams)
+
     const navigate = useNavigateToDream()
 
 
     useEffect(() => {
-        dreamsStore.get().catch(
-            e => alert(e)
-        )
+        getDreams().catch(e => alert(e))
     }, [])
 
     const handleClick = async () => {
@@ -34,7 +33,7 @@ export default function Start() {
                 Neu
             </Button>
             <List>
-                {dreamsStore.dreams.map(d =>
+                {dreams.map(d =>
                     (<DreamItem key={d.id} date={d.date} id={d.id} />)
                 )}
             </List>

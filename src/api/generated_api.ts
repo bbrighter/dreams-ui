@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface ControllerDreamMetaResponse {
+  date: string;
+  id: number;
+}
+
 export interface ControllerDreamRequestBody {
   date: string;
   description?: string;
@@ -18,11 +23,21 @@ export interface ControllerDreamResponse {
   date: string;
   description: string;
   id: number;
+  persons: ControllerPersonResponse[];
   tags: ControllerTagResponse[];
 }
 
 export interface ControllerDreamsResponse {
-  dreams: ControllerDreamResponse[];
+  dreams: ControllerDreamMetaResponse[];
+}
+
+export interface ControllerPersonResponse {
+  id: number;
+  name: string;
+}
+
+export interface ControllerPersonsResponse {
+  persons: ControllerPersonResponse[];
 }
 
 export interface ControllerTagResponse {
@@ -281,7 +296,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Get one dreams
+     * @description Get one dream
      *
      * @name DreamsDetail
      * @request GET:/dreams/{dreamId}
@@ -323,6 +338,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Add a person to a dream
+     *
+     * @name PersonsUpdate
+     * @request PUT:/dreams/{dreamId}/persons
+     */
+    personsUpdate: (
+      dreamId: string,
+      query: {
+        /** Name of person */
+        name: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<number, any>({
+        path: `/dreams/${dreamId}/persons`,
+        method: "PUT",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Delete a person from a dream
+     *
+     * @name PersonsDelete
+     * @request DELETE:/dreams/{dreamId}/persons/{personId}
+     */
+    personsDelete: (dreamId: string, personId: string, params: RequestParams = {}) =>
+      this.request<ControllerPersonsResponse, any>({
+        path: `/dreams/${dreamId}/persons/${personId}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Add a tag to a dream
      *
      * @name TagsUpdate
@@ -354,6 +405,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ControllerTagsResponse, any>({
         path: `/dreams/${dreamId}/tags/${tagId}`,
         method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+  };
+  persons = {
+    /**
+     * @description Get all persons
+     *
+     * @name PersonsList
+     * @request GET:/persons
+     */
+    personsList: (params: RequestParams = {}) =>
+      this.request<ControllerPersonResponse[], any>({
+        path: `/persons`,
+        method: "GET",
         format: "json",
         ...params,
       }),
