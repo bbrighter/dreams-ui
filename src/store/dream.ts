@@ -1,13 +1,13 @@
 import { ControllerDreamResponse } from "../api/generated_api"
 import { Person } from "./persons"
-import { Tag, tagResponseToTags } from "./tags"
+import { Category, categoryResponseToCategories } from "./categories"
 
 
 export interface Dream {
     id: number
     date: Date
     description: string
-    tags: Array<Tag>
+    categories: Array<Category>
     persons: Array<Person>
     isSaved: boolean
 }
@@ -17,7 +17,7 @@ export function dreamResponseToDream(resp: ControllerDreamResponse): Dream {
         id: resp.id,
         date: new Date(resp.date),
         description: resp.description,
-        tags: tagResponseToTags(resp.tags),
+        categories: categoryResponseToCategories(resp.categories),
         persons: resp.persons.map(p => ({ id: p.id, name: p.name })),
         isSaved: true,
     }

@@ -4,12 +4,12 @@ import { produce } from "immer"
 import { ControllerDreamRequestBody } from "../api/generated_api"
 import api from "../api/api"
 import { Dream, dreamResponseToDream } from "./dream"
-import { tagResponseToTags, Tags } from "./tags"
+import { categoryResponseToCategories, Categories } from "./categories"
 import { personsResponseToPersons, Persons } from "./persons"
 import { Dreams, dreamsResponseToDreams } from "./dreams"
 
 
-interface State extends Tags, Persons, Dreams {
+interface State extends Categories, Persons, Dreams {
     dream: Dream
 }
 
@@ -23,10 +23,10 @@ interface Actions {
     // Dreams
     getDreams: () => Promise<void>
     deleteDream: (id: number) => Promise<void>
-    // Tags
-    getTags: () => Promise<void>,
-    addTag: (title: string) => Promise<boolean>
-    removeTag: (tagId: number) => Promise<boolean>
+    // Categories
+    getCategories: () => Promise<void>,
+    addCategory: (name: string) => Promise<boolean>
+    removeCategory: (id: number) => Promise<boolean>
     // Persons
     getPersons: () => Promise<void>
     addPerson: (name: string) => Promise<void>
@@ -40,7 +40,7 @@ const initialState: State = {
         id: 0,
         date: new Date(),
         description: "",
-        tags: [],
+        categories: [],
         persons: [],
         isSaved: true,
     },
@@ -120,31 +120,31 @@ const useDreams = create<Store>((set, get) => ({
     },
 
     // Tags
-    getTags: async () => {
-        const resp = await api.tags.tagsList()
+    getCategories: async () => {
+        const resp = await api.categories.categoriesList()
         set(produce((draft: State) => {
-            draft.tags = tagResponseToTags(resp.data.tags)
+            draft.tags = categoryResponseToCategories(resp.data.categories)
         }))
     },
 
-    addTag: async (title: string): Promise<boolean> => {
-        const resp = await api.dreams.tagsUpdate(get().dream.id.toString(), { title: title })
-        const newTagId = resp.data.tags.find(t => t.title == title)?.id
+    addCategory: async (name: string): Promise<boolean> => {
+        const resp = await api.dreams.categoriesUpdate(get().dream.id.toString(), { name: name })
+        const newTagId = resp.data.categories.find(c => c.name == name)?.id
         if (resp.ok && newTagId) {
             set(produce((draft: State) => {
-                draft.tags = tagResponseToTags(resp.data.tags)
-                draft.dream.tags.push({ id: newTagId, title: title })
+                draft.tags = categoryResponseToCategories(resp.data.categories)
+                draft.dream.categories.push({ id: newTagId, name: name })
             }))
         }
         return resp.ok
     },
 
-    removeTag: async (tagId: number) => {
-        const resp = await api.dreams.tagsDelete(get().dream.id.toString(), tagId.toString())
+    removeCategory: async (id: number) => {
+        const resp = await api.dreams.categoriesDelete(get().dream.id.toString(), id.toString())
         if (resp.ok) {
             set(produce((draft: State) => {
-                draft.tags = tagResponseToTags(resp.data.tags)
-                draft.dream.tags = draft.dream.tags.filter(t => t.id != tagId)
+                draft.tags = categoryResponseToCategories(resp.data.categories)
+                draft.dream.categories = draft.dream.categories.filter(t => t.id != id)
             }))
         }
         return resp.ok
