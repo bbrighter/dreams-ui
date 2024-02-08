@@ -7,7 +7,7 @@ test('dreamResponseToDream', () => {
         date: "2024-01-04T19:54:20.113Z",
         description: "description",
         persons: [],
-        tags: [],
+        categories: [],
     }
 
     const dream = dreamResponseToDream(resp)
@@ -18,5 +18,5 @@ test('dreamResponseToDream', () => {
     expect(dream.date.getFullYear()).toBe(2024)
     expect(dream.description).toBe("description")
     expect(dream.persons).toHaveLength(0)
-    expect(dream.tags).toHaveLength(0)
+    expect(dream.categories).toHaveLength(0)
 })

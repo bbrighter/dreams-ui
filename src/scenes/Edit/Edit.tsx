@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce'
 
 import Header from './Components/Header';
 import RecordText from './Components/RecordText';
-import Tags from './Components/Tags';
+import Categories from './Components/Categories';
 import Persons from './Components/Persons'
 import useDreams from '../../store/store'
 
@@ -58,7 +58,7 @@ export default function Edit() {
                     value={description}
                     onChange={onChangeDescriptionDebounce}
                 />
-                <Tags />
+                <Categories />
                 <Persons />
             </Box>
         </Container>

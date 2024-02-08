@@ -1,21 +1,21 @@
 import { Person } from "../../../store/persons"
-import { Tag } from "../../../store/tags"
+import { Category } from "../../../store/categories"
 
 export interface TagValue {
     id: number
-    label: string
+    name: string
 }
 
 export function isTagValue(t: unknown): t is TagValue {
     return typeof (t) == 'object' && t != null &&
         'id' in t && typeof (t.id) == 'number' &&
-        'label' in t && typeof (t.label) == 'string'
+        'name' in t && typeof (t.name) == 'string'
 }
 
-export function tagsToTagValue(ts: Array<Tag>): Array<TagValue> {
-    return ts.map(t => ({ id: t.id, label: t.title }))
+export function categoriesToTagValue(ts: Array<Category>): Array<TagValue> {
+    return ts
 }
 
 export function personsToTagValue(ps: Array<Person>): Array<TagValue> {
-    return ps.map(p => ({ id: p.id, label: p.name }))
+    return ps
 }

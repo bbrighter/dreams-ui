@@ -9,6 +9,15 @@
  * ---------------------------------------------------------------
  */
 
+export interface ControllerCategoriesResponse {
+  categories: ControllerCategoryResponse[];
+}
+
+export interface ControllerCategoryResponse {
+  id: number;
+  name: string;
+}
+
 export interface ControllerDreamMetaResponse {
   date: string;
   id: number;
@@ -20,11 +29,11 @@ export interface ControllerDreamRequestBody {
 }
 
 export interface ControllerDreamResponse {
+  categories: ControllerCategoryResponse[];
   date: string;
   description: string;
   id: number;
   persons: ControllerPersonResponse[];
-  tags: ControllerTagResponse[];
 }
 
 export interface ControllerDreamsResponse {
@@ -38,15 +47,6 @@ export interface ControllerPersonResponse {
 
 export interface ControllerPersonsResponse {
   persons: ControllerPersonResponse[];
-}
-
-export interface ControllerTagResponse {
-  id: number;
-  title: string;
-}
-
-export interface ControllerTagsResponse {
-  tags: ControllerTagResponse[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -264,6 +264,21 @@ export class HttpClient<SecurityDataType = unknown> {
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  categories = {
+    /**
+     * @description Get all categories
+     *
+     * @name CategoriesList
+     * @request GET:/categories
+     */
+    categoriesList: (params: RequestParams = {}) =>
+      this.request<ControllerCategoriesResponse, any>({
+        path: `/categories`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
   dreams = {
     /**
      * @description Get all dreams
@@ -338,6 +353,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Add a category to a dream
+     *
+     * @name CategoriesUpdate
+     * @request PUT:/dreams/{dreamId}/categories
+     */
+    categoriesUpdate: (
+      dreamId: string,
+      query: {
+        /** Name of a category */
+        name: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ControllerCategoriesResponse, any>({
+        path: `/dreams/${dreamId}/categories`,
+        method: "PUT",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Remove a category from a dream
+     *
+     * @name CategoriesDelete
+     * @request DELETE:/dreams/{dreamId}/categories/{categoryId}
+     */
+    categoriesDelete: (dreamId: string, categoryId: string, params: RequestParams = {}) =>
+      this.request<ControllerCategoriesResponse, any>({
+        path: `/dreams/${dreamId}/categories/${categoryId}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Add a person to a dream
      *
      * @name PersonsUpdate
@@ -372,42 +423,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: "json",
         ...params,
       }),
-
-    /**
-     * @description Add a tag to a dream
-     *
-     * @name TagsUpdate
-     * @request PUT:/dreams/{dreamId}/tags
-     */
-    tagsUpdate: (
-      dreamId: string,
-      query: {
-        /** Label of tag */
-        title: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ControllerTagsResponse, any>({
-        path: `/dreams/${dreamId}/tags`,
-        method: "PUT",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Remove a tag to a dream
-     *
-     * @name TagsDelete
-     * @request DELETE:/dreams/{dreamId}/tags/{tagId}
-     */
-    tagsDelete: (dreamId: string, tagId: string, params: RequestParams = {}) =>
-      this.request<ControllerTagsResponse, any>({
-        path: `/dreams/${dreamId}/tags/${tagId}`,
-        method: "DELETE",
-        format: "json",
-        ...params,
-      }),
   };
   persons = {
     /**
@@ -419,21 +434,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     personsList: (params: RequestParams = {}) =>
       this.request<ControllerPersonResponse[], any>({
         path: `/persons`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-  };
-  tags = {
-    /**
-     * @description Get all tags
-     *
-     * @name TagsList
-     * @request GET:/tags
-     */
-    tagsList: (params: RequestParams = {}) =>
-      this.request<ControllerTagsResponse, any>({
-        path: `/tags`,
         method: "GET",
         format: "json",
         ...params,
