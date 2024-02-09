@@ -38,7 +38,7 @@ export default function Statistics() {
     })
 
     const namedPersonsCount = personsCount.map(s => {
-        const name = categories.find(c => c.id == s.id)?.name
+        const name = persons.find(c => c.id == s.id)?.name
         return { key: s.id.toString(), value: name || "", count: s.count }
     })
 
