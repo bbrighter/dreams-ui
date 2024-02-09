@@ -7,7 +7,7 @@ import { Dream, dreamResponseToDream } from "./dream"
 import { categoryResponseToCategories, Categories } from "./categories"
 import { personsResponseToPersons, Persons } from "./persons"
 import { Dreams, dreamsResponseToDreams } from "./dreams"
-import { ControllerCategoriesCountToStatistics as controllerCategoriesCountToStatistics, Statistics } from "./statistics"
+import { Statistics, controllerCountsResponseToStatistic } from "./statistics"
 
 
 interface State extends Categories, Persons, Dreams, Statistics {
@@ -50,8 +50,10 @@ const initialState: State = {
     dreams: [],
     categories: [],
     persons: [],
-    statistics: [],
+    categoriesCount: [],
+    personsCount: [],
 }
+
 
 const useDreams = create<Store>((set, get) => ({
     ...initialState,
@@ -196,7 +198,8 @@ const useDreams = create<Store>((set, get) => ({
         const resp = await api.statistics.statisticsList()
         if (resp.ok) {
             set(produce((draft: State) => {
-                draft.statistics = controllerCategoriesCountToStatistics(resp.data)
+                draft.categoriesCount = controllerCountsResponseToStatistic(resp.data, 'category')
+                draft.personsCount = controllerCountsResponseToStatistic(resp.data, 'person')
             }))
         }
     },

@@ -13,18 +13,19 @@ export interface ControllerCategoriesResponse {
   categories: ControllerCategoryResponse[];
 }
 
-export interface ControllerCategoryCount {
-  categoryId: number;
-  count: number;
-}
-
-export interface ControllerCategoryCountResponse {
-  categories: ControllerCategoryCount[];
-}
-
 export interface ControllerCategoryResponse {
   id: number;
   name: string;
+}
+
+export interface ControllerCount {
+  count: number;
+  id: number;
+}
+
+export interface ControllerCountsResponse {
+  categories: ControllerCount[];
+  persons: ControllerCount[];
 }
 
 export interface ControllerDreamMetaResponse {
@@ -450,13 +451,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   statistics = {
     /**
-     * @description Get count per category
+     * @description Get count per category and person
      *
      * @name StatisticsList
      * @request GET:/statistics
      */
     statisticsList: (params: RequestParams = {}) =>
-      this.request<ControllerCategoryCountResponse, any>({
+      this.request<ControllerCountsResponse, any>({
         path: `/statistics`,
         method: "GET",
         format: "json",

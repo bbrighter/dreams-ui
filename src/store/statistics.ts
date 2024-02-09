@@ -1,14 +1,17 @@
-import { ControllerCategoryCountResponse } from "../api/generated_api"
+import { ControllerCountsResponse } from "../api/generated_api"
+
 
 export interface Statistic {
-    categoryId: number
+    id: number
     count: number
 }
 
 export interface Statistics {
-    statistics: Array<Statistic>
+    categoriesCount: Array<Statistic>
+    personsCount: Array<Statistic>
 }
 
-export function ControllerCategoriesCountToStatistics(resp: ControllerCategoryCountResponse): Array<Statistic> {
-    return resp.categories.map(r => ({ categoryId: r.categoryId, count: r.count } as Statistic))
+export function controllerCountsResponseToStatistic(resp: ControllerCountsResponse, type: 'category' | 'person'): Array<Statistic> {
+    const array = type == 'category' ? resp.categories : resp.persons
+    return array == null ? [] : array.map(r => ({ id: r.id, count: r.count } as Statistic))
 }
