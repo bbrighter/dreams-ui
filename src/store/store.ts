@@ -7,9 +7,10 @@ import { Dream, dreamResponseToDream } from "./dream"
 import { categoryResponseToCategories, Categories } from "./categories"
 import { personsResponseToPersons, Persons } from "./persons"
 import { Dreams, dreamsResponseToDreams } from "./dreams"
+import { ControllerCategoriesCountToStatistics as controllerCategoriesCountToStatistics, Statistics } from "./statistics"
 
 
-interface State extends Categories, Persons, Dreams {
+interface State extends Categories, Persons, Dreams, Statistics {
     dream: Dream
 }
 
@@ -31,6 +32,8 @@ interface Actions {
     getPersons: () => Promise<void>
     addPerson: (name: string) => Promise<void>
     removePerson: (id: number) => Promise<void>
+    // Statistics
+    getStatistics: () => Promise<void>
 }
 
 interface Store extends State, Actions { }
@@ -45,8 +48,9 @@ const initialState: State = {
         isSaved: true,
     },
     dreams: [],
-    tags: [],
+    categories: [],
     persons: [],
+    statistics: [],
 }
 
 const useDreams = create<Store>((set, get) => ({
@@ -123,7 +127,7 @@ const useDreams = create<Store>((set, get) => ({
     getCategories: async () => {
         const resp = await api.categories.categoriesList()
         set(produce((draft: State) => {
-            draft.tags = categoryResponseToCategories(resp.data.categories)
+            draft.categories = categoryResponseToCategories(resp.data.categories)
         }))
     },
 
@@ -132,7 +136,7 @@ const useDreams = create<Store>((set, get) => ({
         const newTagId = resp.data.categories.find(c => c.name == name)?.id
         if (resp.ok && newTagId) {
             set(produce((draft: State) => {
-                draft.tags = categoryResponseToCategories(resp.data.categories)
+                draft.categories = categoryResponseToCategories(resp.data.categories)
                 draft.dream.categories.push({ id: newTagId, name: name })
             }))
         }
@@ -143,7 +147,7 @@ const useDreams = create<Store>((set, get) => ({
         const resp = await api.dreams.categoriesDelete(get().dream.id.toString(), id.toString())
         if (resp.ok) {
             set(produce((draft: State) => {
-                draft.tags = categoryResponseToCategories(resp.data.categories)
+                draft.categories = categoryResponseToCategories(resp.data.categories)
                 draft.dream.categories = draft.dream.categories.filter(t => t.id != id)
             }))
         }
@@ -183,6 +187,16 @@ const useDreams = create<Store>((set, get) => ({
             set(produce((draft: State) => {
                 draft.dream.persons = draft.dream.persons.filter(p => p.id != id)
                 draft.persons = personsResponseToPersons(resp.data.persons)
+            }))
+        }
+    },
+
+    // Statistics
+    getStatistics: async () => {
+        const resp = await api.statistics.statisticsList()
+        if (resp.ok) {
+            set(produce((draft: State) => {
+                draft.statistics = controllerCategoriesCountToStatistics(resp.data)
             }))
         }
     },
