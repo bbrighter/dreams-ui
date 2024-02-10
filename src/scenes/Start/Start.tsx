@@ -5,6 +5,7 @@ import { Button, Container, List } from "@mui/material";
 import DreamItem from "./Compenents/DreamItem";
 import { useNavigateToDream } from "../../hooks/navigate";
 import useDreams from "../../store/store";
+import Navigation from "../Components/Navigation";
 
 
 export default function Start() {
@@ -37,6 +38,7 @@ export default function Start() {
                     (<DreamItem key={d.id} date={d.date} id={d.id} />)
                 )}
             </List>
+            <Navigation activeIndex={0} />
         </Container>
     )
 }

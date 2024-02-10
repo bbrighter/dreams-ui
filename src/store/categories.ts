@@ -6,7 +6,7 @@ export interface Category {
 }
 
 export interface Categories {
-    tags: Array<Category>
+    categories: Array<Category>
 }
 
 export function isCategory(t: unknown): t is Category {

@@ -9,3 +9,8 @@ export const useNavigateToDream = () => {
     const navigate = useNavigate()
     return (dreamId: number) => navigate('/dreams/' + dreamId)
 }
+
+export const useNavigateStatistics = () => {
+    const navigate = useNavigate()
+    return () => navigate('/statistics')
+}
