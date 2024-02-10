@@ -1,17 +1,9 @@
 import * as React from 'react'
-import { TagCloud } from 'react-tagcloud'
+import Container from '@mui/material/Container'
 
 import useDreams from '../../store/store'
-import { Container, Divider, Typography } from '@mui/material'
-import styled from '@emotion/styled'
 import Navigation from '../Components/Navigation'
-
-const StyledTagCloud = styled(TagCloud)`
-    position: relative;
-    width: 80%;
-    left: 10%;
-`
-
+import Tags from './Components/Tags'
 
 export default function Statistics() {
     const getStatistics = useDreams(state => state.getStatistics)
@@ -32,31 +24,16 @@ export default function Statistics() {
         }
     }, [])
 
-    const namedStatistics = categoryCounts.map(s => {
-        const name = categories.find(c => c.id == s.id)?.name
-        return { key: s.id.toString(), value: name || "", count: s.count }
-    })
-
-    const namedPersonsCount = personsCount.map(s => {
-        const name = persons.find(c => c.id == s.id)?.name
-        return { key: s.id.toString(), value: name || "", count: s.count }
-    })
-
     return (
         <>
-            <Container>
-                <Typography>Kategorien</Typography>
-                <StyledTagCloud
-                    maxSize={50}
-                    minSize={14}
-                    tags={namedStatistics}
+            <Container sx={{ padding: '0rem' }}>
+                <Tags
+                    type='category'
+                    statistics={categoryCounts}
                 />
-                <Divider />
-                <Typography>Personen</Typography>
-                <StyledTagCloud
-                    maxSize={50}
-                    minSize={14}
-                    tags={namedPersonsCount}
+                <Tags
+                    type='person'
+                    statistics={personsCount}
                 />
                 <Navigation activeIndex={1} />
             </Container>
