@@ -36,6 +36,7 @@ export interface ControllerDreamMetaResponse {
 export interface ControllerDreamRequestBody {
   date: string;
   description?: string;
+  visible?: boolean;
 }
 
 export interface ControllerDreamResponse {
@@ -44,6 +45,7 @@ export interface ControllerDreamResponse {
   description: string;
   id: number;
   persons: ControllerPersonResponse[];
+  visible: boolean;
 }
 
 export interface ControllerDreamsResponse {
@@ -296,10 +298,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name DreamsList
      * @request GET:/dreams
      */
-    dreamsList: (params: RequestParams = {}) =>
+    dreamsList: (
+      query?: {
+        /** True if all dreams should be shown */
+        showPrivateDreams?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<ControllerDreamsResponse, any>({
         path: `/dreams`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

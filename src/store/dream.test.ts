@@ -8,6 +8,7 @@ test('dreamResponseToDream', () => {
         description: "description",
         persons: [],
         categories: [],
+        visible: true,
     }
 
     const dream = dreamResponseToDream(resp)
@@ -19,4 +20,5 @@ test('dreamResponseToDream', () => {
     expect(dream.description).toBe("description")
     expect(dream.persons).toHaveLength(0)
     expect(dream.categories).toHaveLength(0)
+    expect(dream.visible).toBeTruthy()
 })

@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { TagCloud } from 'react-tagcloud'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import PeopleIcon from '@mui/icons-material/People';
 
 import { Statistic } from '../../../store/statistics'
 import useDreams from '../../../store/store'

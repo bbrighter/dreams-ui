@@ -8,9 +8,10 @@ import { categoryResponseToCategories, Categories } from "./categories"
 import { personsResponseToPersons, Persons } from "./persons"
 import { Dreams, dreamsResponseToDreams } from "./dreams"
 import { Statistics, controllerCountsResponseToStatistic } from "./statistics"
+import { Password } from "./password"
 
 
-interface State extends Categories, Persons, Dreams, Statistics {
+interface State extends Categories, Persons, Dreams, Statistics, Password {
     dream: Dream
 }
 
@@ -21,6 +22,7 @@ interface Actions {
     getDream: (id: number | string) => Promise<void>,
     createDream: () => Promise<number>,
     updateDream: () => Promise<boolean>,
+    changevisiblity: () => Promise<void>,
     // Dreams
     getDreams: () => Promise<void>
     deleteDream: (id: number) => Promise<void>
@@ -34,6 +36,9 @@ interface Actions {
     removePerson: (id: number) => Promise<void>
     // Statistics
     getStatistics: () => Promise<void>
+    // Password
+    setPassword: (password: string) => void
+    isValidPassword: () => boolean
 }
 
 interface Store extends State, Actions { }
@@ -46,12 +51,14 @@ const initialState: State = {
         categories: [],
         persons: [],
         isSaved: true,
+        visible: true,
     },
     dreams: [],
     categories: [],
     persons: [],
     categoriesCount: [],
     personsCount: [],
+    password: "",
 }
 
 
@@ -106,10 +113,24 @@ const useDreams = create<Store>((set, get) => ({
         }
         return resp.ok
     },
+    changevisiblity: async () => {
+        const currentVisibility = get().dream.visible
+        const body: ControllerDreamRequestBody = {
+            date: get().dream.date.toISOString(),
+            description: get().dream.description,
+            visible: !currentVisibility
+        }
+        const resp = await api.dreams.dreamsPartialUpdate(get().dream.id.toString(), body)
+        if (resp.ok) {
+            set(produce((draft: State) => { draft.dream.visible = !currentVisibility }))
+        }
+
+    },
 
     // Dreams
     getDreams: async () => {
-        const resp = await api.dreams.dreamsList()
+        const query = get().isValidPassword() ? { showPrivateDreams: true } : {}
+        const resp = await api.dreams.dreamsList(query)
         const dreams = dreamsResponseToDreams(resp.data)
         dreams.dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
         set(produce((draft: State) => {
@@ -203,6 +224,17 @@ const useDreams = create<Store>((set, get) => ({
             }))
         }
     },
+
+    // Password
+    setPassword: (password: string) => {
+        set(produce((draft: State) => {
+            draft.password = password
+        }))
+    },
+    isValidPassword: () => {
+        const password = get().password
+        return password == "080388"
+    }
 }))
 
 export default useDreams

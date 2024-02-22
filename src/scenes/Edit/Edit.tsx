@@ -43,24 +43,26 @@ export default function Edit() {
     }
 
     return (
-        <Container >
-            <Box component='form'>
-                <Header isSaved={isSaved} />
-                <RecordText />
-                <TextField
-                    sx={{
-                        width: '100%',
-                        marginTop: '2rem'
-                    }}
-                    label="Beschreibung"
-                    multiline
-                    minRows={20}
-                    value={description}
-                    onChange={onChangeDescriptionDebounce}
-                />
-                <Categories />
-                <Persons />
-            </Box>
-        </Container>
+        <>
+            <Header isSaved={isSaved} />
+            <Container >
+                <Box component='form'>
+                    <RecordText />
+                    <TextField
+                        sx={{
+                            width: '100%',
+                            marginTop: '6rem'
+                        }}
+                        label="Beschreibung"
+                        multiline
+                        minRows={20}
+                        value={description}
+                        onChange={onChangeDescriptionDebounce}
+                    />
+                    <Categories />
+                    <Persons />
+                </Box>
+            </Container>
+        </>
     )
 }
