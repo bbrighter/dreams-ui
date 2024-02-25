@@ -22,12 +22,22 @@ export default function Authentication() {
     const setPassword = useDreams(state => state.setPassword)
     const isCorrectPassword = useDreams(state => state.isValidPassword)()
     const [open, setOpen] = React.useState(false)
-    const isEmptyPasswort = "" == password
+
+    const onClick = () => isCorrectPassword ? setPassword("") : setOpen(true)
+
+    React.useEffect(() => {
+        if (isCorrectPassword) {
+            setTimeout(() => setOpen(false), 500)
+        }
+    }, [password])
+
+
+    const color = isCorrectPassword ? 'success' : 'primary'
 
     return (
         <>
             <IconButton
-                onClick={() => setOpen(true)}>
+                onClick={onClick}>
                 {isCorrectPassword ? <LockOpenIcon /> : <LockIcon />}
             </IconButton>
             <Modal
@@ -39,8 +49,8 @@ export default function Authentication() {
                         value={password}
                         type='password'
                         label='Passwort'
+                        color={color}
                         onChange={(e) => setPassword(e.target.value)}
-                        error={!isCorrectPassword && !isEmptyPasswort}
                     />
                 </Box>
             </Modal>

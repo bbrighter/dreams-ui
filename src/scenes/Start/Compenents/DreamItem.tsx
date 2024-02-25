@@ -16,9 +16,15 @@ const StyledListItem = styled(ListItem)`
     }
 `
 
+const StyledListItemText = styled(ListItemText) <{ visible: boolean }>`
+    color: ${props => (props.visible ? 'primary' : '#90caf9')};
+
+`
+
 export default function DreamItem(props: {
     id: number
     date: Date
+    visible: boolean
 }) {
     const deleteDream = useDreams(state => state.deleteDream)
     const navigate = useNavigate()
@@ -45,8 +51,8 @@ export default function DreamItem(props: {
             <ListItemAvatar >
                 <CloudIcon />
             </ListItemAvatar>
-            <ListItemText>
+            <StyledListItemText visible={props.visible}>
                 {props.date.toLocaleDateString("de-DE", { dateStyle: "medium" })}
-            </ListItemText>
+            </StyledListItemText>
         </StyledListItem>)
 }

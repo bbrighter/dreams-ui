@@ -58,6 +58,7 @@ export default function RecordText() {
 
     return (
         <ShadowFab
+            sx={{ marginTop: '1rem' }}
             isHighlight={listening}
             color={color}
             onClick={changeListening}

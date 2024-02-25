@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Box, Container, TextField } from '@mui/material'
 import debounce from 'lodash.debounce'
 
-import Header from './Components/Header';
+import EditHeader from './Components/EditHeader';
 import RecordText from './Components/RecordText';
 import Categories from './Components/Categories';
 import Persons from './Components/Persons'
@@ -17,14 +17,16 @@ const debouncedSave = (func: () => void) => debounce(func, DEBOUNCE_TIME)
 export default function Edit() {
     const setDescription = useDreams(state => state.setDescription)
     const getDream = useDreams(state => state.getDream)
+    const getPrivateDream = useDreams(state => state.getPrivateDream)
     const updateDream = useDreams(state => state.updateDream)
     const isSaved = useDreams(state => state.dream.isSaved)
     const description = useDreams(state => state.dream.description)
+    const isValidPassword = useDreams(state => state.isValidPassword)()
     const { id: urlId } = useParams()
 
     React.useEffect(() => {
         if (urlId) {
-            getDream(urlId)
+            isValidPassword ? getPrivateDream(urlId) : getDream(urlId)
         } else {
             alert("No url Id found")
         }
@@ -44,14 +46,14 @@ export default function Edit() {
 
     return (
         <>
-            <Header isSaved={isSaved} />
+            <EditHeader isSaved={isSaved} />
             <Container >
                 <Box component='form'>
                     <RecordText />
                     <TextField
                         sx={{
                             width: '100%',
-                            marginTop: '6rem'
+                            marginTop: '1rem'
                         }}
                         label="Beschreibung"
                         multiline

@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { AppBar, IconButton, Input, Toolbar } from "@mui/material";
+import { IconButton, Input } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { useNavigateHomePage } from '../../../hooks/navigate';
 import useDreams from '../../../store/store';
-import Authentication from '../../Start/Authentication';
 import Hide from './Hide';
+import Header from '../../Components/Header';
 
-export default function Header(props: { isSaved: boolean }) {
+export default function EditHeader(props: { isSaved: boolean }) {
     const isValidPassword = useDreams(state => state.isValidPassword())
     const date = useDreams(state => state.dream.date)
     const setDate = useDreams(state => state.setDate)
@@ -16,19 +16,27 @@ export default function Header(props: { isSaved: boolean }) {
         setDate(e.currentTarget.value)
     }
 
+    const DateInput = <Input
+        type='date'
+        value={date.toISOString().substring(0, 10)}
+        onChange={onChangeDate}
+    />
+    const HideOrShow = () => {
+        return (
+            isValidPassword ? <Hide /> : <></>
+        )
+    }
+
+
     return (
-        <AppBar>
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
-                <BackButton />
-                <Input
-                    type='date'
-                    value={date.toISOString().substring(0, 10)}
-                    onChange={onChangeDate}
-                />
-                {isValidPassword ? <Hide /> : <Authentication />}
-                <SaveButton isSaved={props.isSaved} />
-            </Toolbar>
-        </AppBar>
+        <Header
+            mainAction={<BackButton />}
+            secondaryAction={[
+                <SaveButton key="1" isSaved={props.isSaved} />,
+                <HideOrShow key="2" />
+            ]}
+            optionalMiddleAction={DateInput}
+        />
     )
 }
 
