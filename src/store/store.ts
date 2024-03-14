@@ -11,6 +11,8 @@ import { Statistics, controllerCountsResponseToStatistic } from "./statistics"
 import { Password } from "./password"
 
 
+const STATISTICS_LIMITS = 40
+
 interface State extends Categories, Persons, Dreams, Statistics, Password {
     dream: Dream
 }
@@ -235,9 +237,9 @@ const useDreams = create<Store>((set, get) => ({
         let resp: HttpResponse<ControllerCountsResponse>
         if (showAll) {
             api.setSecurityData(get().password)
-            resp = await api.private.statisticsList()
+            resp = await api.private.statisticsList({ limit: STATISTICS_LIMITS })
         } else {
-            resp = await api.statistics.statisticsList()
+            resp = await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
         }
         if (resp.ok) {
             set(produce((draft: State) => {

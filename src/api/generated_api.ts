@@ -507,10 +507,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/private/statistics
      * @secure
      */
-    statisticsList: (params: RequestParams = {}) =>
+    statisticsList: (
+      query?: {
+        /** Limit of returned results */
+        limit?: number;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<ControllerCountsResponse, void>({
         path: `/private/statistics`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -523,10 +530,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name StatisticsList
      * @request GET:/statistics
      */
-    statisticsList: (params: RequestParams = {}) =>
+    statisticsList: (
+      query?: {
+        /** Limit of returned results */
+        limit?: number;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<ControllerCountsResponse, any>({
         path: `/statistics`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

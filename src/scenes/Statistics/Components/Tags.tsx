@@ -35,7 +35,7 @@ export default function Tags(props: {
             <Typography> {header}</Typography>
             <StyledTagCloud
                 maxSize={50}
-                minSize={14}
+                minSize={10}
                 tags={tags}
             />
         </>
