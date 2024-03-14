@@ -10,6 +10,7 @@ export interface Dream {
     categories: Array<Category>
     persons: Array<Person>
     isSaved: boolean
+    visible: boolean
 }
 
 export function dreamResponseToDream(resp: ControllerDreamResponse): Dream {
@@ -20,5 +21,6 @@ export function dreamResponseToDream(resp: ControllerDreamResponse): Dream {
         categories: categoryResponseToCategories(resp.categories),
         persons: resp.persons.map(p => ({ id: p.id, name: p.name })),
         isSaved: true,
+        visible: resp.visible,
     }
 }

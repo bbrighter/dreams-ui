@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { TagCloud } from 'react-tagcloud'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import PeopleIcon from '@mui/icons-material/People';
 
 import { Statistic } from '../../../store/statistics'
 import useDreams from '../../../store/store'
@@ -36,7 +35,7 @@ export default function Tags(props: {
             <Typography> {header}</Typography>
             <StyledTagCloud
                 maxSize={50}
-                minSize={14}
+                minSize={10}
                 tags={tags}
             />
         </>

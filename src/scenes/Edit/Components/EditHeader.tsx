@@ -1,37 +1,46 @@
 import * as React from 'react'
-import { IconButton, Input, Toolbar } from "@mui/material";
+import { IconButton, Input } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { useNavigateHomePage } from '../../../hooks/navigate';
 import useDreams from '../../../store/store';
+import Hide from './Hide';
+import Header from '../../Components/Header';
 
-export default function Header(props: { isSaved: boolean }) {
+export default function EditHeader(props: { isSaved: boolean }) {
+    const isValidPassword = useDreams(state => state.isValidPassword())
     const date = useDreams(state => state.dream.date)
     const setDate = useDreams(state => state.setDate)
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setDate(e.currentTarget.value)
     }
 
+    const DateInput = <Input
+        type='date'
+        value={date.toISOString().substring(0, 10)}
+        onChange={onChangeDate}
+    />
+    const HideOrShow = () => {
+        return (
+            isValidPassword ? <Hide /> : <></>
+        )
+    }
+
+
     return (
-        <Toolbar>
-            <BackButton />
-            <Input
-                sx={{
-                    position: 'absolute',
-                    width: '140px',
-                    left: 'calc(50% - 140px/2)'
-                }}
-                type='date'
-                value={date.toISOString().substring(0, 10)}
-                onChange={onChangeDate}
-            />
-            <SaveButton isSaved={props.isSaved} />
-        </Toolbar>
+        <Header
+            mainAction={<BackButton />}
+            secondaryAction={[
+                <SaveButton key="1" isSaved={props.isSaved} />,
+                <HideOrShow key="2" />
+            ]}
+            optionalMiddleAction={DateInput}
+        />
     )
 }
 
-function SaveButton(props: { isSaved: boolean }) {
+export function SaveButton(props: { isSaved: boolean }) {
     const navigate = useNavigateHomePage()
     const updateDream = useDreams(state => state.updateDream)
     const saveDream = async () => {
@@ -43,10 +52,6 @@ function SaveButton(props: { isSaved: boolean }) {
     return (
 
         <IconButton
-            sx={{
-                position: 'absolute',
-                right: 0
-            }}
             color={color}
             onClick={saveDream}
         >
@@ -55,7 +60,7 @@ function SaveButton(props: { isSaved: boolean }) {
     )
 }
 
-function BackButton() {
+export function BackButton() {
     const navigate = useNavigateHomePage()
 
     const handleClick = () => {
@@ -64,10 +69,6 @@ function BackButton() {
 
     return (
         <IconButton
-            sx={{
-                position: 'absolute',
-                left: 0
-            }}
             onClick={handleClick}
         >
             <ArrowBackIcon />

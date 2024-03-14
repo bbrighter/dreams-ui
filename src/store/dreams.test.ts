@@ -4,7 +4,7 @@ import { dreamsResponseToDreams } from "./dreams"
 test('dreamsResponseToDreams', () => {
     const resp: ControllerDreamsResponse = {
         dreams: [
-            { id: 1, date: "2024-01-04T19:54:20.113Z" },
+            { id: 1, date: "2024-01-04T19:54:20.113Z", visible: true },
         ]
     }
 

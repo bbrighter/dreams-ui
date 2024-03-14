@@ -1,16 +1,19 @@
 import { create } from "zustand"
 import { produce } from "immer"
 
-import { ControllerDreamRequestBody } from "../api/generated_api"
+import { ControllerCountsResponse, ControllerDreamRequestBody, HttpResponse } from "../api/generated_api"
 import api from "../api/api"
 import { Dream, dreamResponseToDream } from "./dream"
 import { categoryResponseToCategories, Categories } from "./categories"
 import { personsResponseToPersons, Persons } from "./persons"
 import { Dreams, dreamsResponseToDreams } from "./dreams"
 import { Statistics, controllerCountsResponseToStatistic } from "./statistics"
+import { Password } from "./password"
 
 
-interface State extends Categories, Persons, Dreams, Statistics {
+const STATISTICS_LIMITS = 40
+
+interface State extends Categories, Persons, Dreams, Statistics, Password {
     dream: Dream
 }
 
@@ -21,6 +24,10 @@ interface Actions {
     getDream: (id: number | string) => Promise<void>,
     createDream: () => Promise<number>,
     updateDream: () => Promise<boolean>,
+    // Private dreams
+    changevisiblity: () => Promise<void>,
+    getPrivateDreams: () => Promise<void>,
+    getPrivateDream: (id: number | string) => Promise<void>,
     // Dreams
     getDreams: () => Promise<void>
     deleteDream: (id: number) => Promise<void>
@@ -33,7 +40,10 @@ interface Actions {
     addPerson: (name: string) => Promise<void>
     removePerson: (id: number) => Promise<void>
     // Statistics
-    getStatistics: () => Promise<void>
+    getStatistics: (showAll: boolean) => Promise<void>
+    // Password
+    setPassword: (password: string) => void
+    isValidPassword: () => boolean
 }
 
 interface Store extends State, Actions { }
@@ -46,12 +56,14 @@ const initialState: State = {
         categories: [],
         persons: [],
         isSaved: true,
+        visible: true,
     },
     dreams: [],
     categories: [],
     persons: [],
     categoriesCount: [],
     personsCount: [],
+    password: "",
 }
 
 
@@ -106,7 +118,34 @@ const useDreams = create<Store>((set, get) => ({
         }
         return resp.ok
     },
-
+    // Private dreams
+    changevisiblity: async () => {
+        api.setSecurityData(get().password)
+        const resp = await api.private.dreamsPartialUpdate(get().dream.id.toString())
+        if (resp.ok) {
+            set(produce((draft: State) => { draft.dream.visible = resp.data.valueOf() }))
+        }
+    },
+    getPrivateDream: async (id: string | number) => {
+        api.setSecurityData(get().password)
+        const resp = await api.private.dreamsDetail(id.toString())
+        if (resp.ok) {
+            set(produce((draft: State) => {
+                draft.dream = dreamResponseToDream(resp.data)
+            }))
+        }
+    },
+    getPrivateDreams: async () => {
+        api.setSecurityData(get().password)
+        const resp = await api.private.dreamsList({ secure: true })
+        const dreams = dreamsResponseToDreams(resp.data)
+        dreams.dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
+        if (resp.ok) {
+            set(produce((draft: State) => {
+                draft.dreams = dreams.dreams
+            }))
+        }
+    },
     // Dreams
     getDreams: async () => {
         const resp = await api.dreams.dreamsList()
@@ -194,8 +233,14 @@ const useDreams = create<Store>((set, get) => ({
     },
 
     // Statistics
-    getStatistics: async () => {
-        const resp = await api.statistics.statisticsList()
+    getStatistics: async (showAll: boolean) => {
+        let resp: HttpResponse<ControllerCountsResponse>
+        if (showAll) {
+            api.setSecurityData(get().password)
+            resp = await api.private.statisticsList({ limit: STATISTICS_LIMITS })
+        } else {
+            resp = await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
+        }
         if (resp.ok) {
             set(produce((draft: State) => {
                 draft.categoriesCount = controllerCountsResponseToStatistic(resp.data, 'category')
@@ -203,6 +248,17 @@ const useDreams = create<Store>((set, get) => ({
             }))
         }
     },
+
+    // Password
+    setPassword: (password: string) => {
+        set(produce((draft: State) => {
+            draft.password = password
+        }))
+    },
+    isValidPassword: () => {
+        const password = get().password
+        return password == "080388"
+    }
 }))
 
 export default useDreams
