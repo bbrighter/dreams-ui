@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest'
+
 import { ControllerDreamsResponse } from "../api/generated_api"
 import { dreamsResponseToDreams } from "./dreams"
 

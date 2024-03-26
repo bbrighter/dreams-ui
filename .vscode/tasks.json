@@ -1,39 +1,25 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "npm: start",
-        "type": "npm",
-        "script": "start",
-        "problemMatcher": [],
-        "icon": {"id": "run"}
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "test",
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "icon": {
+        "id": "beaker"
       },
-      {
-        "label": "test",
-        "type": "npm",
-        "script": "test",
-        "group": "test",
-        "icon": {"id": "beaker"},
-        "presentation": {
-          "clear": true
-        }    
-      },
-      {
-        "label": "Build",
-        "type": "npm",
-        "script": "build:production",
-        "group": {
-          "kind": "build",
-          "isDefault": true
-        }
-      },
-      {
-        "label": "Cypress Open",
-        "type": "npm",
-        "script": "cypress:open",
-        "group": {
-          "kind": "test"
-        }
+      "presentation": {
+        "clear": true
       }
-    ]
-  }
+    },
+    {
+      "label": "Cypress Open",
+      "type": "npm",
+      "script": "cypress:open",
+      "group": {
+        "kind": "test"
+      }
+    }
+  ]
+}

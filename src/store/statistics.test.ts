@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest'
+
 import { ControllerCountsResponse } from "../api/generated_api"
 import { controllerCountsResponseToStatistic } from "./statistics"
 

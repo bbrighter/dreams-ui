@@ -16,7 +16,7 @@ const StyledListItem = styled(ListItem)`
     }
 `
 
-const StyledListItemText = styled(ListItemText) <{ visible: boolean }>`
+const StyledListItemText = styled(ListItemText) <{ visible: number }>`
     color: ${props => (props.visible ? 'primary' : '#90caf9')};
 
 `
@@ -51,7 +51,7 @@ export default function DreamItem(props: {
             <ListItemAvatar >
                 <CloudIcon />
             </ListItemAvatar>
-            <StyledListItemText visible={props.visible}>
+            <StyledListItemText visible={+props.visible}>
                 {props.date.toLocaleDateString("de-DE", { dateStyle: "medium" })}
             </StyledListItemText>
         </StyledListItem>)

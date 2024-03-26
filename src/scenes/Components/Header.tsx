@@ -10,9 +10,9 @@ export default function Header(
         optionalMiddleAction?: React.ReactNode
     }
 ) {
-    let SecondaryActions = [<></>] as Array<React.ReactNode>
+    let SecondaryActions = [<div key={0}></div>] as Array<React.ReactNode>
     if (props.secondaryAction) {
-        SecondaryActions = props.secondaryAction.map(v => v)
+        SecondaryActions = props.secondaryAction.map((v, i) => <div key={i}>{v}</div>)
     }
 
 

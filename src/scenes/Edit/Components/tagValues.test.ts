@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest'
+
 import { Category } from "../../../store/categories"
 import { Person } from "../../../store/persons"
 import { isTagValue } from "./tagValues"

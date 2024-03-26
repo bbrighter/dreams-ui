@@ -32,8 +32,8 @@ export default function EditHeader(props: { isSaved: boolean }) {
         <Header
             mainAction={<BackButton />}
             secondaryAction={[
-                <SaveButton key="1" isSaved={props.isSaved} />,
-                <HideOrShow key="2" />
+                <SaveButton isSaved={props.isSaved} />,
+                <HideOrShow />
             ]}
             optionalMiddleAction={DateInput}
         />

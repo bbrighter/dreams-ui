@@ -33,9 +33,10 @@ export default function Start() {
         navigate(dreamId)
     }
 
-    const MainAction = <Button variant="contained" onClick={handleClick}>
-        Neu
-    </Button>
+    const MainAction =
+        <Button variant="contained" onClick={handleClick}>
+            Neu
+        </Button>
 
     return (
         <>

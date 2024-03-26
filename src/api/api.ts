@@ -1,5 +1,9 @@
 import { Api, RequestParams } from "./generated_api";
 
+const PORT = "5005"
+const LOCAL_URL = "http://127.0.0.1"
+const BUILD_URL = "http://192.168.178.133"
+
 const api = new Api({
     securityWorker: (securityData: unknown): RequestParams => {
         if (typeof securityData == 'string') {
@@ -9,7 +13,7 @@ const api = new Api({
         }
     }
 })
-api.baseUrl = process.env.REACT_APP_API_URL || "http://127.0.0.1:5005"
+api.baseUrl = (import.meta.env.PROD ? BUILD_URL : LOCAL_URL) + ":" + PORT
 
 const pwToBase64 = (pw: string): string => {
     return btoa("user:" + pw)
