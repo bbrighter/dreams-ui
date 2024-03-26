@@ -2,28 +2,27 @@
   "name": "dreams",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@emotion/react": "^11.11.3",
+    "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.2",
-    "@mui/material": "^5.15.2",
-    "immer": "^10.0.3",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
+    "immer": "^10.0.4",
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.1",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^6.22.3",
     "react-speech-recognition": "^3.10.0",
     "react-tagcloud": "^2.3.3",
-    "typescript": "^4.9.5",
-    "zustand": "^4.4.7"
+    "regenerator-runtime": "^0.14.1",
+    "zustand": "^4.5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "tsc --build",
-    "test": "react-scripts test",
-    "build:production": "env-cmd -f ./.env.production --verbose react-scripts build",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
     "openapi": "npx swagger-typescript-api -p C:\\Users\\Test\\go\\src\\github.com\\bbrighter\\dreams-api\\docs\\swagger.json -o ./src/api -n generated_api.ts"
   },
   "eslintConfig": {
@@ -45,16 +44,19 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^29.5.11",
     "@types/lodash.debounce": "^4.0.9",
-    "@types/node": "^20.10.5",
-    "@types/react": "^18.2.46",
-    "@types/react-dom": "^18.2.18",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.72",
+    "@types/react-dom": "^18.2.22",
     "@types/react-speech-recognition": "^3.9.5",
     "@types/react-tag-input": "^6.6.6",
-    "@types/react-tagcloud": "^2.3.1",
-    "env-cmd": "^10.1.0",
-    "eslint": "^8.56.0",
-    "swagger-typescript-api": "^13.0.3"
+    "@types/react-tagcloud": "^2.3.2",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "eslint": "^8.57.0",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "swagger-typescript-api": "^13.0.3",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.6",
+    "vitest": "^1.4.0"
   }
 }
