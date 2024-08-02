@@ -1,11 +1,11 @@
 import { test, expect } from 'vitest'
 
-import { ControllerCountsResponse } from "../api/generated_api"
+import { EntityCountsResponse } from "../api/generated_api"
 import { controllerCountsResponseToStatistic } from "./statistics"
 
 
 test('ControllerCategoriesCountToStatistics', () => {
-    const resp: ControllerCountsResponse = {
+    const resp: EntityCountsResponse = {
         categories: [
             { id: 1, count: 100 },
             { id: 2, count: 300 },
