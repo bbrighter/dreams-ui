@@ -1,4 +1,4 @@
-import { ControllerCategoryResponse } from "../api/generated_api"
+import { EntityCategoriesResponse } from "../api/generated_api"
 
 export interface Category {
     id: number
@@ -15,6 +15,6 @@ export function isCategory(t: unknown): t is Category {
         'name' in t && typeof (t.name) == 'string'
 }
 
-export function categoryResponseToCategories(resp: Array<ControllerCategoryResponse>): Array<Category> {
-    return resp.map(t => ({ id: t.id, name: t.name }))
+export function categoryResponseToCategories(resp: EntityCategoriesResponse): Array<Category> {
+    return resp.categories.map(t => ({ id: t.id, name: t.name }))
 }

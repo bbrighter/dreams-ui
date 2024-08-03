@@ -1,4 +1,4 @@
-import { ControllerDreamsResponse } from "../api/generated_api";
+import { EntityDreamsResponse } from "../api/generated_api";
 
 export interface Dreams {
     dreams: Array<{
@@ -8,7 +8,7 @@ export interface Dreams {
     }>;
 }
 
-export function dreamsResponseToDreams(resp: ControllerDreamsResponse): Dreams {
+export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {
     return {
         dreams: resp.dreams.map(d =>
             ({ id: d.id, date: new Date(d.date), visible: d.visible }))

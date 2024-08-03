@@ -1,15 +1,15 @@
 import { test, expect } from 'vitest'
 
-import { ControllerDreamResponse } from "../api/generated_api"
+import { EntityDreamResponse } from "../api/generated_api"
 import { dreamResponseToDream } from "./dream"
 
 test('dreamResponseToDream', () => {
-    const resp: ControllerDreamResponse = {
+    const resp: EntityDreamResponse = {
         id: 1,
         date: "2024-01-04T19:54:20.113Z",
         description: "description",
-        persons: [],
-        categories: [],
+        persons: { persons: [] },
+        categories: { categories: [] },
         visible: true,
     }
 
