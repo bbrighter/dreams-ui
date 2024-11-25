@@ -1,4 +1,3 @@
-import * as React from "react"
 import { useParams } from "react-router-dom"
 import { Box, Container, TextField } from "@mui/material"
 import debounce from "lodash.debounce"
@@ -8,6 +7,7 @@ import RecordText from "./Components/RecordText";
 import Categories from "./Components/Categories";
 import Persons from "./Components/Persons"
 import useDreams from "../../store/store"
+import { useEffect } from "react";
 
 
 const DEBOUNCE_TIME = 5_000
@@ -24,7 +24,7 @@ export default function Edit() {
     const isValidPassword = useDreams(state => state.isValidPassword)()
     const { id: urlId } = useParams()
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (urlId) {
             if (isValidPassword) {
                 getPrivateDream(urlId)

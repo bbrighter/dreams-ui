@@ -1,4 +1,3 @@
-import * as React from "react"
 import { Fab } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
@@ -6,6 +5,7 @@ import MicNoneIcon from "@mui/icons-material/MicNone";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import styled from "@emotion/styled";
 import useDreams from "../../../store/store";
+import { useEffect } from "react";
 
 
 const ShadowFab = styled(Fab) <{ isHighlight: boolean }>`
@@ -30,7 +30,7 @@ export default function RecordText() {
         return <div></div>
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         let desc = description + transcript
         if (desc.slice(-1) != " ") {
             desc += " "

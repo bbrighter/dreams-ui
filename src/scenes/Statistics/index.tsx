@@ -1,6 +1,4 @@
-import * as React from "react";
 import Statistics from "./Statistics";
-
 
 const ind = {
     routeProps: {

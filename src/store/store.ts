@@ -25,7 +25,7 @@ interface Actions {
     createDream: () => Promise<number>,
     updateDream: () => Promise<boolean>,
     // Private dreams
-    changevisiblity: () => Promise<void>,
+    changeVisibility: () => Promise<void>,
     getPrivateDreams: () => Promise<void>,
     getPrivateDream: (id: number | string) => Promise<void>,
     // Dreams
@@ -119,7 +119,7 @@ const useDreams = create<Store>((set, get) => ({
         return resp.ok
     },
     // Private dreams
-    changevisiblity: async () => {
+    changeVisibility: async () => {
         api.setSecurityData(get().password)
         const resp = await api.v1.dreamsPrivatePartialUpdate(get().dream.id.toString())
         if (resp.ok) {

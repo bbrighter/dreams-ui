@@ -1,4 +1,3 @@
-import * as React from "react"
 import { Autocomplete, AutocompleteChangeReason, Chip, TextField } from "@mui/material";
 
 import { TagValue, isTagValue } from "./tagValues";
@@ -46,13 +45,12 @@ export default function TagInputs(props: {
             clearOnBlur
             getOptionLabel={getValue}
             renderTags={(value: TagValue[]) =>
-                value.map(option =>
-                    (<Chip
-                        key={option.id}
-                        variant='outlined'
-                        label={option.name}
-                        onDelete={() => props.onDelete(option)}
-                    />),
+                value.map(option => (<Chip
+                    key={option.id}
+                    variant='outlined'
+                    label={option.name}
+                    onDelete={() => props.onDelete(option)}
+                />),
                 )
             }
             renderInput={params => (

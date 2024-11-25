@@ -1,5 +1,4 @@
-import * as React from "react"
-
+import { useEffect } from "react"
 import useDreams from "../../../store/store"
 import TagInputs from "./TagInputs"
 import { TagValue, personsToTagValue } from "./tagValues"
@@ -12,7 +11,7 @@ export default function Persons() {
     const usedPersons = useDreams(state => state.dream.persons)
     const personSuggestions = useDreams(state => state.persons)
 
-    React.useEffect(() => {
+    useEffect(() => {
         getPersons()
     }, [])
 

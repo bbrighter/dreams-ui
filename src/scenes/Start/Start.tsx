@@ -1,4 +1,3 @@
-import * as React from "react"
 import { useEffect } from "react";
 import { Button, Container, List } from "@mui/material";
 

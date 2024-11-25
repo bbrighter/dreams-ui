@@ -1,4 +1,3 @@
-import * as React from "react"
 import styled from "@emotion/styled"
 import { TagCloud } from "react-tagcloud"
 import Divider from "@mui/material/Divider"
