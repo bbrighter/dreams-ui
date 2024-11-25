@@ -1,8 +1,7 @@
-import * as React from 'react'
-
-import useDreams from '../../../store/store';
-import TagInputs from './TagInputs';
-import { TagValue, categoriesToTagValue } from './tagValues';
+import { useEffect } from "react";
+import useDreams from "../../../store/store";
+import TagInputs from "./TagInputs";
+import { TagValue, categoriesToTagValue } from "./tagValues";
 
 
 export default function Categories() {
@@ -12,7 +11,7 @@ export default function Categories() {
     const suggestions = useDreams(state => state.categories)
     const dreamTags = useDreams(state => state.dream.categories)
 
-    React.useEffect(() => {
+    useEffect(() => {
         getCategories()
     }, [])
 

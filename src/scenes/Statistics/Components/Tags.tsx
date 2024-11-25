@@ -1,11 +1,10 @@
-import * as React from 'react'
-import styled from '@emotion/styled'
-import { TagCloud } from 'react-tagcloud'
-import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import styled from "@emotion/styled"
+import { TagCloud } from "react-tagcloud"
+import Divider from "@mui/material/Divider"
+import Typography from "@mui/material/Typography"
 
-import { Statistic } from '../../../store/statistics'
-import useDreams from '../../../store/store'
+import { Statistic } from "../../../store/statistics"
+import useDreams from "../../../store/store"
 
 
 const StyledTagCloud = styled(TagCloud)`
@@ -15,14 +14,14 @@ const StyledTagCloud = styled(TagCloud)`
 `
 
 export default function Tags(props: {
-    type: 'person' | 'category'
+    type: "person" | "category"
     statistics: Array<Statistic>
 }) {
     const persons = useDreams(state => state.persons)
     const categories = useDreams(state => state.categories)
 
-    const header = props.type == 'person' ? "Personen" : "Kategorien"
-    const names = props.type == 'person' ? persons : categories
+    const header = props.type == "person" ? "Personen" : "Kategorien"
+    const names = props.type == "person" ? persons : categories
 
     const tags = props.statistics.map(s => {
         const name = names.find(n => n.id == s.id)?.name || ""
@@ -31,7 +30,7 @@ export default function Tags(props: {
 
     return (
         <>
-            <Divider sx={{ mt: '1rem' }} />
+            <Divider sx={{ mt: "1rem" }} />
             <Typography> {header}</Typography>
             <StyledTagCloud
                 maxSize={50}

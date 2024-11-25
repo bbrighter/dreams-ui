@@ -1,12 +1,11 @@
-import * as React from 'react'
 import { IconButton, Input } from "@mui/material";
-import SaveIcon from '@mui/icons-material/Save'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SaveIcon from "@mui/icons-material/Save"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { useNavigateHomePage } from '../../../hooks/navigate';
-import useDreams from '../../../store/store';
-import Hide from './Hide';
-import Header from '../../Components/Header';
+import { useNavigateHomePage } from "../../../hooks/navigate";
+import useDreams from "../../../store/store";
+import Hide from "./Hide";
+import Header from "../../Components/Header";
 
 export default function EditHeader(props: { isSaved: boolean }) {
     const isValidPassword = useDreams(state => state.isValidPassword())
@@ -32,8 +31,8 @@ export default function EditHeader(props: { isSaved: boolean }) {
         <Header
             mainAction={<BackButton />}
             secondaryAction={[
-                <SaveButton isSaved={props.isSaved} />,
-                <HideOrShow />
+                <SaveButton key={1} isSaved={props.isSaved} />,
+                <HideOrShow key={2} />,
             ]}
             optionalMiddleAction={DateInput}
         />
@@ -48,7 +47,7 @@ export function SaveButton(props: { isSaved: boolean }) {
         if (ok) navigate()
     }
 
-    const color = props.isSaved ? 'success' : 'error'
+    const color = props.isSaved ? "success" : "error"
     return (
 
         <IconButton

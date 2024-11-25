@@ -1,9 +1,8 @@
-import * as React from "react"
 import { useEffect } from "react";
 import { Button, Container, List } from "@mui/material";
 
 
-import DreamItem from "./Compenents/DreamItem";
+import DreamItem from "./Components/DreamItem";
 import { useNavigateToDream } from "../../hooks/navigate";
 import useDreams from "../../store/store";
 import Navigation from "../Components/Navigation";
@@ -41,10 +40,10 @@ export default function Start() {
     return (
         <>
             <Header mainAction={MainAction} />
-            <Container sx={{ pt: '1rem' }}>
+            <Container sx={{ pt: "1rem" }}>
                 <List>
                     {dreams.map(d =>
-                        (<DreamItem key={d.id} date={d.date} id={d.id} visible={d.visible} />)
+                        (<DreamItem key={d.id} date={d.date} id={d.id} visible={d.visible} />),
                     )}
                 </List>
                 <Navigation activeIndex={0} />

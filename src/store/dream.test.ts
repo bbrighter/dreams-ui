@@ -1,9 +1,9 @@
-import { test, expect } from 'vitest'
+import { test, expect } from "vitest"
 
 import { EntityDreamResponse } from "../api/generated_api"
 import { dreamResponseToDream } from "./dream"
 
-test('dreamResponseToDream', () => {
+test("dreamResponseToDream", () => {
     const resp: EntityDreamResponse = {
         id: 1,
         date: "2024-01-04T19:54:20.113Z",

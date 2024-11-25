@@ -14,7 +14,7 @@ export function personsResponseToPersons(resp: EntityPersonsResponse): Array<Per
 }
 
 export const isPerson = (p: unknown): p is Person => {
-    return typeof (p) == 'object' && p != null &&
-        'id' in p && typeof (p.id) == 'number' &&
-        'name' in p && typeof (p.name) == 'string'
+    return typeof (p) == "object" && p != null &&
+        "id" in p && typeof (p.id) == "number" &&
+        "name" in p && typeof (p.name) == "string"
 }

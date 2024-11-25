@@ -1,11 +1,11 @@
-import * as React from 'react'
-import Container from '@mui/material/Container'
+import Container from "@mui/material/Container"
 
-import useDreams from '../../store/store'
-import Navigation from '../Components/Navigation'
-import Tags from './Components/Tags'
-import Header from '../Components/Header'
-import { BackButton } from '../Edit/Components/EditHeader'
+import useDreams from "../../store/store"
+import Navigation from "../Components/Navigation"
+import Tags from "./Components/Tags"
+import Header from "../Components/Header"
+import { BackButton } from "../Edit/Components/EditHeader"
+import { useEffect } from "react"
 
 export default function Statistics() {
     const getStatistics = useDreams(state => state.getStatistics)
@@ -17,7 +17,7 @@ export default function Statistics() {
     const persons = useDreams(state => state.persons)
     const isValidPassword = useDreams(state => state.isValidPassword())
 
-    React.useEffect(() => {
+    useEffect(() => {
         getStatistics(isValidPassword)
         if (categories.length == 0) {
             getCategories()
@@ -33,7 +33,7 @@ export default function Statistics() {
                 mainAction={<BackButton />}
 
             />
-            <Container sx={{ padding: '0rem' }}>
+            <Container sx={{ padding: "0rem" }}>
                 <Tags
                     type='category'
                     statistics={categoryCounts}

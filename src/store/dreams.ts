@@ -11,6 +11,6 @@ export interface Dreams {
 export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {
     return {
         dreams: resp.dreams.map(d =>
-            ({ id: d.id, date: new Date(d.date), visible: d.visible }))
+            ({ id: d.id, date: new Date(d.date), visible: d.visible })),
     }
 }
