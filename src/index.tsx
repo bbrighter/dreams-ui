@@ -1,7 +1,6 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import "regenerator-runtime"; // needed otherwise vite does not build
-import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import scenes from "./scenes"
 
