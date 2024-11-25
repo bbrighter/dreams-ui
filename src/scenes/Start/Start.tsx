@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button, Container, List } from "@mui/material";
 
 
-import DreamItem from "./Compenents/DreamItem";
+import DreamItem from "./Components/DreamItem";
 import { useNavigateToDream } from "../../hooks/navigate";
 import useDreams from "../../store/store";
 import Navigation from "../Components/Navigation";
