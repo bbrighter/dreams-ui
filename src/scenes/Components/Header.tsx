@@ -1,6 +1,6 @@
-import { AppBar, ButtonGroup, Toolbar } from '@mui/material'
-import * as React from 'react'
-import Authentication from './Authentication'
+import { AppBar, ButtonGroup, Toolbar } from "@mui/material"
+import * as React from "react"
+import Authentication from "./Authentication"
 
 
 export default function Header(
@@ -8,7 +8,7 @@ export default function Header(
         mainAction: React.ReactNode
         secondaryAction?: Array<React.ReactNode>
         optionalMiddleAction?: React.ReactNode
-    }
+    },
 ) {
     let SecondaryActions = [<div key={0}></div>] as Array<React.ReactNode>
     if (props.secondaryAction) {
@@ -18,7 +18,7 @@ export default function Header(
 
     return (
         <AppBar position="static">
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
+            <Toolbar sx={{ justifyContent: "space-between" }}>
                 {props.mainAction}
                 {props.optionalMiddleAction}
                 <ButtonGroup variant='outlined'>

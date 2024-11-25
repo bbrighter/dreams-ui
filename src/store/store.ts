@@ -237,8 +237,8 @@ const useDreams = create<Store>((set, get) => ({
         }
         if (resp.ok) {
             set(produce((draft: State) => {
-                draft.categoriesCount = controllerCountsResponseToStatistic(resp.data, 'category')
-                draft.personsCount = controllerCountsResponseToStatistic(resp.data, 'person')
+                draft.categoriesCount = controllerCountsResponseToStatistic(resp.data, "category")
+                draft.personsCount = controllerCountsResponseToStatistic(resp.data, "person")
             }))
         }
     },
@@ -252,7 +252,7 @@ const useDreams = create<Store>((set, get) => ({
     isValidPassword: () => {
         const password = get().password
         return password == "080388"
-    }
+    },
 }))
 
 export default useDreams

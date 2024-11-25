@@ -1,13 +1,13 @@
-import * as React from 'react';
-import Statistics from './Statistics';
+import * as React from "react";
+import Statistics from "./Statistics";
 
 
 const ind = {
     routeProps: {
-        path: 'statistics',
-        element: <Statistics />
+        path: "statistics",
+        element: <Statistics />,
     },
-    name: 'Statistics',
+    name: "Statistics",
 }
 
 export default ind

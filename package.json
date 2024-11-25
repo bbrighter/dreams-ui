@@ -6,17 +6,17 @@
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
-    "@mui/icons-material": "^5.16.7",
-    "@mui/material": "^5.16.7",
+    "@mui/icons-material": "^6.1.8",
+    "@mui/material": "^6.1.8",
     "immer": "^10.1.1",
     "lodash.debounce": "^4.0.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0",
+    "react-router-dom": "^7.0.1",
     "react-speech-recognition": "^3.10.0",
     "react-tagcloud": "^2.3.3",
     "regenerator-runtime": "^0.14.1",
-    "zustand": "^4.5.5"
+    "zustand": "^5.0.1"
   },
   "scripts": {
     "start": "vite --open",
@@ -24,7 +24,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "openapi": "npx swagger-typescript-api -p C:\\Users\\Test\\go\\src\\github.com\\bbrighter\\dreams-api\\docs\\swagger.json -o ./src/api -n generated_api.ts",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "lint": "npx eslint . && tsc -b",
+    "lint:fix": "npx eslint . --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@types/eslint__js": "^8.42.3",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^22.9.3",
     "@types/react": "^18.3.12",
@@ -54,9 +57,11 @@
     "@types/react-tagcloud": "^2.3.2",
     "@vitejs/plugin-react-swc": "^3.7.1",
     "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "swagger-typescript-api": "^13.0.23",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.16.0",
     "vite": "^5.4.11",
     "vitest": "^2.1.5"
   }
