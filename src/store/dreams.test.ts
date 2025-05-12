@@ -1,12 +1,12 @@
-import { test, expect } from "vitest"
+import { expect,test } from 'vitest'
 
-import { EntityDreamsResponse } from "../api/generated_api"
-import { dreamsResponseToDreams } from "./dreams"
+import { EntityDreamsResponse } from '../api/generated_api'
+import { dreamsResponseToDreams } from './dreams'
 
-test("dreamsResponseToDreams", () => {
+test('dreamsResponseToDreams', () => {
     const resp: EntityDreamsResponse = {
         dreams: [
-            { id: 1, date: "2024-01-04T19:54:20.113Z", visible: true },
+            { id: 1, date: '2024-01-04T19:54:20.113Z', visible: true },
         ],
     }
 

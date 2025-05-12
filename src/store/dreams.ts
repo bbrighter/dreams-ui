@@ -1,4 +1,4 @@
-import { EntityDreamsResponse } from "../api/generated_api";
+import { EntityDreamsResponse } from '../api/generated_api';
 
 export interface Dreams {
     dreams: Array<{

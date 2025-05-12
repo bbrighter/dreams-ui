@@ -1,11 +1,12 @@
-import Edit from "./Edit";
+import Edit from './Edit';
+
 
 const ind = {
     routeProps: {
-        path: "dreams/:id",
+        path: 'dreams/:id',
         element: <Edit />,
     },
-    name: "Edit Dream",
+    name: 'Edit Dream',
 }
 
 export default ind

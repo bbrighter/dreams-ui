@@ -1,11 +1,11 @@
-import Statistics from "./Statistics";
+import Statistics from './Statistics';
 
 const ind = {
     routeProps: {
-        path: "statistics",
+        path: 'statistics',
         element: <Statistics />,
     },
-    name: "Statistics",
+    name: 'Statistics',
 }
 
 export default ind

@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import useDreams from "../../../store/store";
-import TagInputs from "./TagInputs";
-import { TagValue, categoriesToTagValue } from "./tagValues";
+import { useEffect } from 'react';
+
+import useDreams from '../../../store/store';
+import TagInputs from './TagInputs';
+import { categoriesToTagValue,TagValue } from './tagValues';
 
 
 export default function Categories() {
