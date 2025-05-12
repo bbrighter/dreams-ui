@@ -1,12 +1,11 @@
-import { useEffect } from "react";
-import { Button, Container, List } from "@mui/material";
+import { Button, Container, List } from '@mui/material';
+import { useEffect } from 'react';
 
-
-import DreamItem from "./Components/DreamItem";
-import { useNavigateToDream } from "../../hooks/navigate";
-import useDreams from "../../store/store";
-import Navigation from "../Components/Navigation";
-import Header from "../Components/Header";
+import { useNavigateToDream } from '../../hooks/navigate';
+import useDreams from '../../store/store';
+import Header from '../Components/Header';
+import Navigation from '../Components/Navigation';
+import DreamItem from './Components/DreamItem';
 
 
 export default function Start() {
@@ -40,7 +39,7 @@ export default function Start() {
     return (
         <>
             <Header mainAction={MainAction} />
-            <Container sx={{ pt: "1rem" }}>
+            <Container sx={{ pt: '1rem' }}>
                 <List>
                     {dreams.map(d =>
                         (<DreamItem key={d.id} date={d.date} id={d.id} visible={d.visible} />),

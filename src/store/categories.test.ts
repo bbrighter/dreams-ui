@@ -1,15 +1,15 @@
-import { test, expect } from "vitest"
+import { expect,test } from 'vitest'
 
-import { EntityCategoriesResponse } from "../api/generated_api"
-import { categoryResponseToCategories } from "./categories"
+import { EntityCategoriesResponse } from '../api/generated_api'
+import { categoryResponseToCategories } from './categories'
 
-test("tagResponseToTags", () => {
+test('tagResponseToTags', () => {
     const resp: EntityCategoriesResponse =
     {
         categories:
             [
-                { id: 1, name: "Title" },
-                { id: 2, name: "Title 2" },
+                { id: 1, name: 'Title' },
+                { id: 2, name: 'Title 2' },
             ],
     }
 
@@ -17,5 +17,5 @@ test("tagResponseToTags", () => {
 
     expect(categories).toHaveLength(2)
     expect(categories[0].id).toBe(1)
-    expect(categories[0].name).toBe("Title")
+    expect(categories[0].name).toBe('Title')
 })

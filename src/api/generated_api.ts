@@ -167,8 +167,8 @@ export class HttpClient<SecurityDataType = unknown> {
           property instanceof Blob
             ? property
             : typeof property === "object" && property !== null
-            ? JSON.stringify(property)
-            : `${property}`,
+              ? JSON.stringify(property)
+              : `${property}`,
         );
         return formData;
       }, new FormData()),
@@ -241,7 +241,7 @@ export class HttpClient<SecurityDataType = unknown> {
       signal: (cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal) || null,
       body: typeof body === "undefined" || body === null ? null : payloadFormatter(body),
     }).then(async (response) => {
-      const r = response as HttpResponse<T, E>;
+      const r = response.clone() as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
@@ -276,16 +276,16 @@ export class HttpClient<SecurityDataType = unknown> {
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  v1 = {
+  dreamsApi = {
     /**
      * @description Get all categories
      *
-     * @name CategoriesList
-     * @request GET:/v1/categories
+     * @name V1CategoriesList
+     * @request GET:/dreams-api/v1/categories
      */
-    categoriesList: (params: RequestParams = {}) =>
+    v1CategoriesList: (params: RequestParams = {}) =>
       this.request<EntityCategoriesResponse, any>({
-        path: `/v1/categories`,
+        path: `/dreams-api/v1/categories`,
         method: "GET",
         format: "json",
         ...params,
@@ -294,12 +294,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Get all dreams
      *
-     * @name DreamsList
-     * @request GET:/v1/dreams
+     * @name V1DreamsList
+     * @request GET:/dreams-api/v1/dreams
      */
-    dreamsList: (params: RequestParams = {}) =>
+    v1DreamsList: (params: RequestParams = {}) =>
       this.request<EntityDreamsResponse, any>({
-        path: `/v1/dreams`,
+        path: `/dreams-api/v1/dreams`,
         method: "GET",
         format: "json",
         ...params,
@@ -308,12 +308,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Create a new dream
      *
-     * @name DreamsCreate
-     * @request POST:/v1/dreams
+     * @name V1DreamsCreate
+     * @request POST:/dreams-api/v1/dreams
      */
-    dreamsCreate: (dreamRequestBody: V1DreamRequestBody, params: RequestParams = {}) =>
+    v1DreamsCreate: (dreamRequestBody: V1DreamRequestBody, params: RequestParams = {}) =>
       this.request<number, void>({
-        path: `/v1/dreams`,
+        path: `/dreams-api/v1/dreams`,
         method: "POST",
         body: dreamRequestBody,
         type: ContentType.Json,
@@ -322,14 +322,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Get all dreams - inlcuding private
+     * @description Get all dreams - including private
      *
-     * @name DreamsPrivateList
-     * @request GET:/v1/dreams/private
+     * @name V1DreamsPrivateList
+     * @request GET:/dreams-api/v1/dreams/private
      */
-    dreamsPrivateList: (params: RequestParams = {}) =>
+    v1DreamsPrivateList: (params: RequestParams = {}) =>
       this.request<EntityDreamsResponse, any>({
-        path: `/v1/dreams/private`,
+        path: `/dreams-api/v1/dreams/private`,
         method: "GET",
         format: "json",
         ...params,
@@ -338,26 +338,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Get one private dream
      *
-     * @name DreamsPrivateDetail
-     * @request GET:/v1/dreams/private/{dreamId}
+     * @name V1DreamsPrivateDetail
+     * @request GET:/dreams-api/v1/dreams/private/{dreamId}
      */
-    dreamsPrivateDetail: (dreamId: string, params: RequestParams = {}) =>
+    v1DreamsPrivateDetail: (dreamId: string, params: RequestParams = {}) =>
       this.request<EntityDreamResponse, void>({
-        path: `/v1/dreams/private/${dreamId}`,
+        path: `/dreams-api/v1/dreams/private/${dreamId}`,
         method: "GET",
         format: "json",
         ...params,
       }),
 
     /**
-     * @description Toggle visiblity of a dream
+     * @description Toggle visibility of a dream
      *
-     * @name DreamsPrivatePartialUpdate
-     * @request PATCH:/v1/dreams/private/{dreamId}
+     * @name V1DreamsPrivatePartialUpdate
+     * @request PATCH:/dreams-api/v1/dreams/private/{dreamId}
      */
-    dreamsPrivatePartialUpdate: (dreamId: string, params: RequestParams = {}) =>
+    v1DreamsPrivatePartialUpdate: (dreamId: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/v1/dreams/private/${dreamId}`,
+        path: `/dreams-api/v1/dreams/private/${dreamId}`,
         method: "PATCH",
         ...params,
       }),
@@ -365,12 +365,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Get one dream
      *
-     * @name DreamsDetail
-     * @request GET:/v1/dreams/{dreamId}
+     * @name V1DreamsDetail
+     * @request GET:/dreams-api/v1/dreams/{dreamId}
      */
-    dreamsDetail: (dreamId: string, params: RequestParams = {}) =>
+    v1DreamsDetail: (dreamId: string, params: RequestParams = {}) =>
       this.request<EntityDreamResponse, void>({
-        path: `/v1/dreams/${dreamId}`,
+        path: `/dreams-api/v1/dreams/${dreamId}`,
         method: "GET",
         format: "json",
         ...params,
@@ -379,12 +379,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Delete one dreams
      *
-     * @name DreamsDelete
-     * @request DELETE:/v1/dreams/{dreamId}
+     * @name V1DreamsDelete
+     * @request DELETE:/dreams-api/v1/dreams/{dreamId}
      */
-    dreamsDelete: (dreamId: string, params: RequestParams = {}) =>
+    v1DreamsDelete: (dreamId: string, params: RequestParams = {}) =>
       this.request<any, void>({
-        path: `/v1/dreams/${dreamId}`,
+        path: `/dreams-api/v1/dreams/${dreamId}`,
         method: "DELETE",
         ...params,
       }),
@@ -392,12 +392,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Update an existing dream
      *
-     * @name DreamsPartialUpdate
-     * @request PATCH:/v1/dreams/{dreamId}
+     * @name V1DreamsPartialUpdate
+     * @request PATCH:/dreams-api/v1/dreams/{dreamId}
      */
-    dreamsPartialUpdate: (dreamId: string, dreamRequestBody: V1DreamRequestBody, params: RequestParams = {}) =>
+    v1DreamsPartialUpdate: (dreamId: string, dreamRequestBody: V1DreamRequestBody, params: RequestParams = {}) =>
       this.request<void, void>({
-        path: `/v1/dreams/${dreamId}`,
+        path: `/dreams-api/v1/dreams/${dreamId}`,
         method: "PATCH",
         body: dreamRequestBody,
         type: ContentType.Json,
@@ -407,10 +407,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Add a category to a dream
      *
-     * @name DreamsCategoriesUpdate
-     * @request PUT:/v1/dreams/{dreamId}/categories
+     * @name V1DreamsCategoriesUpdate
+     * @request PUT:/dreams-api/v1/dreams/{dreamId}/categories
      */
-    dreamsCategoriesUpdate: (
+    v1DreamsCategoriesUpdate: (
       dreamId: string,
       query: {
         /** Name of a category */
@@ -419,7 +419,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<EntityCategoriesResponse, void>({
-        path: `/v1/dreams/${dreamId}/categories`,
+        path: `/dreams-api/v1/dreams/${dreamId}/categories`,
         method: "PUT",
         query: query,
         format: "json",
@@ -429,12 +429,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Remove a category from a dream
      *
-     * @name DreamsCategoriesDelete
-     * @request DELETE:/v1/dreams/{dreamId}/categories/{categoryId}
+     * @name V1DreamsCategoriesDelete
+     * @request DELETE:/dreams-api/v1/dreams/{dreamId}/categories/{categoryId}
      */
-    dreamsCategoriesDelete: (dreamId: string, categoryId: string, params: RequestParams = {}) =>
+    v1DreamsCategoriesDelete: (dreamId: string, categoryId: string, params: RequestParams = {}) =>
       this.request<EntityCategoriesResponse, void>({
-        path: `/v1/dreams/${dreamId}/categories/${categoryId}`,
+        path: `/dreams-api/v1/dreams/${dreamId}/categories/${categoryId}`,
         method: "DELETE",
         format: "json",
         ...params,
@@ -443,10 +443,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Add a person to a dream
      *
-     * @name DreamsPersonsUpdate
-     * @request PUT:/v1/dreams/{dreamId}/persons
+     * @name V1DreamsPersonsUpdate
+     * @request PUT:/dreams-api/v1/dreams/{dreamId}/persons
      */
-    dreamsPersonsUpdate: (
+    v1DreamsPersonsUpdate: (
       dreamId: string,
       query: {
         /** Name of person */
@@ -455,7 +455,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<EntityPersonsResponse, void>({
-        path: `/v1/dreams/${dreamId}/persons`,
+        path: `/dreams-api/v1/dreams/${dreamId}/persons`,
         method: "PUT",
         query: query,
         format: "json",
@@ -465,12 +465,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Delete a person from a dream
      *
-     * @name DreamsPersonsDelete
-     * @request DELETE:/v1/dreams/{dreamId}/persons/{personId}
+     * @name V1DreamsPersonsDelete
+     * @request DELETE:/dreams-api/v1/dreams/{dreamId}/persons/{personId}
      */
-    dreamsPersonsDelete: (dreamId: string, personId: string, params: RequestParams = {}) =>
+    v1DreamsPersonsDelete: (dreamId: string, personId: string, params: RequestParams = {}) =>
       this.request<EntityPersonsResponse, void>({
-        path: `/v1/dreams/${dreamId}/persons/${personId}`,
+        path: `/dreams-api/v1/dreams/${dreamId}/persons/${personId}`,
         method: "DELETE",
         format: "json",
         ...params,
@@ -479,12 +479,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Get all persons
      *
-     * @name PersonsList
-     * @request GET:/v1/persons
+     * @name V1PersonsList
+     * @request GET:/dreams-api/v1/persons
      */
-    personsList: (params: RequestParams = {}) =>
+    v1PersonsList: (params: RequestParams = {}) =>
       this.request<EntityPersonsResponse, any>({
-        path: `/v1/persons`,
+        path: `/dreams-api/v1/persons`,
         method: "GET",
         format: "json",
         ...params,
@@ -493,10 +493,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Get count per category and person
      *
-     * @name PrivateStatisticsList
-     * @request GET:/v1/private/statistics
+     * @name V1PrivateStatisticsList
+     * @request GET:/dreams-api/v1/private/statistics
      */
-    privateStatisticsList: (
+    v1PrivateStatisticsList: (
       query?: {
         /** Limit of returned results */
         limit?: number;
@@ -504,7 +504,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<EntityCountsResponse, any>({
-        path: `/v1/private/statistics`,
+        path: `/dreams-api/v1/private/statistics`,
         method: "GET",
         query: query,
         format: "json",
@@ -514,10 +514,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * @description Get count per category and person
      *
-     * @name StatisticsList
-     * @request GET:/v1/statistics
+     * @name V1StatisticsList
+     * @request GET:/dreams-api/v1/statistics
      */
-    statisticsList: (
+    v1StatisticsList: (
       query?: {
         /** Limit of returned results */
         limit?: number;
@@ -525,7 +525,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<EntityCountsResponse, any>({
-        path: `/v1/statistics`,
+        path: `/dreams-api/v1/statistics`,
         method: "GET",
         query: query,
         format: "json",

@@ -1,4 +1,4 @@
-const BASE_URL = () => (new URL(process.env.REACT_APP_API_URL || "http://127.0.0.1:5005"))
+const BASE_URL = () => (new URL(process.env.REACT_APP_API_URL || 'http://127.0.0.1:5005'))
 
 export const dreamURL = (id: number | string): URL => {
     const url = BASE_URL()

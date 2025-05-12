@@ -1,9 +1,10 @@
-import styled from "@emotion/styled";
-import { IconButton, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
-import CloudIcon from "@mui/icons-material/Cloud";
-import { useNavigate } from "react-router-dom";
-import DeleteIcon from "@mui/icons-material/Delete";
-import useDreams from "../../../store/store";
+import styled from '@emotion/styled';
+import CloudIcon from '@mui/icons-material/Cloud';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+import useDreams from '../../../store/store';
 
 
 const StyledListItem = styled(ListItem)`
@@ -14,7 +15,7 @@ const StyledListItem = styled(ListItem)`
 `
 
 const StyledListItemText = styled(ListItemText) <{ visible: number }>`
-    color: ${props => (props.visible ? "primary" : "#90caf9")};
+    color: ${props => (props.visible ? 'primary' : '#90caf9')};
 
 `
 
@@ -27,7 +28,7 @@ export default function DreamItem(props: {
     const navigate = useNavigate()
 
     const navigateTo = (dreamId: number) => {
-        navigate("/dreams/" + dreamId)
+        navigate('/dreams/' + dreamId)
     }
 
 
@@ -49,7 +50,7 @@ export default function DreamItem(props: {
                 <CloudIcon />
             </ListItemAvatar>
             <StyledListItemText visible={+props.visible}>
-                {props.date.toLocaleDateString("de-DE", { dateStyle: "medium" })}
+                {props.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}
             </StyledListItemText>
         </StyledListItem>)
 }

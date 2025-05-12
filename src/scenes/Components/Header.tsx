@@ -1,6 +1,7 @@
-import { AppBar, ButtonGroup, Toolbar } from "@mui/material"
-import * as React from "react"
-import Authentication from "./Authentication"
+import { AppBar, ButtonGroup, Toolbar } from '@mui/material'
+import * as React from 'react'
+
+import Authentication from './Authentication'
 
 
 export default function Header(
@@ -18,7 +19,7 @@ export default function Header(
 
     return (
         <AppBar position="static">
-            <Toolbar sx={{ justifyContent: "space-between" }}>
+            <Toolbar sx={{ justifyContent: 'space-between' }}>
                 {props.mainAction}
                 {props.optionalMiddleAction}
                 <ButtonGroup variant='outlined'>

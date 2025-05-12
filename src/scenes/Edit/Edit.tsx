@@ -1,13 +1,13 @@
-import { useParams } from "react-router-dom"
-import { Box, Container, TextField } from "@mui/material"
-import debounce from "lodash.debounce"
+import { Box, Container, TextField } from '@mui/material'
+import debounce from 'lodash.debounce'
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom'
 
-import EditHeader from "./Components/EditHeader";
-import RecordText from "./Components/RecordText";
-import Categories from "./Components/Categories";
-import Persons from "./Components/Persons"
-import useDreams from "../../store/store"
-import { useEffect } from "react";
+import useDreams from '../../store/store'
+import Categories from './Components/Categories';
+import EditHeader from './Components/EditHeader';
+import Persons from './Components/Persons'
+import RecordText from './Components/RecordText';
 
 
 const DEBOUNCE_TIME = 5_000
@@ -32,7 +32,7 @@ export default function Edit() {
                 getDream(urlId)
             }
         } else {
-            alert("No url Id found")
+            alert('No url Id found')
         }
     }, [])
 
@@ -56,8 +56,8 @@ export default function Edit() {
                     <RecordText />
                     <TextField
                         sx={{
-                            width: "100%",
-                            marginTop: "1rem",
+                            width: '100%',
+                            marginTop: '1rem',
                         }}
                         label="Beschreibung"
                         multiline

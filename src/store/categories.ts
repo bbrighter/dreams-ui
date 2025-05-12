@@ -1,4 +1,4 @@
-import { EntityCategoriesResponse } from "../api/generated_api"
+import { EntityCategoriesResponse } from '../api/generated_api'
 
 export interface Category {
     id: number
@@ -10,9 +10,9 @@ export interface Categories {
 }
 
 export function isCategory(t: unknown): t is Category {
-    return typeof (t) == "object" && t != null &&
-        "id" in t && typeof (t.id) == "number" &&
-        "name" in t && typeof (t.name) == "string"
+    return typeof (t) == 'object' && t != null &&
+        'id' in t && typeof (t.id) == 'number' &&
+        'name' in t && typeof (t.name) == 'string'
 }
 
 export function categoryResponseToCategories(resp: EntityCategoriesResponse): Array<Category> {
