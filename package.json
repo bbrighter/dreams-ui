@@ -23,7 +23,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "openapi": "npx swagger-typescript-api -p C:\\Users\\Test\\go\\src\\github.com\\bbrighter\\dreams-api\\docs\\swagger.json -o ./src/api -n generated_api.ts",
+    "openapi": "npx swagger-typescript-api generate -p C:\\Users\\Test\\go\\src\\github.com\\bbrighter\\dreams-api\\docs\\swagger.json -o ./src/api -n generated_api.ts",
     "tsc": "tsc --noEmit",
     "lint": "npx eslint . && tsc -b",
     "lint:fix": "npx eslint . --fix"
@@ -63,6 +63,7 @@
     "eslint-plugin-react-compiler": "^19.1.0-rc.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^16.1.0",
+    "msw": "^2.8.2",
     "rollup-plugin-visualizer": "^5.14.0",
     "swagger-typescript-api": "^13.1.3",
     "typescript": "^5.8.3",

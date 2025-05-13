@@ -1,0 +1,79 @@
+import { describe, expect, it } from 'vitest';
+
+import useDreams from './store';
+
+describe('store', () => {
+    it('load public dreams into state', async () => {
+        await useDreams.getState().getDreams()
+        const dreams = useDreams.getState().dreams
+
+        expect(dreams).toHaveLength(1)
+        const dream = dreams[0]
+        expect(dream.id).toBe(1)
+        expect(dream.date).toStrictEqual(new Date('2025-01-01T12:30:00Z'))
+        expect(dream.visible).toBeTruthy()
+    })
+
+    it('load private and public dreams into state', async () => {
+        await useDreams.getState().getPrivateDreams()
+        const dreams = useDreams.getState().dreams
+
+        expect(dreams).toHaveLength(2)
+    })
+
+    it('create a new dream', async () => {
+        await useDreams.getState().getDreams()
+        const id = await useDreams.getState().createDream()
+
+        expect(id).toBe(3)
+        expect(useDreams.getState().dreams).toHaveLength(2)
+    })
+
+    it('delete an existing dream', async () => {
+        await useDreams.getState().getDreams()
+        await useDreams.getState().deleteDream(1)
+
+        expect(useDreams.getState().dreams).toHaveLength(0)
+    })
+
+    it('load one dream into state', async () => {
+        await useDreams.getState().getDream(1)
+
+        const dream = useDreams.getState().dream
+        expect(dream.id).toBe(1)
+        expect(dream.date).toStrictEqual(new Date('2025-01-01T12:30:00Z'))
+        expect(dream.categories).toHaveLength(1)
+        expect(dream.persons).toHaveLength(1)
+        expect(dream.description).toBe('description')
+        expect(dream.visible).toBeTruthy()
+        expect(dream.isSaved).toBeTruthy()
+    })
+
+    it('change the date of a dream', async () => {
+        await useDreams.getState().getDream(1)
+
+        useDreams.getState().setDate('2024-01-01T18:00:00Z')
+        expect(useDreams.getState().dream.date).toStrictEqual(new Date('2024-01-01T18:00:00Z'))
+        expect(useDreams.getState().dream.isSaved).toBeFalsy()
+    })
+
+    it('change the description of a dream', async () => {
+        await useDreams.getState().getDream(1)
+
+        useDreams.getState().setDescription('new')
+        expect(useDreams.getState().dream.description).toBe('new')
+        expect(useDreams.getState().dream.isSaved).toBeFalsy()
+    })
+
+    it('update a dream and send it', async () => {
+        await useDreams.getState().getDream(1)
+        useDreams.getState().setDescription('new')
+        useDreams.getState().setDate('2024-01-01T18:00:00Z')
+
+        const ok = await useDreams.getState().updateDream()
+        expect(ok).toBeTruthy()
+        expect(useDreams.getState().dream.description).toBe('new')
+        expect(useDreams.getState().dream.date).toStrictEqual(new Date('2024-01-01T18:00:00Z'))
+        expect(useDreams.getState().dream.isSaved).toBeTruthy()
+    })
+})
