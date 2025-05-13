@@ -1,7 +1,7 @@
 import { Api, RequestParams } from './generated_api';
 
-const PORT = '5005'
-const LOCAL_URL = 'http://127.0.0.1'
+// const PORT = '5005'
+const LOCAL_URL = 'http://127.0.0.1:5000'
 
 const api = new Api({
     securityWorker: (securityData: unknown): RequestParams => {
@@ -12,7 +12,7 @@ const api = new Api({
         }
     },
 })
-api.baseUrl = (import.meta.env.PROD ? window.BASE_URL : LOCAL_URL) + ':' + PORT
+api.baseUrl = (import.meta.env.PROD ? window.BASE_URL : LOCAL_URL)
 
 const pwToBase64 = (pw: string): string => (btoa('user:' + pw))
 

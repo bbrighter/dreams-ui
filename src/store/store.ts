@@ -3,12 +3,12 @@ import { create } from 'zustand'
 
 import api from '../api/api'
 import { EntityCountsResponse, HttpResponse, V1DreamRequestBody } from '../api/generated_api'
-import { Categories,categoryResponseToCategories } from './categories'
+import { Categories, categoryResponseToCategories } from './categories'
 import { Dream, dreamResponseToDream } from './dream'
 import { Dreams, dreamsResponseToDreams } from './dreams'
 import { Password } from './password'
-import { Persons,personsResponseToPersons } from './persons'
-import { controllerCountsResponseToStatistic,Statistics } from './statistics'
+import { Persons, personsResponseToPersons } from './persons'
+import { controllerCountsResponseToStatistic, Statistics } from './statistics'
 
 
 const STATISTICS_LIMITS = 40
@@ -18,6 +18,7 @@ interface State extends Categories, Persons, Dreams, Statistics, Password {
 }
 
 interface Actions {
+    resetState: () => void
     // Dream
     setDate: (date: string) => void,
     setDescription: (description: string) => void,
@@ -69,6 +70,7 @@ const initialState: State = {
 
 const useDreams = create<Store>((set, get) => ({
     ...initialState,
+    resetState: () => set(initialState),
 
     setDate: (date: string) => {
         set(produce((draft: State) => {
@@ -83,7 +85,7 @@ const useDreams = create<Store>((set, get) => ({
         }))
     },
     getDream: async (id: number | string) => {
-        const resp = await api.dreamsApi.v1DreamsDetail(id.toString())
+        const resp = await api.dreams.dreamsDetail(id.toString())
         if (!resp.ok) {
             alert(resp.statusText)
         }
@@ -96,7 +98,7 @@ const useDreams = create<Store>((set, get) => ({
         const body: V1DreamRequestBody = {
             date: date.toISOString(),
         }
-        const resp = await api.dreamsApi.v1DreamsCreate(body)
+        const resp = await api.dreams.dreamsCreate(body)
         if (!resp.ok) {
             alert(resp.statusText)
         }
@@ -104,6 +106,7 @@ const useDreams = create<Store>((set, get) => ({
         set(produce((draft: State) => {
             draft.dream.id = id
             draft.dream.date = date
+            draft.dreams.unshift({ id: id, date: date, visible: true })
         }))
         return id
     },
@@ -112,7 +115,7 @@ const useDreams = create<Store>((set, get) => ({
             date: get().dream.date.toISOString(),
             description: get().dream.description,
         }
-        const resp = await api.dreamsApi.v1DreamsPartialUpdate(get().dream.id.toString(), body)
+        const resp = await api.dreams.dreamsPartialUpdate(get().dream.id.toString(), body)
         if (resp.ok) {
             set(produce((draft: State) => { draft.dream.isSaved = true }))
         }
@@ -121,14 +124,14 @@ const useDreams = create<Store>((set, get) => ({
     // Private dreams
     changeVisibility: async () => {
         api.setSecurityData(get().password)
-        const resp = await api.dreamsApi.v1DreamsPrivatePartialUpdate(get().dream.id.toString())
+        const resp = await api.dreams.privatePartialUpdate(get().dream.id.toString())
         if (resp.ok) {
             set(produce((draft: State) => { draft.dream.visible = !draft.dream.visible }))
         }
     },
     getPrivateDream: async (id: string | number) => {
         api.setSecurityData(get().password)
-        const resp = await api.dreamsApi.v1DreamsPrivateDetail(id.toString())
+        const resp = await api.dreams.privateDetail(id.toString())
         if (resp.ok) {
             set(produce((draft: State) => {
                 draft.dream = dreamResponseToDream(resp.data)
@@ -137,7 +140,7 @@ const useDreams = create<Store>((set, get) => ({
     },
     getPrivateDreams: async () => {
         api.setSecurityData(get().password)
-        const resp = await api.dreamsApi.v1DreamsPrivateList({ secure: true })
+        const resp = await api.dreams.privateList({ secure: true })
         const dreams = dreamsResponseToDreams(resp.data)
         dreams.dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
         if (resp.ok) {
@@ -148,7 +151,7 @@ const useDreams = create<Store>((set, get) => ({
     },
     // Dreams
     getDreams: async () => {
-        const resp = await api.dreamsApi.v1DreamsList()
+        const resp = await api.dreams.dreamsList()
         const dreams = dreamsResponseToDreams(resp.data)
         dreams.dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
         set(produce((draft: State) => {
@@ -156,7 +159,7 @@ const useDreams = create<Store>((set, get) => ({
         }))
     },
     deleteDream: async (id: number) => {
-        const resp = await api.dreamsApi.v1DreamsDelete(id.toString())
+        const resp = await api.dreams.dreamsDelete(id.toString())
         if (resp.ok) {
             set(produce((draft: State) => {
                 draft.dreams = draft.dreams.filter(d => d.id != id)
@@ -166,14 +169,14 @@ const useDreams = create<Store>((set, get) => ({
 
     // Tags
     getCategories: async () => {
-        const resp = await api.dreamsApi.v1CategoriesList()
+        const resp = await api.categories.categoriesList()
         set(produce((draft: State) => {
             draft.categories = categoryResponseToCategories(resp.data)
         }))
     },
 
     addCategory: async (name: string): Promise<boolean> => {
-        const resp = await api.dreamsApi.v1DreamsCategoriesUpdate(get().dream.id.toString(), { name: name })
+        const resp = await api.dreams.categoriesUpdate(get().dream.id.toString(), { name: name })
         const newTagId = resp.data.categories.find(c => c.name == name)?.id
         if (resp.ok && newTagId) {
             set(produce((draft: State) => {
@@ -185,7 +188,7 @@ const useDreams = create<Store>((set, get) => ({
     },
 
     removeCategory: async (id: number) => {
-        const resp = await api.dreamsApi.v1DreamsCategoriesDelete(get().dream.id.toString(), id.toString())
+        const resp = await api.dreams.categoriesDelete(get().dream.id.toString(), id.toString())
         if (resp.ok) {
             set(produce((draft: State) => {
                 draft.categories = categoryResponseToCategories(resp.data)
@@ -197,7 +200,7 @@ const useDreams = create<Store>((set, get) => ({
 
     // Persons
     getPersons: async () => {
-        const resp = await api.dreamsApi.v1PersonsList()
+        const resp = await api.persons.personsList()
         if (resp.ok) {
             set(produce((draft: State) => {
                 draft.persons = personsResponseToPersons(resp.data)
@@ -205,7 +208,7 @@ const useDreams = create<Store>((set, get) => ({
         }
     },
     addPerson: async (name: string) => {
-        const resp = await api.dreamsApi.v1DreamsPersonsUpdate(get().dream.id.toString(), { name: name })
+        const resp = await api.dreams.personsUpdate(get().dream.id.toString(), { name: name })
         const newPersonId = resp.data.persons.find(p => p.name == name)?.id
         if (resp.ok && newPersonId) {
             set(produce((draft: State) => {
@@ -217,7 +220,7 @@ const useDreams = create<Store>((set, get) => ({
     removePerson: async (id: number) => {
         const dreamId = get().dream.id.toString()
         const personId = id.toString()
-        const resp = await api.dreamsApi.v1DreamsPersonsDelete(dreamId, personId)
+        const resp = await api.dreams.personsDelete(dreamId, personId)
         if (resp.ok) {
             set(produce((draft: State) => {
                 draft.dream.persons = draft.dream.persons.filter(p => p.id != id)
@@ -231,9 +234,9 @@ const useDreams = create<Store>((set, get) => ({
         let resp: HttpResponse<EntityCountsResponse>
         if (showAll) {
             api.setSecurityData(get().password)
-            resp = await api.dreamsApi.v1StatisticsList({ limit: STATISTICS_LIMITS })
+            resp = await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
         } else {
-            resp = await api.dreamsApi.v1StatisticsList({ limit: STATISTICS_LIMITS })
+            resp = await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
         }
         if (resp.ok) {
             set(produce((draft: State) => {
