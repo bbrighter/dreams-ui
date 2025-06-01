@@ -39,7 +39,7 @@ export default function EditHeader(props: { isSaved: boolean }) {
     )
 }
 
-export function SaveButton(props: { isSaved: boolean }) {
+function SaveButton(props: { isSaved: boolean }) {
     const navigate = useNavigateHomePage()
     const updateDream = useDreams(state => state.updateDream)
     const saveDream = async () => {
