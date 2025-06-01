@@ -21,9 +21,9 @@ const dreamHandlers = (baseUrl: string) => ([
         id: 1, date: '2025-01-01T12:30:00Z', visible: true,
         description: 'description',
         categories: {
-            categories: [{ id: 10, name: 'cat name' }],
+            categories: [{ id: 1, name: 'Category' }],
         }, persons: {
-            persons: [{ id: 100, name: 'person name' }],
+            persons: [{ id: 1, name: 'Person' }],
         },
     } as EntityDreamResponse))),
 
