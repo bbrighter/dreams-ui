@@ -1,6 +1,6 @@
 import { Box, Container, TextField } from '@mui/material'
 import debounce from 'lodash.debounce'
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom'
 
 import useDreams from '../../store/store'
@@ -12,7 +12,7 @@ import RecordText from './Components/RecordText';
 
 const DEBOUNCE_TIME = 5_000
 
-const debouncedSave = (func: () => void) => debounce(func, DEBOUNCE_TIME)
+
 
 export default function Edit() {
     const setDescription = useDreams(state => state.setDescription)
@@ -42,10 +42,12 @@ export default function Edit() {
         }
     }
 
+    const debouncedSave = useMemo(() => debounce(saveDream, DEBOUNCE_TIME), [saveDream])
+
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const value = e.currentTarget.value
         setDescription(value)
-        debouncedSave(saveDream)()
+        debouncedSave()
     }
 
     return (

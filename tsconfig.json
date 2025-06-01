@@ -1,21 +1,30 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/", // path to output directory
-    "sourceMap": true, // allow sourcemap support
-    "strictNullChecks": true, // enable strict null checks as a best practice
-    "module": "ES2022", // specify module code generation
-    "jsx": "react-jsx", // use typescript to transpile jsx to js
-    "allowJs": true, // allow a partial TypeScript and JavaScript codebase
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "allowJs": true,
     "moduleResolution": "bundler",
-    "target": "ES6",
+    "target": "ES2020",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "lib": [
+      "ES2021",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node",
+      "@testing-library/jest-dom",
+    ]
   },
   "include": [
-    "./src/"
+    "src"
   ],
   "exclude": [
-    "./node_modules/"
+    "node_modules"
   ]
 }

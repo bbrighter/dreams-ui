@@ -41,6 +41,7 @@ export default function DreamItem(props: {
                         e.stopPropagation()
                         deleteDream(props.id)
                     }}
+                    title='Löschen'
                 >
                     <DeleteIcon />
                 </IconButton>

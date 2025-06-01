@@ -19,6 +19,7 @@ export default function EditHeader(props: { isSaved: boolean }) {
         type='date'
         value={date.toISOString().substring(0, 10)}
         onChange={onChangeDate}
+        title='Datum'
     />
     const HideOrShow = () => {
         return (
@@ -53,6 +54,7 @@ function SaveButton(props: { isSaved: boolean }) {
         <IconButton
             color={color}
             onClick={saveDream}
+            title='Speichern'
         >
             <SaveIcon />
         </IconButton>
@@ -69,6 +71,7 @@ export function BackButton() {
     return (
         <IconButton
             onClick={handleClick}
+            title='Zurück'
         >
             <ArrowBackIcon />
         </IconButton >

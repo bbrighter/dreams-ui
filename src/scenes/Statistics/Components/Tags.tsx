@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { TagCloud } from 'react-tagcloud'
@@ -7,11 +7,6 @@ import { Statistic } from '../../../store/statistics'
 import useDreams from '../../../store/store'
 
 
-const StyledTagCloud = styled(TagCloud)`
-    position: relative;
-    width: 80%;
-    left: 10%;
-`
 
 export default function Tags(props: {
     type: 'person' | 'category'
@@ -32,11 +27,14 @@ export default function Tags(props: {
         <>
             <Divider sx={{ mt: '1rem' }} />
             <Typography> {header}</Typography>
-            <StyledTagCloud
-                maxSize={50}
-                minSize={10}
-                tags={tags}
-            />
+            <Box sx={{ position: 'relative', width: '80%', left: '10%' }}>
+                <TagCloud
+                    maxSize={50}
+                    minSize={10}
+                    tags={tags}
+                />
+            </Box>
+
         </>
     )
 }
