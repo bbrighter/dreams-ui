@@ -1,9 +1,10 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine3.21 AS build
+FROM node:22-alpine3.21 AS build
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install -g pnpm
+COPY pnpm-lock.yaml package.json ./
+RUN pnpm install --frozen-lockfile
 COPY . . 
-RUN npm run build
+RUN pnpm run build
 
 
 FROM nginx:1.27.5-alpine3.21
