@@ -6,6 +6,7 @@ import { useNavigateHomePage } from '../../../hooks/navigate';
 import useDreams from '../../../store/store';
 import Header from '../../Components/Header';
 import Hide from './Hide';
+import FinalizeButton from './Finalize';
 
 export default function EditHeader(props: { isSaved: boolean }) {
     const isValidPassword = useDreams(state => state.isValidPassword())

@@ -25,6 +25,7 @@ interface Actions {
     getDream: (id: number | string) => Promise<void>,
     createDream: () => Promise<number>,
     updateDream: () => Promise<boolean>,
+    finalizeDream: () => Promise<void>,
     // Private dreams
     changeVisibility: () => Promise<void>,
     getPrivateDreams: () => Promise<void>,
@@ -58,6 +59,7 @@ const initialState: State = {
         persons: [],
         isSaved: true,
         visible: true,
+        finalized: false,
     },
     dreams: [],
     categories: [],
@@ -106,7 +108,7 @@ const useDreams = create<Store>((set, get) => ({
         set(produce((draft: State) => {
             draft.dream.id = id
             draft.dream.date = date
-            draft.dreams.unshift({ id: id, date: date, visible: true })
+            draft.dreams.unshift({ id: id, date: date, visible: true, finalized: false })
         }))
         return id
     },
@@ -120,6 +122,20 @@ const useDreams = create<Store>((set, get) => ({
             set(produce((draft: State) => { draft.dream.isSaved = true }))
         }
         return resp.ok
+    },
+    finalizeDream: async () => {
+        const id = get().dream.id
+        const dreamIndex = get().dreams.findIndex(d => d.id == id)
+        if (dreamIndex < 0) {
+            return
+        }
+        const resp = await api.dreams.finalizePartialUpdate(id.toString())
+        if (resp.ok) {
+            set(produce((draft: State) => {
+                draft.dream.finalized = true
+                draft.dreams[dreamIndex].finalized = true
+            }))
+        }
     },
     // Private dreams
     changeVisibility: async () => {

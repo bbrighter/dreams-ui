@@ -7,7 +7,7 @@ import Edit from './Edit'
 
 
 
-describe('viewing and editing a single dresm', () => {
+describe('viewing and editing a single dream', () => {
     it('everything is rendered', async () => {
         render(
             <MemoryRouter initialEntries={['/dreams/1']}>
@@ -45,17 +45,17 @@ describe('viewing and editing a single dresm', () => {
             </MemoryRouter>)
 
         const saveButton = screen.getByTitle('Speichern')
-        expect(saveButton).toHaveStyle('color: rgb(46, 125, 50)')
+        expect(saveButton.getAttribute('class')).match(/colorSuccess/)
         const descriptionInput = await screen.findByLabelText('Beschreibung')
         await userEvent.type(descriptionInput, ' and more text')
 
         expect(screen.getByText('description and more text')).toBeInTheDocument()
-        expect(saveButton).toHaveStyle('color: rgb(211, 47, 47)')
+        expect(saveButton.getAttribute('class')).match(/colorError/)
 
         // vi.advanceTimersByTime(5_000)
 
         await waitFor(() => {
-            expect(saveButton).toHaveStyle('color: rgb(46, 125, 50)')
+            expect(saveButton.getAttribute('class')).match(/colorSuccess/)
         }, { timeout: 6000 })
 
 

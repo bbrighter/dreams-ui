@@ -8,6 +8,7 @@ import Categories from './Components/Categories';
 import EditHeader from './Components/EditHeader';
 import Persons from './Components/Persons'
 import RecordText from './Components/RecordText';
+import FinalizeButton from './Components/Finalize';
 
 
 const DEBOUNCE_TIME = 5_000
@@ -53,7 +54,7 @@ export default function Edit() {
     return (
         <>
             <EditHeader isSaved={isSaved} />
-            <Container >
+            <Container sx={{ marginBottom: '1rem' }}>
                 <Box component='form'>
                     <RecordText />
                     <TextField
@@ -70,6 +71,7 @@ export default function Edit() {
                     <Categories />
                     <Persons />
                 </Box>
+                <FinalizeButton />
             </Container>
         </>
     )
