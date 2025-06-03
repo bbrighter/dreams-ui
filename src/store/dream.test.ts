@@ -1,4 +1,4 @@
-import { expect,test } from 'vitest'
+import { expect, test } from 'vitest'
 
 import { EntityDreamResponse } from '../api/generated_api'
 import { dreamResponseToDream } from './dream'
@@ -11,6 +11,7 @@ test('dreamResponseToDream', () => {
         persons: { persons: [] },
         categories: { categories: [] },
         visible: true,
+        finalized: false,
     }
 
     const dream = dreamResponseToDream(resp)
@@ -22,5 +23,6 @@ test('dreamResponseToDream', () => {
     expect(dream.description).toBe('description')
     expect(dream.persons).toHaveLength(0)
     expect(dream.categories).toHaveLength(0)
-    expect(dream.visible).toBeTruthy()
+    expect(dream.visible).toBe(true)
+    expect(dream.finalized).toBe(false)
 })
