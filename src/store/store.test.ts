@@ -7,11 +7,12 @@ describe('store', () => {
         await useDreams.getState().getDreams()
         const dreams = useDreams.getState().dreams
 
-        expect(dreams).toHaveLength(1)
-        const dream = dreams[0]
+        expect(dreams).toHaveLength(2)
+        const dream = dreams[1]
         expect(dream.id).toBe(1)
         expect(dream.date).toStrictEqual(new Date('2025-01-01T12:30:00Z'))
         expect(dream.visible).toBeTruthy()
+        expect(dream.finalized).toBeFalsy()
     })
 
     it('load private and public dreams into state', async () => {
@@ -26,14 +27,17 @@ describe('store', () => {
         const id = await useDreams.getState().createDream()
 
         expect(id).toBe(3)
-        expect(useDreams.getState().dreams).toHaveLength(2)
+        expect(useDreams.getState().dreams).toHaveLength(3)
+        const dream = useDreams.getState().dream
+        expect(dream.finalized).toBeFalsy()
+        expect(dream.id).toBe(3)
     })
 
     it('delete an existing dream', async () => {
         await useDreams.getState().getDreams()
         await useDreams.getState().deleteDream(1)
 
-        expect(useDreams.getState().dreams).toHaveLength(0)
+        expect(useDreams.getState().dreams).toHaveLength(1)
     })
 
     it('load one dream into state', async () => {
@@ -47,6 +51,7 @@ describe('store', () => {
         expect(dream.description).toBe('description')
         expect(dream.visible).toBeTruthy()
         expect(dream.isSaved).toBeTruthy()
+        expect(dream.finalized).toBeFalsy()
     })
 
     it('change the date of a dream', async () => {
@@ -74,6 +79,17 @@ describe('store', () => {
         expect(ok).toBeTruthy()
         expect(useDreams.getState().dream.description).toBe('new')
         expect(useDreams.getState().dream.date).toStrictEqual(new Date('2024-01-01T18:00:00Z'))
-        expect(useDreams.getState().dream.isSaved).toBeTruthy()
+        expect(useDreams.getState().dream.isSaved).toBe(true)
+    })
+
+    it('finalize a dream', async () => {
+        await useDreams.getState().getDream(1)
+        await useDreams.getState().getDreams()
+
+        await useDreams.getState().finalizeDream()
+
+        const dream = useDreams.getState().dream
+        expect(dream.finalized).toBe(true)
+        expect(useDreams.getState().dreams.find(d => d.id == 1)?.finalized).toBe(true)
     })
 })

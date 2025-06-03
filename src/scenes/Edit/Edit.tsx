@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
 import EditHeader from './Components/EditHeader';
+import FinalizeButton from './Components/FinalizeButton';
 import Persons from './Components/Persons'
 import RecordText from './Components/RecordText';
 
@@ -53,7 +54,7 @@ export default function Edit() {
     return (
         <>
             <EditHeader isSaved={isSaved} />
-            <Container >
+            <Container sx={{ marginBottom: '1rem' }}>
                 <Box component='form'>
                     <RecordText />
                     <TextField
@@ -70,6 +71,7 @@ export default function Edit() {
                     <Categories />
                     <Persons />
                 </Box>
+                <FinalizeButton />
             </Container>
         </>
     )

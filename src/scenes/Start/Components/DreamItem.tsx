@@ -23,6 +23,7 @@ export default function DreamItem(props: {
     id: number
     date: Date
     visible: boolean
+    finalized: boolean
 }) {
     const deleteDream = useDreams(state => state.deleteDream)
     const navigate = useNavigate()
@@ -47,8 +48,8 @@ export default function DreamItem(props: {
                 </IconButton>
             }
         >
-            <ListItemAvatar >
-                <CloudIcon />
+            <ListItemAvatar>
+                <CloudIcon color={props.finalized ? 'inherit' : 'warning'} />
             </ListItemAvatar>
             <StyledListItemText visible={+props.visible}>
                 {props.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}

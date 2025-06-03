@@ -11,6 +11,7 @@ export interface Dream {
     persons: Array<Person>
     isSaved: boolean
     visible: boolean
+    finalized: boolean
 }
 
 export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
@@ -22,5 +23,6 @@ export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
         persons: resp.persons.persons.map(p => ({ id: p.id, name: p.name })),
         isSaved: true,
         visible: resp.visible,
+        finalized: resp.finalized,
     }
 }

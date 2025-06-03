@@ -31,6 +31,7 @@ export interface EntityCountsResponse {
 
 export interface EntityDreamMetaResponse {
   date: string;
+  finalized: boolean;
   id: number;
   visible: boolean;
 }
@@ -39,6 +40,7 @@ export interface EntityDreamResponse {
   categories: EntityCategoriesResponse;
   date: string;
   description: string;
+  finalized: boolean;
   id: number;
   persons: EntityPersonsResponse;
   visible: boolean;
@@ -486,6 +488,19 @@ export class Api<
         path: `/dreams/${dreamId}/categories/${categoryId}`,
         method: "DELETE",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Finalize a dream
+     *
+     * @name FinalizePartialUpdate
+     * @request PATCH:/dreams/{dreamId}/finalize
+     */
+    finalizePartialUpdate: (dreamId: string, params: RequestParams = {}) =>
+      this.request<void, void>({
+        path: `/dreams/${dreamId}/finalize`,
+        method: "PATCH",
         ...params,
       }),
 
