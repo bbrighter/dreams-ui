@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom'
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
 import EditHeader from './Components/EditHeader';
+import FinalizeButton from './Components/FinalizeButton';
 import Persons from './Components/Persons'
 import RecordText from './Components/RecordText';
-import FinalizeButton from './Components/Finalize';
 
 
 const DEBOUNCE_TIME = 5_000

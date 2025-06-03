@@ -13,8 +13,8 @@ const dreamHandlers = (baseUrl: string) => ([
     http.post(baseUrl + '/dreams', () => (HttpResponse.json(3))),
     http.get(baseUrl + '/dreams/private', () => (HttpResponse.json({
         dreams: [
-            { id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false, },
-            { id: 2, date: '2025-02-02T13:00:00Z', visible: false, finalized: false, },
+            { id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false },
+            { id: 2, date: '2025-02-02T13:00:00Z', visible: false, finalized: false },
         ],
     } as EntityDreamsResponse))),
 
