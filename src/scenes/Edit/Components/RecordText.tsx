@@ -1,18 +1,12 @@
-import styled from '@emotion/styled';
 import MicIcon from '@mui/icons-material/Mic';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import MicOffIcon from '@mui/icons-material/MicOff';
-import { Fab } from '@mui/material';
+import Fab from '@mui/material/Fab';
 import { useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import useDreams from '../../../store/store';
 
-
-const ShadowFab = styled(Fab) <{ isHighlight: boolean }>`
-    left: calc(50% - 56px/2);
-    box-shadow: ${(props) => props.isHighlight ? '0 0 20px #ff4f4f' : '0 0 0'};
-`
 
 export default function RecordText() {
     const setDescription = useDreams(state => state.setDescription)
@@ -59,13 +53,15 @@ export default function RecordText() {
     const icon = !isMicrophoneAvailable ? <MicNoneIcon /> : listening ? <MicIcon /> : <MicOffIcon />
 
     return (
-        <ShadowFab
-            sx={{ marginTop: '1rem' }}
-            isHighlight={listening}
-            color={color}
-            onClick={changeListening}
-        >
-            {icon}
-        </ShadowFab>
+        <>
+            <Fab
+                title='Aufnehmen'
+                sx={{ marginTop: '1rem' }}
+                color={color}
+                onClick={changeListening}
+            >
+                {icon}
+            </Fab>
+        </>
     )
 }

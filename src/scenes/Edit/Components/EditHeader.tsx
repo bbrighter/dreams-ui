@@ -63,9 +63,11 @@ function SaveButton(props: { isSaved: boolean }) {
 
 export function BackButton() {
     const navigate = useNavigateHomePage()
+    const resetDream = useDreams(state => state.resetDream)
 
     const handleClick = () => {
         navigate()
+        resetDream()
     }
 
     return (

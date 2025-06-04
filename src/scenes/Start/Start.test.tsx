@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import Start from './Start'
 
@@ -11,6 +11,8 @@ const findRowByDate = async (date: string): Promise<HTMLElement> => {
     const wrapper = relevantRow.closest('li') as HTMLElement
     return wrapper
 }
+
+window.scrollTo = vi.fn()
 
 describe('start page is rendered and can be clicked', () => {
     it('everything is rendered', async () => {

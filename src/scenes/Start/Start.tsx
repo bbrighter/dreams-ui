@@ -14,9 +14,24 @@ export default function Start() {
     const createDream = useDreams(state => state.createDream)
     const dreams = useDreams(state => state.dreams)
     const isValidPassword = useDreams(state => state.isValidPassword())
+    const scrollPosition = useDreams(state => state.scrollPosition)
+    const setScrollPosition = useDreams(state => state.setScrollPosition)
 
     const navigate = useNavigateToDream()
 
+    useEffect(() => {
+        window.scrollTo(0, scrollPosition)
+    }, [])
+
+
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
     useEffect(() => {
         if (isValidPassword) {

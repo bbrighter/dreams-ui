@@ -36,8 +36,8 @@ importers:
         specifier: ^7.6.1
         version: 7.6.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-speech-recognition:
-        specifier: ^4.0.1
-        version: 4.0.1(react@19.1.0)
+        specifier: ^3.10.0
+        version: 3.10.0(react@19.1.0)
       react-tagcloud:
         specifier: ^2.3.3
         version: 2.3.3(react@19.1.0)
@@ -2368,8 +2368,8 @@ packages:
       react-dom:
         optional: true
 
-  react-speech-recognition@4.0.1:
-    resolution: {integrity: sha512-0fIqzLtfY8vuYA6AmJVK7qiabZx0oFKOO+rbiBgFI3COWVGREy0A+gdU16hWXmFebeyrI8JsOLYsWk6WaHUXRw==}
+  react-speech-recognition@3.10.0:
+    resolution: {integrity: sha512-EVSr4Ik8l9urwdPiK2r0+ADrLyDDrjB0qBRdUWO+w2MfwEBrj6NuRmy1GD3x7BU/V6/hab0pl8Lupen0zwlJyw==}
     peerDependencies:
       react: '>=16.8.0'
 
@@ -5417,9 +5417,8 @@ snapshots:
     optionalDependencies:
       react-dom: 19.1.0(react@19.1.0)
 
-  react-speech-recognition@4.0.1(react@19.1.0):
+  react-speech-recognition@3.10.0(react@19.1.0):
     dependencies:
-      lodash.debounce: 4.0.8
       react: 19.1.0
 
   react-tagcloud@2.3.3(react@19.1.0):
