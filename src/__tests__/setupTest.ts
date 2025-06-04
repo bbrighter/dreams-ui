@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime'
+
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, beforeEach, expect } from 'vitest';

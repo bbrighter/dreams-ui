@@ -5,8 +5,6 @@ import { describe, expect, it } from 'vitest'
 
 import Edit from './Edit'
 
-
-
 describe('viewing and editing a single dream', () => {
     it('everything is rendered', async () => {
         render(
@@ -45,7 +43,10 @@ describe('viewing and editing a single dream', () => {
             </MemoryRouter>)
 
         const saveButton = screen.getByTitle('Speichern')
-        expect(saveButton.getAttribute('class')).match(/colorSuccess/)
+        await waitFor(() => {
+            expect(saveButton.getAttribute('class')).match(/colorSuccess/)
+        })
+
         const descriptionInput = await screen.findByLabelText('Beschreibung')
         await userEvent.type(descriptionInput, ' and more text')
 
@@ -101,4 +102,37 @@ describe('viewing and editing a single dream', () => {
     it('add person', { skip: true }, async () => {
 
     })
+
+    // it('recording button works', async () => {
+    //     vi.mock(import('react-speech-recognition'), async (importOriginal) => {
+    //         const actual = await importOriginal()
+    //         return {
+    //             ...actual,
+    //             useSpeechRecognition: vi.fn(() => ({
+    //                 transcript: '',
+    //                 finalTranscript: '',
+    //                 listening: false,
+    //                 resetTranscript: vi.fn(),
+    //                 browserSupportsSpeechRecognition: true,
+    //                 isMicrophoneAvailable: true,
+    //             } as SpeechRecognitionOptions)),
+    //         }
+    //     })
+
+    //     render(
+    //         <MemoryRouter initialEntries={['/dreams/1']}>
+    //             <Routes>
+    //                 <Route path="/dreams/:id" element={<Edit />} />
+    //             </Routes>
+    //         </MemoryRouter>)
+
+    //     const recordButton = await screen.findByTitle('Aufnehmen')
+    //     expect(recordButton.getAttribute('class')).match(/MuiFab-primary/)
+    //     await userEvent.click(recordButton)
+    //     // The following fails for whatever reason, probably because of the mocked react-speech-recognition
+    //     // await waitFor(() => {
+    //     //     const recordButtonWarn = screen.getByTitle('Aufnehmen')
+    //     //     expect(recordButtonWarn.getAttribute('class')).match(/MuiFab-warning/)
+    //     // })
+    // })
 })

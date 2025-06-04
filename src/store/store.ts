@@ -15,14 +15,17 @@ const STATISTICS_LIMITS = 40
 
 interface State extends Categories, Persons, Dreams, Statistics, Password {
     dream: Dream
+    scrollPosition: number
 }
 
 interface Actions {
-    resetState: () => void
+    resetState: () => void,
+    setScrollPosition: (x: number) => void,
     // Dream
     setDate: (date: string) => void,
     setDescription: (description: string) => void,
     getDream: (id: number | string) => Promise<void>,
+    resetDream: () => void,
     createDream: () => Promise<number>,
     updateDream: () => Promise<boolean>,
     finalizeDream: () => Promise<void>,
@@ -50,17 +53,20 @@ interface Actions {
 
 interface Store extends State, Actions { }
 
+const initDream = {
+    id: 0,
+    date: new Date(),
+    description: '',
+    categories: [],
+    persons: [],
+    isSaved: true,
+    visible: true,
+    finalized: false,
+}
+
 const initialState: State = {
-    dream: {
-        id: 0,
-        date: new Date(),
-        description: '',
-        categories: [],
-        persons: [],
-        isSaved: true,
-        visible: true,
-        finalized: false,
-    },
+    dream: initDream,
+    scrollPosition: 0,
     dreams: [],
     categories: [],
     persons: [],
@@ -73,6 +79,9 @@ const initialState: State = {
 const useDreams = create<Store>((set, get) => ({
     ...initialState,
     resetState: () => set(initialState),
+    setScrollPosition: (x: number) => {
+        set(produce((draft: State) => { draft.scrollPosition = x }))
+    },
 
     setDate: (date: string) => {
         set(produce((draft: State) => {
@@ -93,6 +102,11 @@ const useDreams = create<Store>((set, get) => ({
         }
         set(produce((draft: State) => {
             draft.dream = dreamResponseToDream(resp.data)
+        }))
+    },
+    resetDream: () => {
+        set(produce((draft: State) => {
+            draft.dream = initDream
         }))
     },
     createDream: async () => {
