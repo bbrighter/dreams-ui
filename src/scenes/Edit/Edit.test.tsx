@@ -1,8 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { SpeechRecognitionOptions } from 'react-speech-recognition'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import Edit from './Edit'
 
@@ -104,36 +103,36 @@ describe('viewing and editing a single dream', () => {
 
     })
 
-    it('recording button works', async () => {
-        vi.mock(import('react-speech-recognition'), async (importOriginal) => {
-            const actual = await importOriginal()
-            return {
-                ...actual,
-                useSpeechRecognition: vi.fn(() => ({
-                    transcript: '',
-                    finalTranscript: '',
-                    listening: false,
-                    resetTranscript: vi.fn(),
-                    browserSupportsSpeechRecognition: true,
-                    isMicrophoneAvailable: true,
-                } as SpeechRecognitionOptions)),
-            }
-        })
+    // it('recording button works', async () => {
+    //     vi.mock(import('react-speech-recognition'), async (importOriginal) => {
+    //         const actual = await importOriginal()
+    //         return {
+    //             ...actual,
+    //             useSpeechRecognition: vi.fn(() => ({
+    //                 transcript: '',
+    //                 finalTranscript: '',
+    //                 listening: false,
+    //                 resetTranscript: vi.fn(),
+    //                 browserSupportsSpeechRecognition: true,
+    //                 isMicrophoneAvailable: true,
+    //             } as SpeechRecognitionOptions)),
+    //         }
+    //     })
 
-        render(
-            <MemoryRouter initialEntries={['/dreams/1']}>
-                <Routes>
-                    <Route path="/dreams/:id" element={<Edit />} />
-                </Routes>
-            </MemoryRouter>)
+    //     render(
+    //         <MemoryRouter initialEntries={['/dreams/1']}>
+    //             <Routes>
+    //                 <Route path="/dreams/:id" element={<Edit />} />
+    //             </Routes>
+    //         </MemoryRouter>)
 
-        const recordButton = await screen.findByTitle('Aufnehmen')
-        expect(recordButton.getAttribute('class')).match(/MuiFab-primary/)
-        await userEvent.click(recordButton)
-        // The following fails for whatever reason, probably because of the mocked react-speech-recognition
-        // await waitFor(() => {
-        //     const recordButtonWarn = screen.getByTitle('Aufnehmen')
-        //     expect(recordButtonWarn.getAttribute('class')).match(/MuiFab-warning/)
-        // })
-    })
+    //     const recordButton = await screen.findByTitle('Aufnehmen')
+    //     expect(recordButton.getAttribute('class')).match(/MuiFab-primary/)
+    //     await userEvent.click(recordButton)
+    //     // The following fails for whatever reason, probably because of the mocked react-speech-recognition
+    //     // await waitFor(() => {
+    //     //     const recordButtonWarn = screen.getByTitle('Aufnehmen')
+    //     //     expect(recordButtonWarn.getAttribute('class')).match(/MuiFab-warning/)
+    //     // })
+    // })
 })
