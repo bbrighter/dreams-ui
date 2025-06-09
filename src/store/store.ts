@@ -7,7 +7,7 @@ import { Categories, categoryResponseToCategories } from './categories'
 import { Dream, dreamResponseToDream } from './dream'
 import { Dreams, dreamsResponseToDreams } from './dreams'
 import { Password } from './password'
-import { Persons, personsResponseToPersons } from './persons'
+import { IncludeParam, Persons, personsResponseToPersons } from './persons'
 import { controllerCountsResponseToStatistic, Statistics } from './statistics'
 
 
@@ -34,7 +34,7 @@ interface Actions {
     getPrivateDreams: () => Promise<void>,
     getPrivateDream: (id: number | string) => Promise<void>,
     // Dreams
-    getDreams: () => Promise<void>
+    getDreams: (include?: IncludeParam) => Promise<void>
     deleteDream: (id: number) => Promise<void>
     // Categories
     getCategories: () => Promise<void>,
@@ -122,7 +122,7 @@ const useDreams = create<Store>((set, get) => ({
         set(produce((draft: State) => {
             draft.dream.id = id
             draft.dream.date = date
-            draft.dreams.unshift({ id: id, date: date, visible: true, finalized: false })
+            draft.dreams.unshift({ id: id, date: date, visible: true, finalized: false, persons: [], categories: [] })
         }))
         return id
     },
@@ -180,8 +180,9 @@ const useDreams = create<Store>((set, get) => ({
         }
     },
     // Dreams
-    getDreams: async () => {
-        const resp = await api.dreams.dreamsList()
+    getDreams: async (include?: IncludeParam) => {
+        const params = include ? { includes: include } : {}
+        const resp = await api.dreams.dreamsList(params)
         const dreams = dreamsResponseToDreams(resp.data)
         dreams.dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
         set(produce((draft: State) => {

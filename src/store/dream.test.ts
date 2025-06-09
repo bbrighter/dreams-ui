@@ -8,8 +8,8 @@ test('dreamResponseToDream', () => {
         id: 1,
         date: '2024-01-04T19:54:20.113Z',
         description: 'description',
-        persons: { persons: [] },
-        categories: { categories: [] },
+        persons: [],
+        categories: [],
         visible: true,
         finalized: false,
     }

@@ -12,3 +12,9 @@ export interface Persons {
 export function personsResponseToPersons(resp: EntityPersonsResponse): Array<Person> {
     return resp.persons.map(p => ({ id: p.id, name: p.name }))
 }
+
+export enum IncludeParam {
+    PERSONS = 'persons',
+    CATEGORIES = 'categories',
+    ALL = 'persons,categories',
+}

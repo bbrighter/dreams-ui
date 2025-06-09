@@ -1,40 +1,41 @@
 import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import { useEffect } from 'react'
 import { TagCloud } from 'react-tagcloud'
 
-import { Statistic } from '../../../store/statistics'
 import useDreams from '../../../store/store'
+import { StatisticToggleOptions } from '../Statistics'
 
 
 
 export default function Tags(props: {
-    type: 'person' | 'category'
-    statistics: Array<Statistic>
+    type: StatisticToggleOptions
 }) {
+    const getStatistics = useDreams(state => state.getStatistics)
+    const categoryCounts = useDreams(state => state.categoriesCount)
+    const personsCount = useDreams(state => state.personsCount)
     const persons = useDreams(state => state.persons)
     const categories = useDreams(state => state.categories)
+    const isValidPassword = useDreams(state => state.isValidPassword())
 
-    const header = props.type == 'person' ? 'Personen' : 'Kategorien'
+    useEffect(() => {
+        getStatistics(isValidPassword)
+    }, [isValidPassword])
+
+    const count = props.type == 'person' ? personsCount : categoryCounts
     const names = props.type == 'person' ? persons : categories
 
-    const tags = props.statistics.map(s => {
+    const tags = count.map(s => {
         const name = names.find(n => n.id == s.id)?.name || ''
         return { key: s.id.toString(), value: name, count: s.count }
     })
 
     return (
-        <>
-            <Divider sx={{ mt: '1rem' }} />
-            <Typography> {header}</Typography>
-            <Box sx={{ position: 'relative', width: '80%', left: '10%' }}>
-                <TagCloud
-                    maxSize={50}
-                    minSize={10}
-                    tags={tags}
-                />
-            </Box>
-
-        </>
+        <Box sx={{ position: 'relative', width: '80%', left: '10%', mt: '1rem', mb: '1rem' }}>
+            <TagCloud
+                maxSize={50}
+                minSize={10}
+                tags={tags}
+            />
+        </Box>
     )
 }
