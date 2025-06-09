@@ -21,21 +21,15 @@ const dreamHandlers = (baseUrl: string) => ([
     http.get(baseUrl + '/dreams/:id', () => (HttpResponse.json({
         id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false,
         description: 'description',
-        categories: {
-            categories: [{ id: 1, name: 'Category' }],
-        }, persons: {
-            persons: [{ id: 1, name: 'Person' }],
-        },
+        categories: [{ id: 1, name: 'Category' }],
+        persons: [{ id: 1, name: 'Person' }],
     } as EntityDreamResponse))),
 
     http.get(baseUrl + '/dreams/private/:id', () => (HttpResponse.json({
         id: 2, date: '2025-02-02T13:00:00Z', visible: false, finalized: false,
         description: 'description',
-        categories: {
-            categories: [{ id: 10, name: 'cat name' }],
-        }, persons: {
-            persons: [{ id: 100, name: 'person name' }],
-        },
+        categories: [{ id: 10, name: 'cat name' }],
+        persons: [{ id: 100, name: 'person name' }],
     } as EntityDreamResponse))),
 
     http.delete(baseUrl + '/dreams/:id', () => (HttpResponse.json())),

@@ -1,7 +1,7 @@
 import { EntityCountsResponse } from '../api/generated_api'
 
 
-export interface Statistic {
+interface Statistic {
     id: number
     count: number
 }

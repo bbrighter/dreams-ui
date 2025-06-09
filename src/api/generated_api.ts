@@ -30,19 +30,21 @@ export interface EntityCountsResponse {
 }
 
 export interface EntityDreamMetaResponse {
+  categories?: EntityCategoryResponse[];
   date: string;
   finalized: boolean;
   id: number;
+  persons?: EntityPersonResponse[];
   visible: boolean;
 }
 
 export interface EntityDreamResponse {
-  categories: EntityCategoriesResponse;
+  categories?: EntityCategoryResponse[];
   date: string;
   description: string;
   finalized: boolean;
   id: number;
-  persons: EntityPersonsResponse;
+  persons?: EntityPersonResponse[];
   visible: boolean;
 }
 
@@ -337,10 +339,17 @@ export class Api<
      * @name DreamsList
      * @request GET:/dreams
      */
-    dreamsList: (params: RequestParams = {}) =>
+    dreamsList: (
+      query?: {
+        /** Comma separated list of child objects. Possible entries: categories, persons */
+        includes?: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<EntityDreamsResponse, any>({
         path: `/dreams`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

@@ -1,47 +1,45 @@
 import Container from '@mui/material/Container'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
+import { IncludeParam } from '../../store/persons'
 import useDreams from '../../store/store'
 import Header from '../Components/Header'
 import Navigation from '../Components/Navigation'
 import { BackButton } from '../Edit/Components/EditHeader'
+import MonthlyChart from './Components/MonthlyChart'
+import StatisticsToggleOption from './Components/StatisticsToggleOption'
 import Tags from './Components/Tags'
 
+export type StatisticToggleOptions = 'person' | 'category'
+
 export default function Statistics() {
-    const getStatistics = useDreams(state => state.getStatistics)
     const getCategories = useDreams(state => state.getCategories)
     const getPersons = useDreams(state => state.getPersons)
-    const categoryCounts = useDreams(state => state.categoriesCount)
-    const personsCount = useDreams(state => state.personsCount)
+    const getDreams = useDreams(state => state.getDreams)
     const categories = useDreams(state => state.categories)
     const persons = useDreams(state => state.persons)
-    const isValidPassword = useDreams(state => state.isValidPassword())
+
+    const [selectedOption, setSelectedOption] = useState<StatisticToggleOptions>('person')
+    const onChangeToggleOption = (_, v: StatisticToggleOptions) => { setSelectedOption(v) }
 
     useEffect(() => {
-        getStatistics(isValidPassword)
+        getDreams(IncludeParam.ALL)
         if (categories.length == 0) {
             getCategories()
         }
         if (persons.length == 0) {
             getPersons()
         }
-    }, [isValidPassword])
+    }, [])
+
 
     return (
         <>
-            <Header
-                mainAction={<BackButton />}
-
-            />
-            <Container sx={{ padding: '0rem' }}>
-                <Tags
-                    type='category'
-                    statistics={categoryCounts}
-                />
-                <Tags
-                    type='person'
-                    statistics={personsCount}
-                />
+            <Header mainAction={<BackButton />} />
+            <Container sx={{ padding: '2rem' }}>
+                <StatisticsToggleOption value={selectedOption} onChange={onChangeToggleOption} />
+                <Tags type={selectedOption} />
+                <MonthlyChart type={selectedOption} />
                 <Navigation activeIndex={1} />
             </Container>
         </>
