@@ -45,21 +45,22 @@ export default function MonthlyChart(props: {
         if (data.length == 0) return
 
         const allMonths = eachMonthOfInterval({ start: dreams[0].date, end: dreams[dreams.length - 1].date })
-        return allMonths.map(m => {
-            const monthlyDreams = dreams.filter(d => d.date.getFullYear() == m.getFullYear() && d.date.getMonth() == m.getMonth())
-            const result: PivotedData = monthlyDreams.reduce((acc, item) => {
-                const data = props.type == 'person' ? item.persons : item.categories
-                const isSelected = selectedId == 0 ? true : data.some(d => d.id == selectedId)
-                return {
-                    ...acc,
-                    selected: acc.selected + (isSelected ? 1 : 0),
-                    unselected: acc.unselected + (isSelected ? 0 : 1),
-                }
-            }, { selected: 0, unselected: 0, month: format(m, 'MM/yyyy'), date: m } as PivotedData)
-            return result
-        })
+        return allMonths
+            .map(m => {
+                const monthlyDreams = dreams.filter(d => d.date.getFullYear() == m.getFullYear() && d.date.getMonth() == m.getMonth())
+                const result: PivotedData = monthlyDreams.reduce((acc, item) => {
+                    const data = props.type == 'person' ? item.persons : item.categories
+                    const isSelected = selectedId == 0 ? true : data.some(d => d.id == selectedId)
+                    return {
+                        ...acc,
+                        selected: acc.selected + (isSelected ? 1 : 0),
+                        unselected: acc.unselected + (isSelected ? 0 : 1),
+                    }
+                }, { selected: 0, unselected: 0, month: format(m, 'MM/yyyy'), date: m } as PivotedData)
+                return result
+            })
+            .sort((a, b) => a.date.getTime() - b.date.getTime())
     }, [dreams, data, selectedId, props.type])
-
 
     return (
         <Box sx={{ pt: '2rem' }}>
