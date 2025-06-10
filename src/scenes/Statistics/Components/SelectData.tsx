@@ -9,6 +9,9 @@ export default function SelectData(props: {
     onChange: (value: number) => void
     type: StatisticToggleOptions
 }) {
+
+    const options = props.options.slice().sort((a, b) => a.name.trim().localeCompare(b.name.trim()))
+
     return (
         <Select
             value={props.value}
@@ -18,7 +21,7 @@ export default function SelectData(props: {
             <MenuItem value={0} key={0}>
                 <em>Alle</em>
             </MenuItem>
-            {props.options.map(o => (
+            {options.map(o => (
                 <MenuItem key={o.id} value={o.id}>{o.name}</MenuItem>
             ))}
         </Select>
