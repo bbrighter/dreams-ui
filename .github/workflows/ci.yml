@@ -77,9 +77,7 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/arm64
-        cache-from: |
-          type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:latest
-          type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:v*
-        cache-to: type=inline
+        cache-from: type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:cache
+        cache-to: type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:cache
 
 
