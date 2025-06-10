@@ -23,9 +23,7 @@ export default function MonthlyChart(props: {
     const persons = useDreams(state => state.persons)
 
     const [selectedId, setSelectedId] = useState(0)
-    useEffect(() => {
-        setSelectedId(0)
-    }, [props.type])
+    useEffect(() => { setSelectedId(0) }, [props.type])
 
     const data: Array<{ id: number, name: string }> = useMemo(() =>
         props.type == 'person' ? persons : categories,
@@ -46,9 +44,8 @@ export default function MonthlyChart(props: {
         if (dreams.length == 0) return
         if (data.length == 0) return
 
-        const results = [] as Array<PivotedData>
         const allMonths = eachMonthOfInterval({ start: dreams[0].date, end: dreams[dreams.length - 1].date })
-        allMonths.forEach(m => {
+        return allMonths.map(m => {
             const monthlyDreams = dreams.filter(d => d.date.getFullYear() == m.getFullYear() && d.date.getMonth() == m.getMonth())
             const result: PivotedData = monthlyDreams.reduce((acc, item) => {
                 const data = props.type == 'person' ? item.persons : item.categories
@@ -59,9 +56,8 @@ export default function MonthlyChart(props: {
                     unselected: acc.unselected + (isSelected ? 0 : 1),
                 }
             }, { selected: 0, unselected: 0, month: format(m, 'MM/yyyy'), date: m } as PivotedData)
-            results.push(result)
+            return result
         })
-        return results
     }, [dreams, data, selectedId, props.type])
 
 
