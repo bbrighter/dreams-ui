@@ -1,6 +1,7 @@
 import MicIcon from '@mui/icons-material/Mic';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import MicOffIcon from '@mui/icons-material/MicOff';
+import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import { useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -53,15 +54,14 @@ export default function RecordText() {
     const icon = !isMicrophoneAvailable ? <MicNoneIcon /> : listening ? <MicIcon /> : <MicOffIcon />
 
     return (
-        <>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: '1rem' }}>
             <Fab
                 title='Aufnehmen'
-                sx={{ marginTop: '1rem' }}
                 color={color}
                 onClick={changeListening}
             >
                 {icon}
             </Fab>
-        </>
+        </Box>
     )
 }
