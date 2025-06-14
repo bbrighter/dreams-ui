@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import useDreams from '../../../store/store';
 import TagInputs from './TagInputs';
-import { categoriesToTagValue,TagValue } from './tagValues';
+import { categoriesToTagValue, TagValue } from './tagValues';
 
 
 export default function Categories() {
@@ -12,9 +12,7 @@ export default function Categories() {
     const suggestions = useDreams(state => state.categories)
     const dreamTags = useDreams(state => state.dream.categories)
 
-    useEffect(() => {
-        getCategories()
-    }, [])
+    useEffect(() => { getCategories() }, [])
 
     const handleSave = (name: string) => { addCategoryToDream(name) }
 

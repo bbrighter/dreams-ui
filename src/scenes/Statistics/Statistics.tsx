@@ -14,22 +14,14 @@ export type StatisticToggleOptions = 'person' | 'category'
 
 export default function Statistics() {
     const getCategories = useDreams(state => state.getCategories)
-    const getPersons = useDreams(state => state.getPersons)
     const getDreams = useDreams(state => state.getDreams)
-    const categories = useDreams(state => state.categories)
-    const persons = useDreams(state => state.persons)
 
     const [selectedOption, setSelectedOption] = useState<StatisticToggleOptions>('person')
     const onChangeToggleOption = (_, v: StatisticToggleOptions) => { setSelectedOption(v) }
 
     useEffect(() => {
         getDreams(IncludeParam.ALL)
-        if (categories.length == 0) {
-            getCategories()
-        }
-        if (persons.length == 0) {
-            getPersons()
-        }
+        getCategories()
     }, [])
 
 
