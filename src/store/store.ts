@@ -7,7 +7,7 @@ import { Categories, categoryResponseToCategories } from './categories'
 import { Dream, dreamResponseToDream } from './dream'
 import { Dreams, dreamsResponseToDreams } from './dreams'
 import { Password } from './password'
-import { IncludeParam, Persons, personsResponseToPersons } from './persons'
+import { categoryResponseToPersons, IncludeParam, Persons, personsResponseToPersons } from './persons'
 import { controllerCountsResponseToStatistic, Statistics } from './statistics'
 
 
@@ -16,6 +16,8 @@ const STATISTICS_LIMITS = 40
 interface State extends Categories, Persons, Dreams, Statistics, Password {
     dream: Dream
     scrollPosition: number
+    categoriesLoaded: boolean
+    dreamsLoaded: boolean
 }
 
 interface Actions {
@@ -41,7 +43,6 @@ interface Actions {
     addCategory: (name: string) => Promise<boolean>
     removeCategory: (id: number) => Promise<boolean>
     // Persons
-    getPersons: () => Promise<void>
     addPerson: (name: string) => Promise<void>
     removePerson: (id: number) => Promise<void>
     // Statistics
@@ -73,6 +74,8 @@ const initialState: State = {
     categoriesCount: [],
     personsCount: [],
     password: '',
+    categoriesLoaded: false,
+    dreamsLoaded: false,
 }
 
 
@@ -181,12 +184,14 @@ const useDreams = create<Store>((set, get) => ({
     },
     // Dreams
     getDreams: async (include?: IncludeParam) => {
+        if (include == undefined && get().dreamsLoaded) return
         const params = include ? { includes: include } : {}
         const resp = await api.dreams.dreamsList(params)
         const dreams = dreamsResponseToDreams(resp.data)
         dreams.dreams.sort((a, b) => b.date.getTime() - a.date.getTime())
         set(produce((draft: State) => {
             draft.dreams = dreams.dreams
+            draft.dreamsLoaded = true
         }))
     },
     deleteDream: async (id: number) => {
@@ -200,15 +205,18 @@ const useDreams = create<Store>((set, get) => ({
 
     // Tags
     getCategories: async () => {
+        if (get().categoriesLoaded) return
         const resp = await api.categories.categoriesList()
         set(produce((draft: State) => {
             draft.categories = categoryResponseToCategories(resp.data)
+            draft.persons = categoryResponseToPersons(resp.data)
+            draft.categoriesLoaded = true
         }))
     },
 
     addCategory: async (name: string): Promise<boolean> => {
         const resp = await api.dreams.categoriesUpdate(get().dream.id.toString(), { name: name })
-        const newTagId = resp.data.categories.find(c => c.name == name)?.id
+        const newTagId = resp.data.categories?.find(c => c.name == name)?.id
         if (resp.ok && newTagId) {
             set(produce((draft: State) => {
                 draft.categories = categoryResponseToCategories(resp.data)
@@ -230,17 +238,9 @@ const useDreams = create<Store>((set, get) => ({
     },
 
     // Persons
-    getPersons: async () => {
-        const resp = await api.persons.personsList()
-        if (resp.ok) {
-            set(produce((draft: State) => {
-                draft.persons = personsResponseToPersons(resp.data)
-            }))
-        }
-    },
     addPerson: async (name: string) => {
         const resp = await api.dreams.personsUpdate(get().dream.id.toString(), { name: name })
-        const newPersonId = resp.data.persons.find(p => p.name == name)?.id
+        const newPersonId = resp.data.persons?.find(p => p.name == name)?.id
         if (resp.ok && newPersonId) {
             set(produce((draft: State) => {
                 draft.dream.persons.push({ id: newPersonId, name: name })

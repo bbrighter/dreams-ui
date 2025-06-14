@@ -11,7 +11,8 @@
  */
 
 export interface EntityCategoriesResponse {
-  categories: EntityCategoryResponse[];
+  categories?: EntityCategoryResponse[];
+  persons?: EntityCategoryResponse[];
 }
 
 export interface EntityCategoryResponse {
@@ -34,7 +35,7 @@ export interface EntityDreamMetaResponse {
   date: string;
   finalized: boolean;
   id: number;
-  persons?: EntityPersonResponse[];
+  persons?: EntityCategoryResponse[];
   visible: boolean;
 }
 
@@ -44,21 +45,12 @@ export interface EntityDreamResponse {
   description: string;
   finalized: boolean;
   id: number;
-  persons?: EntityPersonResponse[];
+  persons?: EntityCategoryResponse[];
   visible: boolean;
 }
 
 export interface EntityDreamsResponse {
   dreams: EntityDreamMetaResponse[];
-}
-
-export interface EntityPersonResponse {
-  id: number;
-  name: string;
-}
-
-export interface EntityPersonsResponse {
-  persons: EntityPersonResponse[];
 }
 
 export interface V1DreamRequestBody {
@@ -527,7 +519,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EntityPersonsResponse, void>({
+      this.request<EntityCategoriesResponse, void>({
         path: `/dreams/${dreamId}/persons`,
         method: "PUT",
         query: query,
@@ -546,24 +538,9 @@ export class Api<
       personId: string,
       params: RequestParams = {},
     ) =>
-      this.request<EntityPersonsResponse, void>({
+      this.request<EntityCategoriesResponse, void>({
         path: `/dreams/${dreamId}/persons/${personId}`,
         method: "DELETE",
-        format: "json",
-        ...params,
-      }),
-  };
-  persons = {
-    /**
-     * @description Get all persons
-     *
-     * @name PersonsList
-     * @request GET:/persons
-     */
-    personsList: (params: RequestParams = {}) =>
-      this.request<EntityPersonsResponse, any>({
-        path: `/persons`,
-        method: "GET",
         format: "json",
         ...params,
       }),

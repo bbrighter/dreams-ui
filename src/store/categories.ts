@@ -16,7 +16,7 @@ export function categoryResponseToCategories(resp: EntityCategoriesResponse | Ar
     } else if (resp == undefined) {
         cats = []
     } else {
-        cats = resp.categories
+        cats = resp.categories ?? []
     }
     return cats.map(t => ({ id: t.id, name: t.name }))
 }
