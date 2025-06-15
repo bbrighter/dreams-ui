@@ -18,20 +18,14 @@ const DEBOUNCE_TIME = 5_000
 export default function Edit() {
     const setDescription = useDreams(state => state.setDescription)
     const getDream = useDreams(state => state.getDream)
-    const getPrivateDream = useDreams(state => state.getPrivateDream)
     const updateDream = useDreams(state => state.updateDream)
     const isSaved = useDreams(state => state.dream.isSaved)
     const description = useDreams(state => state.dream.description)
-    const isValidPassword = useDreams(state => state.isValidPassword)()
     const { id: urlId } = useParams()
 
     useEffect(() => {
         if (urlId) {
-            if (isValidPassword) {
-                getPrivateDream(urlId)
-            } else {
-                getDream(urlId)
-            }
+            getDream(urlId)
         } else {
             alert('No url Id found')
         }

@@ -1,4 +1,4 @@
-import { EntityCountsResponse } from '../api/generated_api'
+import { EntityCountsResponse } from '../../api/generated_api'
 
 
 interface Statistic {

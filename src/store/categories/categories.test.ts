@@ -1,7 +1,8 @@
-import { expect,test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { EntityCategoriesResponse } from '../api/generated_api'
+import { EntityCategoriesResponse } from '../../api/generated_api'
 import { categoryResponseToCategories } from './categories'
+
 
 test('tagResponseToTags', () => {
     const resp: EntityCategoriesResponse =

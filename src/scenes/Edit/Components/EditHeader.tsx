@@ -8,7 +8,7 @@ import Header from '../../Components/Header';
 import Hide from './Hide';
 
 export default function EditHeader(props: { isSaved: boolean }) {
-    const isValidPassword = useDreams(state => state.isValidPassword())
+    const loggedIn = useDreams(state => state.loggedIn)
     const date = useDreams(state => state.dream.date)
     const setDate = useDreams(state => state.setDate)
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -23,7 +23,7 @@ export default function EditHeader(props: { isSaved: boolean }) {
     />
     const HideOrShow = () => {
         return (
-            isValidPassword ? <Hide /> : <></>
+            loggedIn ? <Hide /> : <></>
         )
     }
 

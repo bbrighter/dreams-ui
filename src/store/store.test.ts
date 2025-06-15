@@ -16,7 +16,7 @@ describe('store', () => {
     })
 
     it('load private and public dreams into state', async () => {
-        await useDreams.getState().getPrivateDreams()
+        await useDreams.getState().getDreams()
         const dreams = useDreams.getState().dreams
 
         expect(dreams).toHaveLength(2)

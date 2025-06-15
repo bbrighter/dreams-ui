@@ -1,13 +1,11 @@
-import { EntityCategoriesResponse, EntityCategoryResponse } from '../api/generated_api'
+import { EntityCategoriesResponse, EntityCategoryResponse } from '../../api/generated_api'
 
 export interface Person {
     id: number
     name: string
 }
 
-export interface Persons {
-    persons: Array<Person>,
-}
+export type Persons = Array<Person>
 
 export function personsResponseToPersons(resp: EntityCategoriesResponse): Array<Person> {
     return resp.persons?.map(p => ({ id: p.id, name: p.name })) ?? []

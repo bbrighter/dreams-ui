@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import CloudIcon from '@mui/icons-material/Cloud';
+import CloudOffIcon from '@mui/icons-material/CloudOff';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -13,12 +14,6 @@ const StyledListItem = styled(ListItem)`
         background-color: rgba(0,0,0,0.2);
     }
 `
-
-const StyledListItemText = styled(ListItemText) <{ visible: number }>`
-    color: ${props => (props.visible ? 'primary' : '#90caf9')};
-
-`
-
 export default function DreamItem(props: {
     id: number
     date: Date
@@ -32,6 +27,7 @@ export default function DreamItem(props: {
         navigate('/dreams/' + dreamId)
     }
 
+    const color = props.finalized ? 'inherit' : 'warning'
 
     return (
         <StyledListItem
@@ -49,10 +45,11 @@ export default function DreamItem(props: {
             }
         >
             <ListItemAvatar>
-                <CloudIcon color={props.finalized ? 'inherit' : 'warning'} />
+                {props.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
+
             </ListItemAvatar>
-            <StyledListItemText visible={+props.visible}>
+            <ListItemText>
                 {props.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}
-            </StyledListItemText>
+            </ListItemText>
         </StyledListItem>)
 }
