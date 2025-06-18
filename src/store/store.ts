@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
+import { AuthStore, createPasswordSlice } from './auth/authStore'
 import { CategoriesStore, createCategoriesSlice } from './categories/categoriesStore'
 import { createDreamSlice, DreamStore } from './dream/dreamStore'
-import { createPasswordSlice, AuthStore } from './auth/authStore'
 import { createStatisticSlice, StatisticsStore } from './statistics/statisticsStore'
 
 
