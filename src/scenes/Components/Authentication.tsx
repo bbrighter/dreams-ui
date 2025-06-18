@@ -1,6 +1,12 @@
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { Box, Button, IconButton, Modal, SxProps, TextField } from '@mui/material'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Fade from '@mui/material/Fade';
+import IconButton from '@mui/material/IconButton';
+import Modal from '@mui/material/Modal';
+import { SxProps } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 
 import useDreams from '../../store/store';
@@ -27,6 +33,11 @@ export default function Authentication() {
     const loggedIn = useDreams(state => state.loggedIn)
 
     const onClick = () => loggedIn ? logout() : setOpen(true)
+    const onClose = () => {
+        setOpen(false)
+        setPassword('')
+        setIsWrong(false)
+    }
 
     useEffect(() => {
         if (loggedIn) {
@@ -38,11 +49,9 @@ export default function Authentication() {
     const loginClick = async () => {
         setLoading(true)
         const ok = await login(password)
-        setIsWrong(ok)
+        setIsWrong(!ok)
         setLoading(false)
     }
-
-    const color = isWrong ? 'primary' : 'error'
 
     return (
         <>
@@ -52,23 +61,29 @@ export default function Authentication() {
             </IconButton>
             <Modal
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={onClose}
             >
-                <Box sx={modalStyle}>
-                    <TextField
-                        value={password}
-                        type='password'
-                        label='Passwort'
-
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <Button
-                        color={color}
-                        onClick={loginClick}
-                        loading={loading}
-                    >Login</Button>
-                </Box>
+                <Fade in={open}>
+                    <Box sx={modalStyle}>
+                        <TextField
+                            value={password}
+                            type='password'
+                            label='Passwort'
+                            error={isWrong}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <Button
+                            variant='contained'
+                            sx={{ mt: '1rem' }}
+                            onClick={loginClick}
+                            loading={loading}
+                        >
+                            Login
+                        </Button>
+                    </Box>
+                </Fade>
             </Modal>
+
         </>
     )
 }
