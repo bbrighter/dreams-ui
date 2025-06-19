@@ -1,5 +1,5 @@
-import { Category } from '../../../store/categories'
-import { Person } from '../../../store/persons'
+import { Category } from '../../../store/categories/categories'
+import { Person } from '../../../store/categories/persons'
 
 export interface TagValue {
     id: number

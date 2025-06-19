@@ -53,9 +53,18 @@ export interface EntityDreamsResponse {
   dreams: EntityDreamMetaResponse[];
 }
 
+export interface EntityLoginResponse {
+  token: string;
+}
+
 export interface V1DreamRequestBody {
   date: string;
   description?: string;
+}
+
+export interface V1LoginRequest {
+  name: string;
+  password: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -370,11 +379,13 @@ export class Api<
      *
      * @name PrivateList
      * @request GET:/dreams/private
+     * @secure
      */
     privateList: (params: RequestParams = {}) =>
       this.request<EntityDreamsResponse, any>({
         path: `/dreams/private`,
         method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -384,11 +395,13 @@ export class Api<
      *
      * @name PrivateDetail
      * @request GET:/dreams/private/{dreamId}
+     * @secure
      */
     privateDetail: (dreamId: string, params: RequestParams = {}) =>
       this.request<EntityDreamResponse, void>({
         path: `/dreams/private/${dreamId}`,
         method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -398,11 +411,13 @@ export class Api<
      *
      * @name PrivatePartialUpdate
      * @request PATCH:/dreams/private/{dreamId}
+     * @secure
      */
     privatePartialUpdate: (dreamId: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/dreams/private/${dreamId}`,
         method: "PATCH",
+        secure: true,
         ...params,
       }),
 
@@ -545,12 +560,44 @@ export class Api<
         ...params,
       }),
   };
+  login = {
+    /**
+     * @description Login
+     *
+     * @name LoginCreate
+     * @request POST:/login
+     */
+    loginCreate: (loginRequest: V1LoginRequest, params: RequestParams = {}) =>
+      this.request<EntityLoginResponse, void>({
+        path: `/login`,
+        method: "POST",
+        body: loginRequest,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  logout = {
+    /**
+     * @description Logout
+     *
+     * @name LogoutCreate
+     * @request POST:/logout
+     */
+    logoutCreate: (params: RequestParams = {}) =>
+      this.request<void, void>({
+        path: `/logout`,
+        method: "POST",
+        ...params,
+      }),
+  };
   private = {
     /**
      * @description Get count per category and person
      *
      * @name StatisticsList
      * @request GET:/private/statistics
+     * @secure
      */
     statisticsList: (
       query?: {
@@ -563,6 +610,7 @@ export class Api<
         path: `/private/statistics`,
         method: "GET",
         query: query,
+        secure: true,
         format: "json",
         ...params,
       }),

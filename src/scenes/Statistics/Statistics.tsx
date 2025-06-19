@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container'
 import { useEffect, useState } from 'react'
 
-import { IncludeParam } from '../../store/persons'
+import { IncludeParam } from '../../store/categories/persons'
 import useDreams from '../../store/store'
 import Header from '../Components/Header'
 import Navigation from '../Components/Navigation'
@@ -15,6 +15,7 @@ export type StatisticToggleOptions = 'person' | 'category'
 export default function Statistics() {
     const getCategories = useDreams(state => state.getCategories)
     const getDreams = useDreams(state => state.getDreams)
+    const loggedIn = useDreams(state => state.loggedIn)
 
     const [selectedOption, setSelectedOption] = useState<StatisticToggleOptions>('person')
     const onChangeToggleOption = (_, v: StatisticToggleOptions) => { setSelectedOption(v) }
@@ -22,7 +23,7 @@ export default function Statistics() {
     useEffect(() => {
         getDreams(IncludeParam.ALL)
         getCategories()
-    }, [])
+    }, [loggedIn])
 
 
     return (

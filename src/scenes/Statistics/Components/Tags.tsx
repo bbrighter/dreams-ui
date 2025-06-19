@@ -15,11 +15,10 @@ export default function Tags(props: {
     const personsCount = useDreams(state => state.personsCount)
     const persons = useDreams(state => state.persons)
     const categories = useDreams(state => state.categories)
-    const isValidPassword = useDreams(state => state.isValidPassword())
 
     useEffect(() => {
-        getStatistics(isValidPassword)
-    }, [isValidPassword])
+        getStatistics()
+    }, [])
 
     const count = props.type == 'person' ? personsCount : categoryCounts
     const names = props.type == 'person' ? persons : categories

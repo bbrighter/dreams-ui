@@ -1,13 +1,11 @@
-import { EntityCategoriesResponse, EntityCategoryResponse } from '../api/generated_api'
+import { EntityCategoriesResponse, EntityCategoryResponse } from '../../api/generated_api'
 
 export interface Category {
     id: number
     name: string
 }
 
-export interface Categories {
-    categories: Array<Category>
-}
+export type Categories = Array<Category>
 
 export function categoryResponseToCategories(resp: EntityCategoriesResponse | Array<EntityCategoryResponse> | undefined): Array<Category> {
     let cats: Array<EntityCategoryResponse>

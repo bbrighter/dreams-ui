@@ -1,6 +1,6 @@
-import { expect,test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { EntityCountsResponse } from '../api/generated_api'
+import { EntityCountsResponse } from '../../api/generated_api'
 import { controllerCountsResponseToStatistic } from './statistics'
 
 

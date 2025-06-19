@@ -1,6 +1,6 @@
-import { EntityDreamResponse } from '../api/generated_api'
-import { Category, categoryResponseToCategories } from './categories'
-import { Person } from './persons'
+import { EntityDreamResponse } from '../../api/generated_api'
+import { Category, categoryResponseToCategories } from '../categories/categories'
+import { Person } from '../categories/persons'
 
 
 export interface Dream {

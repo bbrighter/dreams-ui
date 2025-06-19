@@ -1,7 +1,7 @@
 import { Box, Container, TextField } from '@mui/material'
 import debounce from 'lodash.debounce'
-import { useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom'
+import { useCallback, useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
 
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
@@ -14,36 +14,43 @@ import RecordText from './Components/RecordText';
 const DEBOUNCE_TIME = 5_000
 
 
-
 export default function Edit() {
+    const navigate = useNavigate()
+
     const setDescription = useDreams(state => state.setDescription)
     const getDream = useDreams(state => state.getDream)
-    const getPrivateDream = useDreams(state => state.getPrivateDream)
     const updateDream = useDreams(state => state.updateDream)
     const isSaved = useDreams(state => state.dream.isSaved)
     const description = useDreams(state => state.dream.description)
-    const isValidPassword = useDreams(state => state.isValidPassword)()
     const { id: urlId } = useParams()
 
     useEffect(() => {
-        if (urlId) {
-            if (isValidPassword) {
-                getPrivateDream(urlId)
-            } else {
-                getDream(urlId)
-            }
-        } else {
-            alert('No url Id found')
+        const numericId = Number(urlId)
+        if (!urlId || isNaN(numericId)) {
+            navigate('/')
+            return
         }
+        getDream(urlId).catch((err) => {
+            if (err.status == 404) {
+                navigate('/')
+                return
+            }
+        })
     }, [])
 
-    const saveDream = async () => {
-        if (isSaved) {
+    const saveDream = useCallback(async () => {
+        if (!isSaved) {
             await updateDream()
         }
-    }
+    }, [isSaved, updateDream])
 
     const debouncedSave = useMemo(() => debounce(saveDream, DEBOUNCE_TIME), [saveDream])
+
+    useEffect(() => {
+        return () => {
+            debouncedSave.cancel()
+        }
+    }, [debouncedSave])
 
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const value = e.currentTarget.value
