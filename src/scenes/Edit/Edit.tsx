@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce'
 import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { useGetDreams } from '../../hooks/loadDreams';
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
 import DreamRating from './Components/DreamRating';
@@ -10,7 +11,6 @@ import EditHeader from './Components/EditHeader';
 import FinalizeButton from './Components/FinalizeButton';
 import Persons from './Components/Persons'
 import RecordText from './Components/RecordText';
-import { useGetDreams } from '../../hooks/loadDreams';
 
 
 const DEBOUNCE_TIME = 5_000
