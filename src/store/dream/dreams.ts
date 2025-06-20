@@ -10,6 +10,7 @@ export type Dreams =
         finalized: boolean
         persons: Array<Person>,
         categories: Array<Category>
+        rating: number | null
     }>
 
 
@@ -23,6 +24,7 @@ export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {
             finalized: d.finalized,
             persons: d.persons ?? [],
             categories: d.categories ?? [],
+            rating: d.rating ?? null,
         }
     })
 }

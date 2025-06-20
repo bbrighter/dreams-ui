@@ -12,6 +12,7 @@ export interface Dream {
     isSaved: boolean
     visible: boolean
     finalized: boolean
+    rating: number | null
 }
 
 export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
@@ -24,5 +25,6 @@ export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
         isSaved: true,
         visible: resp.visible,
         finalized: resp.finalized,
+        rating: resp.rating ?? null,
     }
 }

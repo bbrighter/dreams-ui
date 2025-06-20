@@ -3,8 +3,10 @@ import debounce from 'lodash.debounce'
 import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { useGetDreams } from '../../hooks/loadDreams';
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
+import DreamRating from './Components/DreamRating';
 import EditHeader from './Components/EditHeader';
 import FinalizeButton from './Components/FinalizeButton';
 import Persons from './Components/Persons'
@@ -19,10 +21,12 @@ export default function Edit() {
 
     const setDescription = useDreams(state => state.setDescription)
     const getDream = useDreams(state => state.getDream)
-    const updateDream = useDreams(state => state.updateDream)
+    const updateDescription = useDreams(state => state.updateDescription)
     const isSaved = useDreams(state => state.dream.isSaved)
     const description = useDreams(state => state.dream.description)
     const { id: urlId } = useParams()
+
+    useGetDreams()
 
     useEffect(() => {
         const numericId = Number(urlId)
@@ -40,9 +44,9 @@ export default function Edit() {
 
     const saveDream = useCallback(async () => {
         if (!isSaved) {
-            await updateDream()
+            await updateDescription()
         }
-    }, [isSaved, updateDream])
+    }, [isSaved, updateDescription])
 
     const debouncedSave = useMemo(() => debounce(saveDream, DEBOUNCE_TIME), [saveDream])
 
@@ -78,7 +82,16 @@ export default function Edit() {
                     <Categories />
                     <Persons />
                 </Box>
-                <FinalizeButton />
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 2,
+                }}>
+                    <DreamRating />
+                    <FinalizeButton />
+
+                </Box>
             </Container>
         </>
     )

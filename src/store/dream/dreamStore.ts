@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { StateCreator } from 'zustand';
 
 import api from '../../api/api';
-import { V1DreamRequestBody } from '../../api/generated_api';
+import { V1PostDreamRequest, V1UpdateDreamRequest } from '../../api/generated_api';
 import { AuthStore } from '../auth/authStore';
 import { categoryResponseToCategories } from '../categories/categories';
 import { CategoriesStore } from '../categories/categoriesStore';
@@ -24,8 +24,10 @@ interface Actions {
     setDescription: (description: string) => void
     getDream: (id: number | string) => Promise<void>
     createDream: () => Promise<number>
-    updateDream: () => Promise<boolean>
+    updateDate: (date: string) => Promise<boolean>
+    updateDescription: () => Promise<boolean>
     finalizeDream: () => Promise<void>
+    rateDream: (rating: number) => Promise<void>
     changeVisibility: () => Promise<void>
     addCategory: (name: string) => Promise<boolean>
     removeCategory: (id: number) => Promise<boolean>
@@ -51,6 +53,7 @@ const initialState: State = {
         persons: [],
         categories: [],
         visible: true,
+        rating: null,
     },
     dreams: [],
     dreamsLoaded: 'none',
@@ -87,7 +90,7 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
     },
     createDream: async () => {
         const date = new Date()
-        const body: V1DreamRequestBody = {
+        const body: V1PostDreamRequest = {
             date: date.toISOString(),
         }
         const resp = await api.dreams.dreamsCreate(body)
@@ -98,18 +101,27 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
         set(produce((draft: State) => {
             draft.dream.id = id
             draft.dream.date = date
-            draft.dreams.unshift({ id: id, date: date, visible: true, finalized: false, persons: [], categories: [] })
+            draft.dreams.unshift({ id: id, date: date, visible: true, finalized: false, persons: [], categories: [], rating: null })
         }))
         return id
     },
-    updateDream: async () => {
-        const body: V1DreamRequestBody = {
-            date: get().dream.date.toISOString(),
+    updateDescription: async () => {
+        const body: V1UpdateDreamRequest = {
             description: get().dream.description,
         }
         const resp = await api.dreams.dreamsPartialUpdate(get().dream.id.toString(), body)
         if (resp.ok) {
             set(produce((draft: State) => { draft.dream.isSaved = true }))
+        }
+        return resp.ok
+    },
+    updateDate: async (date: string) => {
+        const body: V1UpdateDreamRequest = { date: date }
+        const resp = await api.dreams.dreamsPartialUpdate(get().dream.id.toString(), body)
+        if (resp.ok) {
+            set(produce((draft: State) => {
+                draft.dream.date = new Date(date)
+            }))
         }
         return resp.ok
     },
@@ -130,6 +142,21 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
             set(produce((draft: State) => {
                 draft.dream.finalized = true
                 draft.dreams[dreamIndex].finalized = true
+            }))
+        }
+    },
+    rateDream: async (rating: number) => {
+        const id = get().dream.id
+        const dreamIndex = get().dreams.findIndex(d => d.id == id)
+        if (dreamIndex < 0) {
+            return
+        }
+        const body: V1UpdateDreamRequest = { rating: rating }
+        const resp = await api.dreams.dreamsPartialUpdate(id.toString(), body)
+        if (resp.ok) {
+            set(produce((draft: State) => {
+                draft.dream.rating = rating
+                draft.dreams[dreamIndex].rating = rating
             }))
         }
     },

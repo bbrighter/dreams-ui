@@ -73,10 +73,11 @@ describe('store', () => {
     it('update a dream and send it', async () => {
         await useDreams.getState().getDream(1)
         useDreams.getState().setDescription('new')
-        useDreams.getState().setDate('2024-01-01T18:00:00Z')
 
-        const ok = await useDreams.getState().updateDream()
+        const ok = await useDreams.getState().updateDescription()
         expect(ok).toBeTruthy()
+        const okDate = await useDreams.getState().updateDate('2024-01-01T18:00:00Z')
+        expect(okDate).toBeTruthy()
         expect(useDreams.getState().dream.description).toBe('new')
         expect(useDreams.getState().dream.date).toStrictEqual(new Date('2024-01-01T18:00:00Z'))
         expect(useDreams.getState().dream.isSaved).toBe(true)
@@ -90,6 +91,17 @@ describe('store', () => {
 
         const dream = useDreams.getState().dream
         expect(dream.finalized).toBe(true)
-        expect(useDreams.getState().dreams.find(d => d.id == 1)?.finalized).toBe(true)
+        expect(useDreams.getState().dreams.find(d => d.id == 1)!.finalized).toBe(true)
+    })
+
+    it('rate a dream', async () => {
+        await useDreams.getState().getDream(1)
+        await useDreams.getState().getDreams()
+
+        await useDreams.getState().rateDream(3)
+
+        const dream = useDreams.getState().dream
+        expect(dream.rating).toBe(3)
+        expect(useDreams.getState().dreams.find(d => d.id == 1)!.rating).toBe(3)
     })
 })

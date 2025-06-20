@@ -6,15 +6,14 @@ import useDreams from '../../../store/store';
 export default function FinalizeButton() {
     const finalizeDream = useDreams(state => state.finalizeDream)
     const finalized = useDreams(state => state.dream.finalized)
+    const isRated = useDreams(state => state.dream.rating != null)
 
     const [isLoading, setIsLoading] = useState(false)
-
 
     const finalize = async () => {
         setIsLoading(true)
         finalizeDream().finally(() => setIsLoading(false))
     }
-
 
 
     return (
@@ -23,7 +22,7 @@ export default function FinalizeButton() {
             loading={isLoading}
             onClick={finalize}
             color="success"
-            disabled={finalized}
+            disabled={finalized || !isRated}
         >
             Redigieren
         </Button>
