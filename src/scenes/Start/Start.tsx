@@ -1,6 +1,7 @@
 import { Button, Container, List } from '@mui/material';
 import { useEffect } from 'react';
 
+import { useGetDreams } from '../../hooks/loadDreams';
 import { useNavigateToDream } from '../../hooks/navigate';
 import useDreams from '../../store/store';
 import Header from '../Components/Header';
@@ -9,8 +10,6 @@ import DreamItem from './Components/DreamItem';
 
 
 export default function Start() {
-    const getDreams = useDreams(state => state.getDreams)
-    const loggedIn = useDreams(state => state.loggedIn)
     const createDream = useDreams(state => state.createDream)
     const dreams = useDreams(state => state.dreams)
     const scrollPosition = useDreams(state => state.scrollPosition)
@@ -18,11 +17,11 @@ export default function Start() {
 
     const navigate = useNavigateToDream()
 
+    useGetDreams()
+
     useEffect(() => {
         window.scrollTo(0, scrollPosition)
     }, [])
-
-
 
     useEffect(() => {
         const handleScroll = () => {
@@ -32,9 +31,6 @@ export default function Start() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    useEffect(() => {
-        getDreams().catch(e => alert(e))
-    }, [loggedIn])
 
     const handleClick = async () => {
         const dreamId = await createDream()

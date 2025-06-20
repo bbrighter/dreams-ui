@@ -10,9 +10,9 @@ import Hide from './Hide';
 export default function EditHeader(props: { isSaved: boolean }) {
     const loggedIn = useDreams(state => state.loggedIn)
     const date = useDreams(state => state.dream.date)
-    const setDate = useDreams(state => state.setDate)
+    const updateDate = useDreams(state => state.updateDate)
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        setDate(e.currentTarget.value)
+        updateDate(e.currentTarget.value)
     }
 
     const DateInput = <Input
@@ -42,9 +42,9 @@ export default function EditHeader(props: { isSaved: boolean }) {
 
 function SaveButton(props: { isSaved: boolean }) {
     const navigate = useNavigateHomePage()
-    const updateDream = useDreams(state => state.updateDream)
+    const updateDescription = useDreams(state => state.updateDescription)
     const saveDream = async () => {
-        const ok = await updateDream()
+        const ok = await updateDescription()
         if (ok) navigate()
     }
 

@@ -36,6 +36,7 @@ export interface EntityDreamMetaResponse {
   finalized: boolean;
   id: number;
   persons?: EntityCategoryResponse[];
+  rating?: number;
   visible: boolean;
 }
 
@@ -46,6 +47,7 @@ export interface EntityDreamResponse {
   finalized: boolean;
   id: number;
   persons?: EntityCategoryResponse[];
+  rating?: number;
   visible: boolean;
 }
 
@@ -57,14 +59,20 @@ export interface EntityLoginResponse {
   token: string;
 }
 
-export interface V1DreamRequestBody {
+export interface V1LoginRequest {
+  name: string;
+  password: string;
+}
+
+export interface V1PostDreamRequest {
   date: string;
   description?: string;
 }
 
-export interface V1LoginRequest {
-  name: string;
-  password: string;
+export interface V1UpdateDreamRequest {
+  date?: string;
+  description?: string;
+  rating?: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -362,13 +370,13 @@ export class Api<
      * @request POST:/dreams
      */
     dreamsCreate: (
-      dreamRequestBody: V1DreamRequestBody,
+      postDreamRequest: V1PostDreamRequest,
       params: RequestParams = {},
     ) =>
       this.request<number, void>({
         path: `/dreams`,
         method: "POST",
-        body: dreamRequestBody,
+        body: postDreamRequest,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -456,13 +464,13 @@ export class Api<
      */
     dreamsPartialUpdate: (
       dreamId: string,
-      dreamRequestBody: V1DreamRequestBody,
+      updateDreamRequest: V1UpdateDreamRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, void>({
         path: `/dreams/${dreamId}`,
         method: "PATCH",
-        body: dreamRequestBody,
+        body: updateDreamRequest,
         type: ContentType.Json,
         ...params,
       }),
