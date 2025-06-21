@@ -3,7 +3,7 @@ import MicNoneIcon from '@mui/icons-material/MicNone';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import useDreams from '../../../store/store';
@@ -12,6 +12,7 @@ import useDreams from '../../../store/store';
 export default function RecordText() {
     const setDescription = useDreams(state => state.setDescription)
     const description = useDreams(state => state.dream.description)
+    const setCurrentTranscript = useDreams(state => state.setTranscript)
 
     const {
         transcript,
@@ -22,23 +23,34 @@ export default function RecordText() {
         isMicrophoneAvailable,
     } = useSpeechRecognition()
 
-    if (!browserSupportsSpeechRecognition) {
-        return <div></div>
-    }
-
-    // eslint-disable-next-line react-compiler/react-compiler
     useEffect(() => {
-        let desc = description + transcript
-        if (desc.slice(-1) != ' ') {
+        if (!finalTranscript) return
+
+        let desc = description + finalTranscript
+        if (!desc.endsWith(' ')) {
             desc += ' '
         }
         setDescription(desc)
         resetTranscript()
-    }, [finalTranscript])
+    }, [finalTranscript, setDescription, resetTranscript])
+
+    useEffect(() => {
+        const tr = listening ? transcript : ''
+        setCurrentTranscript(tr)
+    }, [transcript, listening, setCurrentTranscript])
+
+    useEffect(() => {
+        if (!isMicrophoneAvailable) {
+            alert('Microphone is not available')
+        }
+    }, [isMicrophoneAvailable])
+
+    if (!browserSupportsSpeechRecognition) {
+        return <div></div>
+    }
 
 
-
-    const changeListening = () => {
+    const changeListening = useCallback(() => {
         if (!listening) {
             SpeechRecognition.startListening({
                 continuous: true,
@@ -47,8 +59,9 @@ export default function RecordText() {
         } else {
             SpeechRecognition.stopListening()
         }
+    }, [listening])
 
-    }
+
 
     const color = !isMicrophoneAvailable ? 'warning' : listening ? 'error' : 'primary'
     const icon = !isMicrophoneAvailable ? <MicNoneIcon /> : listening ? <MicIcon /> : <MicOffIcon />

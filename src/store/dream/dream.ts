@@ -13,6 +13,7 @@ export interface Dream {
     visible: boolean
     finalized: boolean
     rating: number | null
+    transcript: string
 }
 
 export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
@@ -26,5 +27,6 @@ export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
         visible: resp.visible,
         finalized: resp.finalized,
         rating: resp.rating ?? null,
+        transcript: '',
     }
 }

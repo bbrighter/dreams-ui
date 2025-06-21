@@ -24,6 +24,7 @@ export default function Edit() {
     const updateDescription = useDreams(state => state.updateDescription)
     const isSaved = useDreams(state => state.dream.isSaved)
     const description = useDreams(state => state.dream.description)
+    const transcript = useDreams(state => state.dream.transcript)
     const { id: urlId } = useParams()
 
     useGetDreams()
@@ -68,7 +69,7 @@ export default function Edit() {
                         label="Beschreibung"
                         multiline
                         minRows={20}
-                        value={description}
+                        value={description + transcript}
                         onChange={onChangeDescriptionDebounce}
                     />
                     <Categories />
