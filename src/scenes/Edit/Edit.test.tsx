@@ -116,7 +116,6 @@ describe('viewing and editing a single dream', () => {
         const rating = await screen.findByTitle('Bewertung')
         expect(rating).toBeInTheDocument()
         const finalizeButton = screen.getByText('Redigieren')
-        screen.debug(finalizeButton)
         expect(finalizeButton).toBeDisabled()
 
         const stars = within(rating).getAllByRole('radio')
