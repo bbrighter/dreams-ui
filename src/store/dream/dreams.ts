@@ -2,16 +2,17 @@ import { EntityDreamsResponse } from '../../api/generated_api';
 import { Category } from '../categories/categories';
 import { Person } from '../categories/persons';
 
-export type Dreams =
-    Array<{
-        id: number;
-        date: Date;
-        visible: boolean
-        finalized: boolean
-        persons: Array<Person>,
-        categories: Array<Category>
-        rating: number | null
-    }>
+export type MetaDream = {
+    id: number;
+    date: Date;
+    visible: boolean
+    finalized: boolean
+    persons: Array<Person>,
+    categories: Array<Category>
+    rating: number | null
+}
+
+export type Dreams = Array<MetaDream>
 
 
 export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {

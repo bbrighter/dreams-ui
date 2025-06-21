@@ -48,7 +48,7 @@ export default function Start() {
             <Container sx={{ pt: '1rem', pb: '3rem' }}>
                 <List>
                     {dreams.map(d =>
-                        (<DreamItem key={d.id} date={d.date} id={d.id} visible={d.visible} finalized={d.finalized} />),
+                        (<DreamItem key={d.id} dream={d} />),
                     )}
                 </List>
                 <Navigation activeIndex={0} />

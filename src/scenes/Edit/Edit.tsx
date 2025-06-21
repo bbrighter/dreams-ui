@@ -1,9 +1,9 @@
 import { Box, Container, TextField } from '@mui/material'
-import debounce from 'lodash.debounce'
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useGetDreams } from '../../hooks/loadDreams';
+import { useSimpleDebounce } from '../../hooks/simpleDebounce';
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
 import DreamRating from './Components/DreamRating';
@@ -42,19 +42,11 @@ export default function Edit() {
         })
     }, [])
 
-    const saveDream = useCallback(async () => {
+    const debouncedSave = useSimpleDebounce(async () => {
         if (!isSaved) {
             await updateDescription()
         }
-    }, [isSaved, updateDescription])
-
-    const debouncedSave = useMemo(() => debounce(saveDream, DEBOUNCE_TIME), [saveDream])
-
-    useEffect(() => {
-        return () => {
-            debouncedSave.cancel()
-        }
-    }, [debouncedSave])
+    }, DEBOUNCE_TIME)
 
     const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const value = e.currentTarget.value
