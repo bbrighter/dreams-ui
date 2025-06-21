@@ -4,7 +4,7 @@ import { IconButton, Input } from '@mui/material';
 
 import { useNavigateHomePage } from '../../../hooks/navigate';
 import useDreams from '../../../store/store';
-import Header from '../../Components/Header';
+import Bar from '../../Components/Bar';
 import Hide from './Hide';
 
 export default function EditHeader(props: { isSaved: boolean }) {
@@ -29,13 +29,15 @@ export default function EditHeader(props: { isSaved: boolean }) {
 
 
     return (
-        <Header
+        <Bar
             mainAction={<BackButton />}
             secondaryAction={[
                 <SaveButton key={1} isSaved={props.isSaved} />,
                 <HideOrShow key={2} />,
             ]}
             optionalMiddleAction={DateInput}
+            position='top'
+            showAuth
         />
     )
 }

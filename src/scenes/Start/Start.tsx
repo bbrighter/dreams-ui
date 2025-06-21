@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useGetDreams } from '../../hooks/loadDreams';
 import { useNavigateToDream } from '../../hooks/navigate';
 import useDreams from '../../store/store';
-import Header from '../Components/Header';
+import Bar from '../Components/Bar';
 import Navigation from '../Components/Navigation';
 import DreamItem from './Components/DreamItem';
 
@@ -44,7 +44,7 @@ export default function Start() {
 
     return (
         <>
-            <Header mainAction={MainAction} />
+            <Bar mainAction={MainAction} position='top' showAuth />
             <Container sx={{ pt: '1rem', pb: '3rem' }}>
                 <List>
                     {dreams.map(d =>
