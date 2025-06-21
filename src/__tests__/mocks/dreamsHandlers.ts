@@ -6,7 +6,7 @@ const dreamHandlers = (baseUrl: string) => ([
     http.get(baseUrl + '/dreams', () => (HttpResponse.json({
         dreams: [
             { id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false },
-            { id: 4, date: '2025-02-01T12:30:00Z', visible: true, finalized: true },
+            { id: 4, date: '2025-02-01T12:30:00Z', visible: true, finalized: true, rating: 3 },
         ],
     } as EntityDreamsResponse))),
 

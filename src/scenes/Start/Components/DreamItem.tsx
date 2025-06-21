@@ -2,9 +2,10 @@ import styled from '@emotion/styled';
 import CloudIcon from '@mui/icons-material/Cloud';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import { MetaDream } from '../../../store/dream/dreams';
 import useDreams from '../../../store/store';
 
 
@@ -15,10 +16,7 @@ const StyledListItem = styled(ListItem)`
     }
 `
 export default function DreamItem(props: {
-    id: number
-    date: Date
-    visible: boolean
-    finalized: boolean
+    dream: MetaDream
 }) {
     const deleteDream = useDreams(state => state.deleteDream)
     const navigate = useNavigate()
@@ -27,16 +25,16 @@ export default function DreamItem(props: {
         navigate('/dreams/' + dreamId)
     }
 
-    const color = props.finalized ? 'inherit' : 'warning'
+    const color = props.dream.finalized ? 'inherit' : 'warning'
 
     return (
         <StyledListItem
-            onClick={() => navigateTo(props.id)}
+            onClick={() => navigateTo(props.dream.id)}
             secondaryAction={
                 <IconButton
                     onClick={(e) => {
                         e.stopPropagation()
-                        deleteDream(props.id)
+                        deleteDream(props.dream.id)
                     }}
                     title='Löschen'
                 >
@@ -45,11 +43,17 @@ export default function DreamItem(props: {
             }
         >
             <ListItemAvatar>
-                {props.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
-
+                {props.dream.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
             </ListItemAvatar>
             <ListItemText>
-                {props.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}
+                {props.dream.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}
             </ListItemText>
+            <Rating
+                title='Bewertung'
+                value={props.dream.rating}
+                readOnly
+                size='small'
+                sx={{ pr: 2, pl: 2 }}
+            />
         </StyledListItem>)
 }

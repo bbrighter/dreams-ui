@@ -23,6 +23,7 @@ export default function DreamRating() {
 
     return (
         <Rating
+            title='Bewertung'
             value={value}
             onChange={onChange}
         />

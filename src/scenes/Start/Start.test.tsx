@@ -27,17 +27,21 @@ describe('start page is rendered and can be clicked', () => {
         expect(screen.getByText('Auswertung')).toBeInTheDocument()
     })
 
-    it('finalized and non-finalized are rendered correctly', async () => {
+    it('finalized and rating is rendered', async () => {
         render(<MemoryRouter><Start /></MemoryRouter>)
 
-        const finalizedRow = await findRowByDate('01.01.2025')
-        const svg = finalizedRow.querySelector('svg') as SVGElement
+        const nonFinalizedRow = await findRowByDate('01.01.2025')
+        const svg = nonFinalizedRow.querySelector('svg') as SVGElement
         expect(svg.getAttribute('class')).toMatch(/colorWarning/)
+        const notRated = within(nonFinalizedRow).getByTitle('Bewertung')
+        expect(notRated.getAttribute('aria-label')).toBe('0 Stars')
 
-        const nonFinalizedRow = await findRowByDate('01.02.2025')
-        const warnSvg = nonFinalizedRow.querySelector('svg') as SVGElement
+        const finalizedRow = await findRowByDate('01.02.2025')
+        const warnSvg = finalizedRow.querySelector('svg') as SVGElement
         expect(warnSvg).toBeInTheDocument()
         expect(warnSvg.getAttribute('class')).not.toMatch(/colorWarning/)
+        const rated = within(finalizedRow).getByTitle('Bewertung')
+        expect(rated.getAttribute('aria-label')).toBe('3 Stars')
     })
 
     it('deletion works', async () => {

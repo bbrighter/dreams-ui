@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -62,7 +62,6 @@ describe('viewing and editing a single dream', () => {
 
         // vi.runOnlyPendingTimers()
         // vi.useRealTimers()
-
     })
 
     it('remove category', async () => {
@@ -101,6 +100,28 @@ describe('viewing and editing a single dream', () => {
 
     it('add person', { skip: true }, async () => {
 
+    })
+
+    it('rate and finalize', async () => {
+        render(
+            <MemoryRouter initialEntries={['/dreams/1']}>
+                <Routes>
+                    <Route path="/dreams/:id" element={<Edit />} />
+                </Routes>
+            </MemoryRouter>)
+
+        const rating = await screen.findByTitle('Bewertung')
+        expect(rating).toBeInTheDocument()
+        const finalizeButton = screen.getByText('Redigieren')
+        screen.debug(finalizeButton)
+        expect(finalizeButton).toBeDisabled()
+
+        const stars = within(rating).getAllByRole('radio')
+        await userEvent.click(stars[0])
+
+        expect(finalizeButton).not.toBeDisabled()
+        await userEvent.click(finalizeButton)
+        expect(finalizeButton).toBeDisabled()
     })
 
     // it('recording button works', async () => {
