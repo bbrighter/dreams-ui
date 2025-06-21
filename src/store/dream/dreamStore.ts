@@ -39,6 +39,7 @@ interface Actions {
     deleteDream: (id: number) => Promise<void>
 
     setScrollPosition: (pos: number) => void
+    setTranscript: (transcript: string) => void
 }
 
 export interface DreamStore extends State, Actions { }
@@ -54,6 +55,7 @@ const initialState: State = {
         categories: [],
         visible: true,
         rating: null,
+        transcript: '',
     },
     dreams: [],
     dreamsLoaded: 'none',
@@ -234,6 +236,9 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
 
     setScrollPosition: (pos: number) => {
         set(produce((draft: State) => { draft.scrollPosition = pos }))
+    },
+    setTranscript: (transcript: string) => {
+        set(produce((draft: State) => { draft.dream.transcript = transcript }))
     },
 
 }))
