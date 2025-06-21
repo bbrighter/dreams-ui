@@ -1,7 +1,7 @@
 import { Box, Container, TextField } from '@mui/material'
-import debounce from 'lodash.debounce'
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
+import { useDebouncedCallback } from 'use-debounce'
 
 import { useGetDreams } from '../../hooks/loadDreams';
 import useDreams from '../../store/store'
@@ -42,13 +42,11 @@ export default function Edit() {
         })
     }, [])
 
-    const saveDream = useCallback(async () => {
+    const debouncedSave = useDebouncedCallback(async () => {
         if (!isSaved) {
             await updateDescription()
         }
-    }, [isSaved, updateDescription])
-
-    const debouncedSave = useMemo(() => debounce(saveDream, DEBOUNCE_TIME), [saveDream])
+    }, DEBOUNCE_TIME)
 
     useEffect(() => {
         return () => {
