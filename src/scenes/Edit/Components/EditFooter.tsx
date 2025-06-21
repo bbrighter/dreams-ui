@@ -28,13 +28,13 @@ function NextOrPreviousDream() {
     const currentDreamId = useDreams(state => state.dream.id)
 
 
-    const [prevDreamIndex, setPrevDreamIndex] = useState(-1)
     const [nextDreamIndex, setNextDreamIndex] = useState(-1)
+    const [prevDreamIndex, setPrevDreamIndex] = useState(-1)
 
     useEffect(() => {
         const currentDreamIndex = dreams.findIndex(d => d.id == currentDreamId)
-        setPrevDreamIndex(currentDreamIndex < dreams.length - 1 ? currentDreamIndex + 1 : -1)
         setNextDreamIndex(currentDreamIndex - 1)
+        setPrevDreamIndex(currentDreamIndex < dreams.length - 1 ? currentDreamIndex + 1 : -1)
     }, [currentDreamId, dreams])
 
 
@@ -47,14 +47,16 @@ function NextOrPreviousDream() {
     return (
         <ButtonGroup>
             <IconButton
-                disabled={prevDreamIndex == -1}
-                onClick={() => onClick(prevDreamIndex)}
+                title='Nächster Traum'
+                disabled={nextDreamIndex == -1}
+                onClick={() => onClick(nextDreamIndex)}
             >
                 <ArrowUpwardIcon />
             </IconButton>
             <IconButton
-                disabled={nextDreamIndex == -1}
-                onClick={() => onClick(nextDreamIndex)}
+                title='Vorheriger Traum'
+                disabled={prevDreamIndex == -1}
+                onClick={() => onClick(prevDreamIndex)}
             >
                 <ArrowDownwardIcon />
             </IconButton>

@@ -29,6 +29,9 @@ describe('viewing and editing a single dream', () => {
 
             expect(screen.getByLabelText('Beteiligte Personen')).toBeInTheDocument()
             expect(screen.getByText('Person')).toBeInTheDocument()
+
+            expect(screen.getByTitle('Nächster Traum')).not.toBeDisabled()
+            expect(screen.getByTitle('Vorheriger Traum')).toBeDisabled()
         })
     })
 
