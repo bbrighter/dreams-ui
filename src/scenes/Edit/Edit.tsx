@@ -6,14 +6,13 @@ import { useGetDreams } from '../../hooks/loadDreams';
 import { useSimpleDebounce } from '../../hooks/simpleDebounce';
 import useDreams from '../../store/store'
 import Categories from './Components/Categories';
-import DreamRating from './Components/DreamRating';
+import EditFooter from './Components/EditFooter';
 import EditHeader from './Components/EditHeader';
-import FinalizeButton from './Components/FinalizeButton';
 import Persons from './Components/Persons'
 import RecordText from './Components/RecordText';
 
 
-const DEBOUNCE_TIME = 5_000
+const DEBOUNCE_TIME = 2_000
 
 
 export default function Edit() {
@@ -41,7 +40,7 @@ export default function Edit() {
                 return
             }
         })
-    }, [])
+    }, [urlId])
 
     const debouncedSave = useSimpleDebounce(async () => {
         if (!isSaved) {
@@ -56,36 +55,27 @@ export default function Edit() {
     }
 
     return (
-        <>
-            <EditHeader isSaved={isSaved} />
-            <Container sx={{ marginBottom: '1rem' }}>
-                <Box component='form'>
-                    <RecordText />
-                    <TextField
-                        sx={{
-                            width: '100%',
-                            marginTop: '1rem',
-                        }}
-                        label="Beschreibung"
-                        multiline
-                        minRows={20}
-                        value={description + transcript}
-                        onChange={onChangeDescriptionDebounce}
-                    />
-                    <Categories />
-                    <Persons />
-                </Box>
-                <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: 2,
-                }}>
-                    <DreamRating />
-                    <FinalizeButton />
-
-                </Box>
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <EditHeader />
+            <Container sx={{ marginBottom: '1rem', flexGrow: 1 }} component='form'>
+                <RecordText />
+                <TextField
+                    sx={{
+                        width: '100%',
+                        marginTop: '1rem',
+                        height: '80%',
+                    }}
+                    label="Beschreibung"
+                    multiline
+                    minRows={5}
+                    maxRows={18}
+                    value={description + transcript}
+                    onChange={onChangeDescriptionDebounce}
+                />
+                <Categories />
+                <Persons />
             </Container>
-        </>
+            <EditFooter />
+        </Box>
     )
 }

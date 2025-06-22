@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { IncludeParam } from '../../store/categories/persons'
 import useDreams from '../../store/store'
-import Header from '../Components/Header'
+import Bar from '../Components/Bar'
 import Navigation from '../Components/Navigation'
 import { BackButton } from '../Edit/Components/EditHeader'
 import MonthlyChart from './Components/MonthlyChart'
@@ -28,7 +28,7 @@ export default function Statistics() {
 
     return (
         <>
-            <Header mainAction={<BackButton />} />
+            <Bar mainAction={<BackButton />} position='top' showAuth />
             <Container sx={{ padding: '2rem' }}>
                 <StatisticsToggleOption value={selectedOption} onChange={onChangeToggleOption} />
                 <Tags type={selectedOption} />

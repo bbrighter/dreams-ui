@@ -4,10 +4,10 @@ import { IconButton, Input } from '@mui/material';
 
 import { useNavigateHomePage } from '../../../hooks/navigate';
 import useDreams from '../../../store/store';
-import Header from '../../Components/Header';
+import Bar from '../../Components/Bar';
 import Hide from './Hide';
 
-export default function EditHeader(props: { isSaved: boolean }) {
+export default function EditHeader() {
     const loggedIn = useDreams(state => state.loggedIn)
     const date = useDreams(state => state.dream.date)
     const updateDate = useDreams(state => state.updateDate)
@@ -29,28 +29,27 @@ export default function EditHeader(props: { isSaved: boolean }) {
 
 
     return (
-        <Header
+        <Bar
             mainAction={<BackButton />}
             secondaryAction={[
-                <SaveButton key={1} isSaved={props.isSaved} />,
+                <SaveButton key={1} />,
                 <HideOrShow key={2} />,
             ]}
             optionalMiddleAction={DateInput}
+            position='top'
+            showAuth
         />
     )
 }
 
-function SaveButton(props: { isSaved: boolean }) {
-    const navigate = useNavigateHomePage()
+function SaveButton() {
     const updateDescription = useDreams(state => state.updateDescription)
-    const saveDream = async () => {
-        const ok = await updateDescription()
-        if (ok) navigate()
-    }
+    const isSaved = useDreams(state => state.dream.isSaved)
 
-    const color = props.isSaved ? 'success' : 'error'
+    const saveDream = () => { updateDescription() }
+
+    const color = isSaved ? 'success' : 'error'
     return (
-
         <IconButton
             color={color}
             onClick={saveDream}

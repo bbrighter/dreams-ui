@@ -29,6 +29,9 @@ describe('viewing and editing a single dream', () => {
 
             expect(screen.getByLabelText('Beteiligte Personen')).toBeInTheDocument()
             expect(screen.getByText('Person')).toBeInTheDocument()
+
+            expect(screen.getByTitle('Nächster Traum')).not.toBeDisabled()
+            expect(screen.getByTitle('Vorheriger Traum')).toBeDisabled()
         })
     })
 
@@ -57,7 +60,7 @@ describe('viewing and editing a single dream', () => {
 
         await waitFor(() => {
             expect(saveButton.getAttribute('class')).match(/colorSuccess/)
-        }, { timeout: 6000 })
+        }, { timeout: 3000 })
 
 
         // vi.runOnlyPendingTimers()
@@ -113,7 +116,6 @@ describe('viewing and editing a single dream', () => {
         const rating = await screen.findByTitle('Bewertung')
         expect(rating).toBeInTheDocument()
         const finalizeButton = screen.getByText('Redigieren')
-        screen.debug(finalizeButton)
         expect(finalizeButton).toBeDisabled()
 
         const stars = within(rating).getAllByRole('radio')
