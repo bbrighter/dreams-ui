@@ -26,6 +26,7 @@ function NextOrPreviousDream() {
     const navigate = useNavigateToDream()
     const dreams = useDreams(state => state.dreams)
     const currentDreamId = useDreams(state => state.dream.id)
+    const isSaved = useDreams(state => state.dream.isSaved)
 
 
     const [nextDreamIndex, setNextDreamIndex] = useState(-1)
@@ -48,14 +49,14 @@ function NextOrPreviousDream() {
         <ButtonGroup>
             <IconButton
                 title='Nächster Traum'
-                disabled={nextDreamIndex == -1}
+                disabled={nextDreamIndex == -1 || !isSaved}
                 onClick={() => onClick(nextDreamIndex)}
             >
                 <ArrowUpwardIcon />
             </IconButton>
             <IconButton
                 title='Vorheriger Traum'
-                disabled={prevDreamIndex == -1}
+                disabled={prevDreamIndex == -1 || !isSaved}
                 onClick={() => onClick(prevDreamIndex)}
             >
                 <ArrowDownwardIcon />

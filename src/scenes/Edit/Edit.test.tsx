@@ -60,7 +60,7 @@ describe('viewing and editing a single dream', () => {
 
         await waitFor(() => {
             expect(saveButton.getAttribute('class')).match(/colorSuccess/)
-        }, { timeout: 6000 })
+        }, { timeout: 3000 })
 
 
         // vi.runOnlyPendingTimers()

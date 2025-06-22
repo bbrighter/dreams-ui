@@ -12,7 +12,7 @@ import Persons from './Components/Persons'
 import RecordText from './Components/RecordText';
 
 
-const DEBOUNCE_TIME = 5_000
+const DEBOUNCE_TIME = 2_000
 
 
 export default function Edit() {
@@ -56,7 +56,7 @@ export default function Edit() {
 
     return (
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <EditHeader isSaved={isSaved} />
+            <EditHeader />
             <Container sx={{ marginBottom: '1rem', flexGrow: 1 }} component='form'>
                 <RecordText />
                 <TextField
