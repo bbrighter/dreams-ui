@@ -1,6 +1,5 @@
 import { EntityDreamResponse } from '../../api/generated_api'
 import { Category, categoryResponseToCategories } from '../categories/categories'
-import { Person } from '../categories/persons'
 
 
 export interface Dream {
@@ -8,7 +7,7 @@ export interface Dream {
     date: Date
     description: string
     categories: Array<Category>
-    persons: Array<Person>
+    persons: Array<Category>
     isSaved: boolean
     visible: boolean
     finalized: boolean
@@ -22,7 +21,7 @@ export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
         date: new Date(resp.date),
         description: resp.description,
         categories: categoryResponseToCategories(resp.categories),
-        persons: resp?.persons?.map(p => ({ id: p.id, name: p.name })) ?? [],
+        persons: categoryResponseToCategories(resp.persons),
         isSaved: true,
         visible: resp.visible,
         finalized: resp.finalized,

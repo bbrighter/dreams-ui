@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container'
 import { useEffect, useState } from 'react'
 
-import { IncludeParam } from '../../store/categories/persons'
+import { IncludeParams } from '../../store/categories/categories'
 import useDreams from '../../store/store'
 import Bar from '../Components/Bar'
 import Navigation from '../Components/Navigation'
@@ -21,7 +21,7 @@ export default function Statistics() {
     const onChangeToggleOption = (_, v: StatisticToggleOptions) => { setSelectedOption(v) }
 
     useEffect(() => {
-        getDreams(IncludeParam.ALL)
+        getDreams(IncludeParams.ALL)
         getCategories()
     }, [loggedIn])
 

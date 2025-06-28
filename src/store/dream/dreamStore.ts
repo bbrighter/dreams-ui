@@ -4,9 +4,8 @@ import { StateCreator } from 'zustand';
 import api from '../../api/api';
 import { V1PostDreamRequest, V1UpdateDreamRequest } from '../../api/generated_api';
 import { AuthStore } from '../auth/authStore';
-import { categoryResponseToCategories } from '../categories/categories';
+import { categoriesResponseToCategories, IncludeParams } from '../categories/categories';
 import { CategoriesStore } from '../categories/categoriesStore';
-import { IncludeParam, personsResponseToPersons } from '../categories/persons';
 import { Dream, dreamResponseToDream } from './dream';
 import { Dreams, dreamsResponseToDreams } from './dreams';
 
@@ -35,7 +34,7 @@ interface Actions {
     removePerson: (id: number) => Promise<void>
 
     resetDreams: () => void
-    getDreams: (include?: IncludeParam) => Promise<void>
+    getDreams: (include?: IncludeParams) => Promise<void>
     deleteDream: (id: number) => Promise<void>
 
     setScrollPosition: (pos: number) => void
@@ -168,7 +167,7 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
         draft.dreamsLoaded = 'none'
     }))),
 
-    getDreams: async (include?: IncludeParam) => {
+    getDreams: async (include?: IncludeParams) => {
         const loaded = (get().loggedIn && get().dreamsLoaded == 'all') || (get().dreamsLoaded == 'public' && !get().loggedIn)
         if (include == undefined && loaded) return
         const params = include ? { includes: include } : {}
@@ -196,7 +195,7 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
             set(produce((draft: State) => {
                 draft.dream.categories.push({ id: newTagId, name: name })
             }))
-            get().updateCategories(categoryResponseToCategories(resp.data))
+            get().updateCategories(categoriesResponseToCategories(resp.data).categories)
         }
         return resp.ok
     },
@@ -207,7 +206,7 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
             set(produce((draft: State) => {
                 draft.dream.categories = draft.dream.categories.filter(t => t.id != id)
             }))
-            get().updateCategories(categoryResponseToCategories(resp.data))
+            get().updateCategories(categoriesResponseToCategories(resp.data).categories)
         }
         return resp.ok
     },
@@ -219,7 +218,7 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
             set(produce((draft: State) => {
                 draft.dream.persons.push({ id: newPersonId, name: name })
             }))
-            get().updatePersons(personsResponseToPersons(resp.data))
+            get().updatePersons(categoriesResponseToCategories(resp.data).persons)
         }
     },
     removePerson: async (id: number) => {
@@ -230,7 +229,7 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
             set(produce((draft: State) => {
                 draft.dream.persons = draft.dream.persons.filter(p => p.id != id)
             }))
-            get().updatePersons(personsResponseToPersons(resp.data))
+            get().updatePersons(categoriesResponseToCategories(resp.data).persons)
         }
     },
 

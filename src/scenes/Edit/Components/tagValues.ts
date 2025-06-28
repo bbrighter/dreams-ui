@@ -1,5 +1,4 @@
 import { Category } from '../../../store/categories/categories'
-import { Person } from '../../../store/categories/persons'
 
 export interface TagValue {
     id: number
@@ -14,8 +13,4 @@ export function isTagValue(t: unknown): t is TagValue {
 
 export function categoriesToTagValue(ts: Array<Category>): Array<TagValue> {
     return ts
-}
-
-export function personsToTagValue(ps: Array<Person>): Array<TagValue> {
-    return ps
 }

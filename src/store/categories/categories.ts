@@ -3,18 +3,30 @@ import { EntityCategoriesResponse, EntityCategoryResponse } from '../../api/gene
 export interface Category {
     id: number
     name: string
+    count?: number
 }
 
 export type Categories = Array<Category>
 
-export function categoryResponseToCategories(resp: EntityCategoriesResponse | Array<EntityCategoryResponse> | undefined): Array<Category> {
-    let cats: Array<EntityCategoryResponse>
-    if (Array.isArray(resp)) {
-        cats = resp
-    } else if (resp == undefined) {
-        cats = []
-    } else {
-        cats = resp.categories ?? []
+export function categoriesResponseToCategories(resp: EntityCategoriesResponse | undefined): { categories: Array<Category>, persons: Array<Category> } {
+    return {
+        categories: categoryResponseToCategories(resp?.categories),
+        persons: categoryResponseToCategories(resp?.persons),
     }
-    return cats.map(t => ({ id: t.id, name: t.name }))
+}
+
+export function categoryResponseToCategories(resp: EntityCategoryResponse[] | undefined): Array<Category> {
+    return resp?.map(t => ({ id: t.id, name: t.name, count: t.count })) ?? []
+}
+
+
+export enum IncludeParams {
+    PERSONS = 'persons',
+    CATEGORIES = 'categories',
+    ALL = 'persons,categories',
+}
+
+export enum TypeParams {
+    PERSON = 'person',
+    CATEGORY = 'category',
 }
