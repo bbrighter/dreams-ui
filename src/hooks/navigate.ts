@@ -14,3 +14,8 @@ export const useNavigateStatistics = () => {
     const navigate = useNavigate()
     return () => navigate('/statistics')
 }
+
+export const useNavigateToManagement = () => {
+    const navigate = useNavigate()
+    return () => navigate('/management')
+}

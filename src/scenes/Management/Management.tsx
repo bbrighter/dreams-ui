@@ -5,6 +5,7 @@ import Tabs from '@mui/material/Tabs'
 import { useEffect, useState } from 'react'
 
 import useDreams from '../../store/store'
+import Navigation from '../Components/Navigation'
 import ManagementList from './ManagementList'
 
 export default function Management() {
@@ -27,6 +28,7 @@ export default function Management() {
             <List>
                 <ManagementList listItems={tab === 0 ? categories : persons} />
             </List>
+            <Navigation activeIndex={2} />
         </Container>
     )
 }

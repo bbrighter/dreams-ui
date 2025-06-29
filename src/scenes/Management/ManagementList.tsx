@@ -86,21 +86,21 @@ function ManagementListItem(props: { listItem: { id: number, name: string, count
             {mode == 'edit' &&
                 <CustomStack>
                     <TextField value={name} onChange={(e) => setName(e.target.value)}></TextField>
-                    <IconButton>
-                        <EditIcon color='success' onClick={onConfirmRename} />
+                    <IconButton title='Bestätigen' onClick={onConfirmRename}>
+                        <EditIcon color='success' />
                     </IconButton>
-                    <IconButton onClick={setDefaultMode}>
+                    <IconButton title='Abbrechen' onClick={setDefaultMode}>
                         <CancelIcon color='error' />
                     </IconButton>
                 </CustomStack>}
             {mode == 'delete' &&
                 <CustomStack>
                     <ListItemText primary='Wirklich löschen?' secondary={props.listItem.name} />
-                    <IconButton>
-                        <DeleteIcon color='success' onClick={onConfirmDelete} />
+                    <IconButton title='Bestätigen' onClick={onConfirmDelete}>
+                        <DeleteIcon color='success' />
                     </IconButton>
-                    <IconButton>
-                        <CancelIcon color='error' onClick={setDefaultMode} />
+                    <IconButton title='Abbrechen' onClick={setDefaultMode} >
+                        <CancelIcon color='error' />
                     </IconButton>
                 </CustomStack>}
             {mode == 'merge' &&
@@ -121,14 +121,13 @@ function ManagementListItem(props: { listItem: { id: number, name: string, count
                                 <ListItemText primary={p.name} secondary='Person' />
                             </MenuItem>))}
                     </Select>
-                    <IconButton>
-                        <MergeTypeIcon color='success' onClick={onConfirmMerge} />
+                    <IconButton title='Bestätigen' onClick={onConfirmMerge}>
+                        <MergeTypeIcon color='success' />
                     </IconButton>
-                    <IconButton>
-                        <CancelIcon color='error' onClick={setDefaultMode} />
+                    <IconButton title='Abbrechen' onClick={setDefaultMode} >
+                        <CancelIcon color='error' />
                     </IconButton>
-                </CustomStack>
-            }
+                </CustomStack>}
         </ListItem >
     )
 }
