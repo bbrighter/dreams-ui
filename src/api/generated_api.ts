@@ -16,6 +16,7 @@ export interface EntityCategoriesResponse {
 }
 
 export interface EntityCategoryResponse {
+  count?: number;
   id: number;
   name: string;
 }
@@ -62,6 +63,12 @@ export interface EntityLoginResponse {
 export interface V1LoginRequest {
   name: string;
   password: string;
+}
+
+export interface V1MergeCategoriesParams {
+  newName: string;
+  sourceCategoryId: number;
+  targetCategoryId: number;
 }
 
 export interface V1PostDreamRequest {
@@ -333,10 +340,91 @@ export class Api<
      * @name CategoriesList
      * @request GET:/categories
      */
-    categoriesList: (params: RequestParams = {}) =>
+    categoriesList: (
+      query?: {
+        /** Comma separated list of child objects. Possible entries: dreamsCount */
+        includes?: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<EntityCategoriesResponse, any>({
         path: `/categories`,
         method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Delete a category. Must be contained in no dreams.
+     *
+     * @name DeleteCategories
+     * @request DELETE:/categories/:id
+     */
+    deleteCategories: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/categories/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * @description Change the name of a category.
+     *
+     * @name IdNamePartialUpdate
+     * @request PATCH:/categories/:id/name
+     */
+    idNamePartialUpdate: (
+      id: string,
+      query: {
+        /** New name for this category */
+        name: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/categories/${id}/name`,
+        method: "PATCH",
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * @description Change the type of a category.
+     *
+     * @name IdTypePartialUpdate
+     * @request PATCH:/categories/:id/type
+     */
+    idTypePartialUpdate: (
+      id: string,
+      query: {
+        /** New type for this category */
+        type: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/categories/${id}/type`,
+        method: "PATCH",
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * @description Merge two categories.
+     *
+     * @name MergeCreate
+     * @request POST:/categories/merge
+     */
+    mergeCreate: (
+      mergeCategoriesParams: V1MergeCategoriesParams,
+      params: RequestParams = {},
+    ) =>
+      this.request<EntityCategoriesResponse, any>({
+        path: `/categories/merge`,
+        method: "POST",
+        body: mergeCategoriesParams,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

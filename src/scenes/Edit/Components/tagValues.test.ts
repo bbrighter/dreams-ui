@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest'
 
 import { Category } from '../../../store/categories/categories'
-import { Person } from '../../../store/categories/persons'
 import { isTagValue } from './tagValues'
 
 test('isTagValue', () => {
@@ -21,7 +20,7 @@ test('categoryIsTagValue', () => {
 })
 
 test('personIsTagValue', () => {
-    const cat: Person = {
+    const cat: Category = {
         id: 1,
         name: 'name',
     }

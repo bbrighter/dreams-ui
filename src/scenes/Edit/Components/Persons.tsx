@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import useDreams from '../../../store/store'
 import TagInputs from './TagInputs'
-import { personsToTagValue, TagValue } from './tagValues'
+import { categoriesToTagValue, TagValue } from './tagValues'
 
 
 export default function Persons() {
@@ -21,8 +21,8 @@ export default function Persons() {
     return (
         <TagInputs
             type='Person'
-            values={personsToTagValue(usedPersons)}
-            options={personsToTagValue(personSuggestions)}
+            values={categoriesToTagValue(usedPersons)}
+            options={categoriesToTagValue(personSuggestions)}
             onSave={handleChange}
             onDelete={handleSave}
         />

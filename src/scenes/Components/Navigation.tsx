@@ -1,9 +1,10 @@
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import SettingsIcon from '@mui/icons-material/Settings';
 import TableViewIcon from '@mui/icons-material/TableView';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
 import * as React from 'react'
 
-import { useNavigateHomePage, useNavigateStatistics } from '../../hooks/navigate';
+import { useNavigateHomePage, useNavigateStatistics, useNavigateToManagement } from '../../hooks/navigate';
 
 
 export default function Navigation(props: {
@@ -12,16 +13,24 @@ export default function Navigation(props: {
     const [activeTab, setActiveTab] = React.useState(props.activeIndex)
     const goToHome = useNavigateHomePage()
     const goToStatistics = useNavigateStatistics()
+    const goToManagement = useNavigateToManagement()
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         setActiveTab(newValue)
-        if (newValue == 0) {
-            goToHome()
-        } else if (newValue == 1) {
-            goToStatistics()
-        } else {
-            alert('Huch! ' + newValue)
+        switch (newValue) {
+            case 0:
+                goToHome()
+                break
+            case 1:
+                goToStatistics()
+                break
+            case 2:
+                goToManagement()
+                break
+            default:
+                alert('Huch! ' + newValue)
         }
+
     }
 
     return (
@@ -29,6 +38,7 @@ export default function Navigation(props: {
             <BottomNavigation showLabels value={activeTab} onChange={handleChange}>
                 <BottomNavigationAction label="Übersicht" icon={<TableViewIcon />} />
                 <BottomNavigationAction label="Auswertung" icon={<QueryStatsIcon />} />
+                <BottomNavigationAction label='Management' icon={<SettingsIcon />} />
             </BottomNavigation>
         </Paper>
     )

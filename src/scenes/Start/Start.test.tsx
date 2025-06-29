@@ -25,6 +25,7 @@ describe('start page is rendered and can be clicked', () => {
 
         expect(screen.getByText('Übersicht')).toBeInTheDocument()
         expect(screen.getByText('Auswertung')).toBeInTheDocument()
+        expect(screen.getByText('Management')).toBeInTheDocument()
     })
 
     it('finalized and rating is rendered', async () => {
