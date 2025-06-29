@@ -38,7 +38,7 @@ export default function Navigation(props: {
             <BottomNavigation showLabels value={activeTab} onChange={handleChange}>
                 <BottomNavigationAction label="Übersicht" icon={<TableViewIcon />} />
                 <BottomNavigationAction label="Auswertung" icon={<QueryStatsIcon />} />
-                <BottomNavigationAction label='Einstellungen' icon={<SettingsIcon />} />
+                <BottomNavigationAction label='Management' icon={<SettingsIcon />} />
             </BottomNavigation>
         </Paper>
     )

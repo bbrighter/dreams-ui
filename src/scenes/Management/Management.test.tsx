@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
+import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 
 import { server } from '../../__tests__/setupTest'
@@ -8,7 +9,7 @@ import Management from './Management'
 
 describe('Management is rendered', () => {
     it('Tabs work and content is rendered', async () => {
-        render(<Management />)
+        render(<MemoryRouter><Management /></MemoryRouter>)
 
         const categoryTab = await screen.findByText('Kategorien')
         const personTab = screen.getByText('Personen')
@@ -28,7 +29,7 @@ describe('Management is rendered', () => {
     })
 
     it('renaming works', async () => {
-        render(<Management />)
+        render(<MemoryRouter><Management /></MemoryRouter>)
 
         const editButton = await screen.findByTitle('Umbenennen')
         await userEvent.click(editButton)
@@ -52,7 +53,7 @@ describe('Management is rendered', () => {
                 { categories: [{ id: 1, name: 'Category', count: 0 }] })),
         )
 
-        render(<Management />)
+        render(<MemoryRouter><Management /></MemoryRouter>)
 
         const deleteButton = await screen.findByTitle('Löschen')
         await userEvent.click(deleteButton)
@@ -65,7 +66,7 @@ describe('Management is rendered', () => {
     })
 
     it('merging works', { skip: true }, async () => {
-        render(<Management />)
+        render(<MemoryRouter><Management /></MemoryRouter>)
 
         const mergeButton = await screen.findByTitle('Merge')
         await userEvent.click(mergeButton)
