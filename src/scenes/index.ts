@@ -1,5 +1,5 @@
-// import React from "react";
 import Edit from './Edit';
+import Management from './Management'
 import Start from './Start';
 import Statistics from './Statistics'
 
@@ -29,10 +29,12 @@ const indices = [
         },
         name: 'Statistics',
     },
-
-    // Start,
-    // Edit,
-    // Statistics,
+    {
+        routeProps: {
+            path: 'management',
+            element: Management.routeProps.element,
+        },
+    },
 ]
 
 export default indices
