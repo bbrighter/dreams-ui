@@ -1,38 +1,52 @@
-import { JSX, lazy, Suspense } from 'react';
+import React, { JSX, lazy, LazyExoticComponent, ReactNode, Suspense } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 
-const Edit = lazy(() => import('./Edit/Edit'))
-const Management = lazy(() => import('./Management/Management'))
-const Start = lazy(() => import('./Start/Start'))
-const Statistics = lazy(() => import('./Statistics/Statistics'))
+import ErrorBoundary from './Errors';
 
-const indices: Array<{ path: string, element: JSX.Element, name: string }> = [
-    {
+const Edit = lazy(() => import('./Edit'))
+const Management = lazy(() => import('./Management'))
+const Start = lazy(() => import('./Start'))
+const Statistics = lazy(() => import('./Statistics'))
 
-        path: '/',
-        element: <Start />,
-        name: 'Start',
-    },
-    {
-        path: 'dreams/:id',
-        element: <Edit />,
-        name: 'Edit Dream',
-    },
-    {
+const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => {
+    const fallback = <div>Loading...</div>
 
-        path: 'statistics',
-        element: <Statistics />,
-        name: 'Statistics',
-    },
-    {
+    return (
+        <Suspense fallback={fallback}>
+            <Component />
+        </Suspense>
+    )
+}
 
-        path: 'management',
-        element: <Management />,
-        name: 'Management',
-    },
+type RawRoute = {
+    path: string
+    element: LazyExoticComponent<() => JSX.Element>
+    name: string
+}
+
+type Route = {
+    path: string
+    element: ReactNode
+    name: string
+    errorElement: ReactNode
+}
+
+const rawRoutes: Array<RawRoute> = [
+    { path: '/', element: Start, name: 'Start' },
+    { path: 'dreams/:id', element: Edit, name: 'Edit Dream' },
+    { path: 'statistics', element: Statistics, name: 'Statistics' },
+    { path: 'management', element: Management, name: 'Management' },
 ]
 
-export default indices.map(v => ({
-    path: v.path,
-    element: <Suspense fallback={<div>Loading...</div>}>{v.element}</Suspense>,
-    name: v.name,
-}))
+const routes: Array<Route> = rawRoutes.map(v => (
+    {
+        ...v,
+        element: withSuspense(v.element),
+        errorElement: <ErrorBoundary />,
+    }))
+
+
+
+export default createBrowserRouter(routes, {
+    basename: '/dreams',
+})
