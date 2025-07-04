@@ -1,5 +1,3 @@
-import 'regenerator-runtime'; // needed otherwise vite does not build
-
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
