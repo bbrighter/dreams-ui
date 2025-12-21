@@ -23,7 +23,7 @@ interface Actions {
     setDescription: (description: string) => void
     getDream: (id: number | string) => Promise<void>
     createDream: () => Promise<number>
-    updateDate: (date: string) => Promise<boolean>
+    updateDate: (date: Date) => Promise<boolean>
     updateDescription: () => Promise<boolean>
     finalizeDream: () => Promise<void>
     rateDream: (rating: number) => Promise<void>
@@ -116,12 +116,14 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
         }
         return resp.ok
     },
-    updateDate: async (date: string) => {
-        const body: V1UpdateDreamRequest = { date: date }
+    updateDate: async (date: Date) => {
+        const body: V1UpdateDreamRequest = { date: date.toISOString() }
         const resp = await api.dreams.dreamsPartialUpdate(get().dream.id.toString(), body)
         if (resp.ok) {
+            const relevantDreamIndex = get().dreams.findIndex(d => d.id == get().dream.id)
             set(produce((draft: State) => {
-                draft.dream.date = new Date(date)
+                draft.dream.date = date
+                draft.dreams[relevantDreamIndex].date = date
             }))
         }
         return resp.ok

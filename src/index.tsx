@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime'
+
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
