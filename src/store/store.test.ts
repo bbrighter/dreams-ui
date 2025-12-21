@@ -26,11 +26,11 @@ describe('store', () => {
         await useDreams.getState().getDreams()
         const id = await useDreams.getState().createDream()
 
-        expect(id).toBe(3)
+        expect(id).toBe(4)
         expect(useDreams.getState().dreams).toHaveLength(3)
         const dream = useDreams.getState().dream
         expect(dream.finalized).toBeFalsy()
-        expect(dream.id).toBe(3)
+        expect(dream.id).toBe(4)
     })
 
     it('delete an existing dream', async () => {

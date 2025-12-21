@@ -14,7 +14,7 @@ describe('test categories store', () => {
 
         const persons = useDreams.getState().persons
         expect(persons).toHaveLength(1)
-        expect(persons[0].id).toBe(3)
+        expect(persons[0].id).toBe(2)
         expect(persons[0].name).toBe('Person')
     })
 
@@ -26,7 +26,7 @@ describe('test categories store', () => {
         expect(categories[0].count).toBe(1)
         const persons = useDreams.getState().persons
         expect(persons).toHaveLength(1)
-        expect(persons[0].count).toBe(2)
+        expect(persons[0].count).toBe(1)
     })
 
     it('change the name of a category', async () => {
@@ -51,7 +51,7 @@ describe('test categories store', () => {
     })
 
     it('change the type of a person to category', async () => {
-        const id = 3
+        const id = 2
         await useDreams.getState().getCategories()
 
         await useDreams.getState().changeType(id, TypeParams.CATEGORY)
@@ -64,7 +64,7 @@ describe('test categories store', () => {
 
     it('merge two categories', async () => {
         const sourceId = 1
-        const targetId = 3
+        const targetId = 2
         const newName = 'new name'
         await useDreams.getState().getCategories()
 

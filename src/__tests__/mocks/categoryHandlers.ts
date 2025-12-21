@@ -1,10 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 import { EntityCategoriesResponse, V1MergeCategoriesParams } from '../../api/generated_api'
-
-const cat1 = { id: 1, name: 'Category' }
-const cat2 = { id: 2, name: 'New category' }
-const person1 = { id: 3, name: 'Person' }
+import { cat1, pers1 } from './initialValues'
 
 const categoryHandlers = (baseUrl: string) => ([
     http.get(baseUrl + '/categories', ({ request }) => {
@@ -13,25 +10,21 @@ const categoryHandlers = (baseUrl: string) => ([
         if (includeCount) {
             return HttpResponse.json({
                 categories: [{ count: 1, ...cat1 }],
-                persons: [{ count: 2, ...person1 }],
+                persons: [{ count: 1, ...pers1 }],
             })
         }
-        return HttpResponse.json({ categories: [cat1], persons: [person1] } as EntityCategoriesResponse)
+        return HttpResponse.json({ categories: [cat1], persons: [pers1] } as EntityCategoriesResponse)
     }),
-    http.delete(baseUrl + '/dreams/:dreamId/categories/:categoryId', () => HttpResponse.json({ categories: [] } as EntityCategoriesResponse)),
-    http.put(baseUrl + '/dreams/:dreamId/categories', () => HttpResponse.json({ categories: [cat1, cat2] } as EntityCategoriesResponse)),
-    http.put(baseUrl + '/dreams/:dreamId/persons', () => HttpResponse.json({ categories: [cat1, cat2], persons: [person1, { id: 4, name: 'Somebody' }] } as EntityCategoriesResponse)),
-    http.delete(baseUrl + '/dreams/:dreamId/persons/:personId', () => HttpResponse.json({ categories: [cat1, cat2] } as EntityCategoriesResponse)),
     http.patch(baseUrl + '/categories/:catId/name', () => HttpResponse.json({})),
     http.patch(baseUrl + '/categories/:catId/type', () => HttpResponse.json({})),
     http.post(baseUrl + '/categories/merge', async ({ request }) => {
         const body = await request.clone().json() as V1MergeCategoriesParams
         const newName = body.newName
-        if (body.sourceCategoryId != 1 || body.targetCategoryId != 3) {
+        if (body.sourceCategoryId != 1 || body.targetCategoryId != 2) {
             throw 'invalid test input, source must be 1, target 3'
         }
         return HttpResponse.json({
-            persons: [{ ...person1, name: newName }],
+            persons: [{ ...pers1, name: newName }],
         } as EntityCategoriesResponse)
     }),
     http.delete(baseUrl + '/categories/:catId', () => HttpResponse.json({})),

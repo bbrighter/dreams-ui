@@ -20,7 +20,7 @@ describe('Management is rendered', () => {
 
         await userEvent.click(personTab)
         expect(screen.getByText('Person')).toBeInTheDocument()
-        expect(screen.getByText(2)).toBeInTheDocument()
+        expect(screen.getByText(1)).toBeInTheDocument()
         expect(screen.queryAllByAltText('Category')).toHaveLength(0)
 
         await userEvent.click(categoryTab)
