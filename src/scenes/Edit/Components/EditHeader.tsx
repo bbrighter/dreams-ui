@@ -12,7 +12,7 @@ export default function EditHeader() {
     const date = useDreams(state => state.dream.date)
     const updateDate = useDreams(state => state.updateDate)
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        updateDate(e.currentTarget.value)
+        updateDate(new Date(e.currentTarget.value))
     }
 
     const DateInput = <Input
