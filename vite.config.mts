@@ -1,3 +1,4 @@
+/// <reference types="vitest/config"/>
 import react from '@vitejs/plugin-react-swc'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
@@ -15,4 +16,9 @@ export default defineConfig({
       typescript: true,
     }),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: 'src/__tests__/setupTest.ts',
+  },
 })
