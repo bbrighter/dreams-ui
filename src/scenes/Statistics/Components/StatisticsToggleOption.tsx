@@ -1,9 +1,7 @@
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
-import { StatisticToggleOptions } from '../Statistics';
-
-
+import { StatisticToggleOptions } from '../Statistics'
 
 export default function StatisticsToggleOption(props: {
     onChange: (e: React.MouseEvent<HTMLElement>, v: StatisticToggleOptions) => void
@@ -15,14 +13,14 @@ export default function StatisticsToggleOption(props: {
 
     return (
         <ToggleButtonGroup
-            value={props.value}
-            exclusive
-            onChange={onChange}
+          value={props.value}
+          exclusive
+          onChange={onChange}
         >
-            <ToggleButton value='person'>
+            <ToggleButton value="person">
                 Personen
             </ToggleButton>
-            <ToggleButton value='category'>
+            <ToggleButton value="category">
                 Kategorien
             </ToggleButton>
         </ToggleButtonGroup>

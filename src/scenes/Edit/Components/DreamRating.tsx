@@ -1,7 +1,7 @@
-import Rating from '@mui/material/Rating';
-import { useEffect, useState } from 'react';
+import Rating from '@mui/material/Rating'
+import { useEffect, useState } from 'react'
 
-import useDreams from '../../../store/store';
+import useDreams from '../../../store/store'
 
 export default function DreamRating() {
     const rating = useDreams(state => state.dream.rating)
@@ -20,12 +20,11 @@ export default function DreamRating() {
         setValue(rating)
     }, [rating])
 
-
     return (
         <Rating
-            title='Bewertung'
-            value={value}
-            onChange={onChange}
+          title="Bewertung"
+          value={value}
+          onChange={onChange}
         />
     )
 }

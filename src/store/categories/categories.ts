@@ -19,7 +19,6 @@ export function categoryResponseToCategories(resp: EntityCategoryResponse[] | un
     return resp?.map(t => ({ id: t.id, name: t.name, count: t.count })) ?? []
 }
 
-
 export enum IncludeParams {
     PERSONS = 'persons',
     CATEGORIES = 'categories',

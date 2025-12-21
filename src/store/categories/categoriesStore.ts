@@ -1,15 +1,14 @@
-import { produce } from 'immer';
-import { StateCreator } from 'zustand';
+import { produce } from 'immer'
+import { StateCreator } from 'zustand'
 
-import api from '../../api/api';
-import { AuthStore } from '../auth/authStore';
-import { DreamStore } from '../dream/dreamStore';
-import { Categories, categoriesResponseToCategories, Category, TypeParams } from './categories';
-
+import api from '../../api/api'
+import { AuthStore } from '../auth/authStore'
+import { DreamStore } from '../dream/dreamStore'
+import { Categories, categoriesResponseToCategories, Category, TypeParams } from './categories'
 
 type State = {
-    categories: Categories,
-    persons: Categories,
+    categories: Categories
+    persons: Categories
     categoriesLoaded: boolean
 }
 
@@ -26,7 +25,6 @@ interface Actions {
     deleteCategory: (id: number) => Promise<void>
 }
 
-
 export interface CategoriesStore extends State, Actions { }
 
 const initialState: State = {
@@ -35,7 +33,7 @@ const initialState: State = {
     categoriesLoaded: false,
 }
 
-export const createCategoriesSlice: StateCreator<CategoriesStore & AuthStore & DreamStore, [], [], CategoriesStore> = ((set, get) => ({
+export const createCategoriesSlice: StateCreator<CategoriesStore & AuthStore & DreamStore, [], [], CategoriesStore> = (set, get) => ({
     ...initialState,
     resetCategories: () => {
         set(initialState)
@@ -82,7 +80,8 @@ export const createCategoriesSlice: StateCreator<CategoriesStore & AuthStore & D
         set(produce((draft: State) => {
             if (categoryIndex > -1) {
                 draft.categories[categoryIndex].name = newName
-            } else if (personIndex > -1) {
+            }
+ else if (personIndex > -1) {
                 draft.persons[personIndex].name = newName
             }
         }))
@@ -98,14 +97,16 @@ export const createCategoriesSlice: StateCreator<CategoriesStore & AuthStore & D
         set(produce((draft: State) => {
             if (categoryIndex > -1) {
                 itemToMove = draft.categories.splice(categoryIndex, 1)[0]
-            } else if (personIndex > -1) {
+            }
+ else if (personIndex > -1) {
                 itemToMove = draft.persons.splice(personIndex, 1)[0]
             }
             if (!itemToMove) return
 
             if (newType == TypeParams.CATEGORY) {
                 draft.categories.push(itemToMove)
-            } else if (newType == TypeParams.PERSON) {
+            }
+ else if (newType == TypeParams.PERSON) {
                 draft.persons.push(itemToMove)
             }
         }))
@@ -134,9 +135,10 @@ export const createCategoriesSlice: StateCreator<CategoriesStore & AuthStore & D
         set(produce((draft: State) => {
             if (categoriesIndex > -1) {
                 draft.categories.splice(categoriesIndex, 1)
-            } else if (personsIndex > -1) {
+            }
+ else if (personsIndex > -1) {
                 draft.persons.splice(personsIndex, 1)
             }
         }))
     },
-}))
+})

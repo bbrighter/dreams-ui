@@ -1,16 +1,15 @@
-import LockIcon from '@mui/icons-material/Lock';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Fade from '@mui/material/Fade';
-import IconButton from '@mui/material/IconButton';
-import Modal from '@mui/material/Modal';
-import { SxProps } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import { useEffect, useState } from 'react';
+import LockIcon from '@mui/icons-material/Lock'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Fade from '@mui/material/Fade'
+import IconButton from '@mui/material/IconButton'
+import Modal from '@mui/material/Modal'
+import { SxProps } from '@mui/material/styles'
+import TextField from '@mui/material/TextField'
+import { useEffect, useState } from 'react'
 
-import useDreams from '../../store/store';
-
+import useDreams from '../../store/store'
 
 const modalStyle: SxProps = {
     position: 'absolute',
@@ -45,7 +44,6 @@ export default function Authentication() {
         }
     }, [loggedIn])
 
-
     const loginClick = async () => {
         setLoading(true)
         const ok = await login(password)
@@ -56,27 +54,28 @@ export default function Authentication() {
     return (
         <>
             <IconButton
-                onClick={onClick}>
+              onClick={onClick}
+            >
                 {loggedIn ? <LockOpenIcon /> : <LockIcon />}
             </IconButton>
             <Modal
-                open={open}
-                onClose={onClose}
+              open={open}
+              onClose={onClose}
             >
                 <Fade in={open}>
                     <Box sx={modalStyle}>
                         <TextField
-                            value={password}
-                            type='password'
-                            label='Passwort'
-                            error={isWrong}
-                            onChange={(e) => setPassword(e.target.value)}
+                          value={password}
+                          type="password"
+                          label="Passwort"
+                          error={isWrong}
+                          onChange={e => setPassword(e.target.value)}
                         />
                         <Button
-                            variant='contained'
-                            sx={{ mt: '1rem' }}
-                            onClick={loginClick}
-                            loading={loading}
+                          variant="contained"
+                          sx={{ mt: '1rem' }}
+                          onClick={loginClick}
+                          loading={loading}
                         >
                             Login
                         </Button>

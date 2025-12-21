@@ -1,7 +1,7 @@
-import { produce } from 'immer';
-import { StateCreator } from 'zustand';
+import { produce } from 'immer'
+import { StateCreator } from 'zustand'
 
-import api from '../../api/api';
+import api from '../../api/api'
 
 type State = {
     user: string
@@ -22,7 +22,7 @@ const initialState: State = {
     loggedIn: false,
 }
 
-export const createPasswordSlice: StateCreator<AuthStore> = ((set, get) => ({
+export const createPasswordSlice: StateCreator<AuthStore> = (set, get) => ({
     ...initialState,
     login: async (password: string) => {
         try {
@@ -34,10 +34,10 @@ export const createPasswordSlice: StateCreator<AuthStore> = ((set, get) => ({
                 }))
             }
             return resp.ok
-        } catch {
+        }
+ catch {
             return false
         }
-
     },
     logout: async () => {
         const resp = await api.logout.logoutCreate()
@@ -45,4 +45,4 @@ export const createPasswordSlice: StateCreator<AuthStore> = ((set, get) => ({
             set(initialState)
         }
     },
-}))
+})

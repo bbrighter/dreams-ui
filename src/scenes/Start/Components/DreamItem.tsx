@@ -1,13 +1,12 @@
-import styled from '@emotion/styled';
-import CloudIcon from '@mui/icons-material/Cloud';
-import CloudOffIcon from '@mui/icons-material/CloudOff';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled'
+import CloudIcon from '@mui/icons-material/Cloud'
+import CloudOffIcon from '@mui/icons-material/CloudOff'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
-import { MetaDream } from '../../../store/dream/dreams';
-import useDreams from '../../../store/store';
-
+import { MetaDream } from '../../../store/dream/dreams'
+import useDreams from '../../../store/store'
 
 const StyledListItem = styled(ListItem)`
     :hover{
@@ -29,18 +28,18 @@ export default function DreamItem(props: {
 
     return (
         <StyledListItem
-            onClick={() => navigateTo(props.dream.id)}
-            secondaryAction={
+          onClick={() => navigateTo(props.dream.id)}
+          secondaryAction={(
                 <IconButton
-                    onClick={(e) => {
+                  onClick={(e) => {
                         e.stopPropagation()
                         deleteDream(props.dream.id)
                     }}
-                    title='Löschen'
+                  title="Löschen"
                 >
                     <DeleteIcon />
                 </IconButton>
-            }
+              )}
         >
             <ListItemAvatar>
                 {props.dream.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
@@ -49,11 +48,12 @@ export default function DreamItem(props: {
                 {props.dream.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}
             </ListItemText>
             <Rating
-                title='Bewertung'
-                value={props.dream.rating}
-                readOnly
-                size='small'
-                sx={{ pr: 2, pl: 2 }}
+              title="Bewertung"
+              value={props.dream.rating}
+              readOnly
+              size="small"
+              sx={{ pr: 2, pl: 2 }}
             />
-        </StyledListItem>)
+        </StyledListItem>
+)
 }

@@ -1,6 +1,6 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse } from 'msw'
 
-import { EntityDreamResponse, EntityDreamsResponse } from '../../api/generated_api';
+import { EntityDreamResponse, EntityDreamsResponse } from '../../api/generated_api'
 
 const dreamHandlers = (baseUrl: string) => ([
     http.get(baseUrl + '/dreams', () => (HttpResponse.json({
@@ -36,6 +36,5 @@ const dreamHandlers = (baseUrl: string) => ([
     http.patch(baseUrl + '/dreams/:id', () => (HttpResponse.json())),
     http.patch(baseUrl + '/dreams/:id/finalize', () => (HttpResponse.json())),
 ])
-
 
 export default dreamHandlers

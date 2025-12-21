@@ -1,7 +1,7 @@
-import Button from '@mui/material/Button';
-import { useState } from 'react';
+import Button from '@mui/material/Button'
+import { useState } from 'react'
 
-import useDreams from '../../../store/store';
+import useDreams from '../../../store/store'
 
 export default function FinalizeButton() {
     const finalizeDream = useDreams(state => state.finalizeDream)
@@ -15,14 +15,13 @@ export default function FinalizeButton() {
         finalizeDream().finally(() => setIsLoading(false))
     }
 
-
     return (
         <Button
-            variant="contained"
-            loading={isLoading}
-            onClick={finalize}
-            color="success"
-            disabled={finalized || !isRated}
+          variant="contained"
+          loading={isLoading}
+          onClick={finalize}
+          color="success"
+          disabled={finalized || !isRated}
         >
             Redigieren
         </Button>

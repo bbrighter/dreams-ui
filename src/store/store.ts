@@ -5,7 +5,6 @@ import { CategoriesStore, createCategoriesSlice } from './categories/categoriesS
 import { createDreamSlice, DreamStore } from './dream/dreamStore'
 import { createStatisticSlice, StatisticsStore } from './statistics/statisticsStore'
 
-
 const useDreams = create<
     DreamStore & CategoriesStore & StatisticsStore & AuthStore & { resetState: () => void }
 >((set, get, api) => {
@@ -27,6 +26,5 @@ const useDreams = create<
         },
     }
 })
-
 
 export default useDreams

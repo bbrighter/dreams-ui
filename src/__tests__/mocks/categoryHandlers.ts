@@ -1,6 +1,6 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse } from 'msw'
 
-import { EntityCategoriesResponse, V1MergeCategoriesParams } from '../../api/generated_api';
+import { EntityCategoriesResponse, V1MergeCategoriesParams } from '../../api/generated_api'
 
 const cat1 = { id: 1, name: 'Category' }
 const cat2 = { id: 2, name: 'New category' }
@@ -35,6 +35,4 @@ const categoryHandlers = (baseUrl: string) => ([
     http.delete(baseUrl + '/categories/:catId', () => HttpResponse.json({})),
 ])
 
-
 export default categoryHandlers
-

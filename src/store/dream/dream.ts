@@ -1,7 +1,6 @@
 import { EntityDreamResponse } from '../../api/generated_api'
 import { Category, categoryResponseToCategories } from '../categories/categories'
 
-
 export interface Dream {
     id: number
     date: Date

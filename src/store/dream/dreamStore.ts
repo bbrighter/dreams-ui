@@ -1,14 +1,13 @@
-import { produce } from 'immer';
-import { StateCreator } from 'zustand';
+import { produce } from 'immer'
+import { StateCreator } from 'zustand'
 
-import api from '../../api/api';
-import { V1PostDreamRequest, V1UpdateDreamRequest } from '../../api/generated_api';
-import { AuthStore } from '../auth/authStore';
-import { categoriesResponseToCategories, IncludeParams } from '../categories/categories';
-import { CategoriesStore } from '../categories/categoriesStore';
-import { Dream, dreamResponseToDream } from './dream';
-import { Dreams, dreamsResponseToDreams } from './dreams';
-
+import api from '../../api/api'
+import { V1PostDreamRequest, V1UpdateDreamRequest } from '../../api/generated_api'
+import { AuthStore } from '../auth/authStore'
+import { categoriesResponseToCategories, IncludeParams } from '../categories/categories'
+import { CategoriesStore } from '../categories/categoriesStore'
+import { Dream, dreamResponseToDream } from './dream'
+import { Dreams, dreamsResponseToDreams } from './dreams'
 
 interface State {
     dream: Dream
@@ -62,7 +61,7 @@ const initialState: State = {
 
 }
 
-export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthStore, [], [], DreamStore> = ((set, get) => ({
+export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthStore, [], [], DreamStore> = (set, get) => ({
     ...initialState,
     resetDream: () => set(produce((draft: State) => {
         draft.dream = initialState.dream
@@ -112,7 +111,9 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
         }
         const resp = await api.dreams.dreamsPartialUpdate(get().dream.id.toString(), body)
         if (resp.ok) {
-            set(produce((draft: State) => { draft.dream.isSaved = true }))
+            set(produce((draft: State) => {
+                draft.dream.isSaved = true
+             }))
         }
         return resp.ok
     },
@@ -131,7 +132,9 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
     changeVisibility: async () => {
         const resp = await api.dreams.privatePartialUpdate(get().dream.id.toString())
         if (resp.ok) {
-            set(produce((draft: State) => { draft.dream.visible = !draft.dream.visible }))
+            set(produce((draft: State) => {
+                draft.dream.visible = !draft.dream.visible
+             }))
         }
     },
     finalizeDream: async () => {
@@ -236,10 +239,14 @@ export const createDreamSlice: StateCreator<DreamStore & CategoriesStore & AuthS
     },
 
     setScrollPosition: (pos: number) => {
-        set(produce((draft: State) => { draft.scrollPosition = pos }))
+        set(produce((draft: State) => {
+            draft.scrollPosition = pos
+         }))
     },
     setTranscript: (transcript: string) => {
-        set(produce((draft: State) => { draft.dream.transcript = transcript }))
+        set(produce((draft: State) => {
+            draft.dream.transcript = transcript
+         }))
     },
 
-}))
+})

@@ -12,7 +12,8 @@ describe('viewing and editing a single dream', () => {
                 <Routes>
                     <Route path="/dreams/:id" element={<Edit />} />
                 </Routes>
-            </MemoryRouter>)
+            </MemoryRouter>,
+)
 
         await waitFor(() => {
             expect(screen.getByTitle('Speichern')).toBeInTheDocument()
@@ -43,7 +44,8 @@ describe('viewing and editing a single dream', () => {
                 <Routes>
                     <Route path="/dreams/:id" element={<Edit />} />
                 </Routes>
-            </MemoryRouter>)
+            </MemoryRouter>,
+)
 
         const saveButton = screen.getByTitle('Speichern')
         await waitFor(() => {
@@ -62,7 +64,6 @@ describe('viewing and editing a single dream', () => {
             expect(saveButton.getAttribute('class')).match(/colorSuccess/)
         }, { timeout: 3000 })
 
-
         // vi.runOnlyPendingTimers()
         // vi.useRealTimers()
     })
@@ -73,7 +74,8 @@ describe('viewing and editing a single dream', () => {
                 <Routes>
                     <Route path="/dreams/:id" element={<Edit />} />
                 </Routes>
-            </MemoryRouter>)
+            </MemoryRouter>,
+)
 
         const category = (await screen.findByText('Category')).closest('div')!
         const deleteCategory = category.querySelector('svg')!
@@ -88,13 +90,13 @@ describe('viewing and editing a single dream', () => {
                 <Routes>
                     <Route path="/dreams/:id" element={<Edit />} />
                 </Routes>
-            </MemoryRouter>)
+            </MemoryRouter>,
+)
 
         const categoryInput = await screen.findByLabelText('Kategorien')
         await userEvent.type(categoryInput, 'New category{enter}')
 
         expect(screen.getByRole('button', { name: 'New category' })).toBeInTheDocument()
-
     })
 
     it('remove person', { skip: true }, async () => {
@@ -111,7 +113,8 @@ describe('viewing and editing a single dream', () => {
                 <Routes>
                     <Route path="/dreams/:id" element={<Edit />} />
                 </Routes>
-            </MemoryRouter>)
+            </MemoryRouter>,
+)
 
         const rating = await screen.findByTitle('Bewertung')
         expect(rating).toBeInTheDocument()

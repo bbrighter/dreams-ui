@@ -1,19 +1,17 @@
 import { Box, Container, TextField } from '@mui/material'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useGetDreams } from '../../hooks/loadDreams';
-import { useSimpleDebounce } from '../../hooks/simpleDebounce';
+import { useGetDreams } from '../../hooks/loadDreams'
+import { useSimpleDebounce } from '../../hooks/simpleDebounce'
 import useDreams from '../../store/store'
-import Categories from './Components/Categories';
-import EditFooter from './Components/EditFooter';
-import EditHeader from './Components/EditHeader';
+import Categories from './Components/Categories'
+import EditFooter from './Components/EditFooter'
+import EditHeader from './Components/EditHeader'
 import Persons from './Components/Persons'
-import RecordText from './Components/RecordText';
-
+import RecordText from './Components/RecordText'
 
 const DEBOUNCE_TIME = 2_000
-
 
 export default function Edit() {
     const navigate = useNavigate()
@@ -57,20 +55,20 @@ export default function Edit() {
     return (
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <EditHeader />
-            <Container sx={{ marginBottom: '1rem', flexGrow: 1 }} component='form'>
+            <Container sx={{ marginBottom: '1rem', flexGrow: 1 }} component="form">
                 <RecordText />
                 <TextField
-                    sx={{
+                  sx={{
                         width: '100%',
                         marginTop: '1rem',
                         height: '80%',
                     }}
-                    label="Beschreibung"
-                    multiline
-                    minRows={5}
-                    maxRows={18}
-                    value={description + transcript}
-                    onChange={onChangeDescriptionDebounce}
+                  label="Beschreibung"
+                  multiline
+                  minRows={5}
+                  maxRows={18}
+                  value={description + transcript}
+                  onChange={onChangeDescriptionDebounce}
                 />
                 <Categories />
                 <Persons />

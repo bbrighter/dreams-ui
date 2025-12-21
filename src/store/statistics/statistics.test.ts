@@ -3,7 +3,6 @@ import { expect, test } from 'vitest'
 import { EntityCountsResponse } from '../../api/generated_api'
 import { controllerCountsResponseToStatistic } from './statistics'
 
-
 test('ControllerCategoriesCountToStatistics', () => {
     const resp: EntityCountsResponse = {
         categories: [

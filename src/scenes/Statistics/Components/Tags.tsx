@@ -5,8 +5,6 @@ import { TagCloud } from 'react-tagcloud'
 import useDreams from '../../../store/store'
 import { StatisticToggleOptions } from '../Statistics'
 
-
-
 export default function Tags(props: {
     type: StatisticToggleOptions
 }) {
@@ -23,7 +21,7 @@ export default function Tags(props: {
     const count = props.type == 'person' ? personsCount : categoryCounts
     const names = props.type == 'person' ? persons : categories
 
-    const tags = count.map(s => {
+    const tags = count.map((s) => {
         const name = names.find(n => n.id == s.id)?.name || ''
         return { key: s.id.toString(), value: name, count: s.count }
     })
@@ -31,9 +29,9 @@ export default function Tags(props: {
     return (
         <Box sx={{ position: 'relative', width: '80%', left: '10%', mt: '1rem', mb: '1rem' }}>
             <TagCloud
-                maxSize={50}
-                minSize={10}
-                tags={tags}
+              maxSize={50}
+              minSize={10}
+              tags={tags}
             />
         </Box>
     )

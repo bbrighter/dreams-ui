@@ -1,6 +1,5 @@
 import { EntityCountsResponse } from '../../api/generated_api'
 
-
 interface Statistic {
     id: number
     count: number

@@ -1,15 +1,14 @@
-import { produce } from 'immer';
-import { StateCreator } from 'zustand';
+import { produce } from 'immer'
+import { StateCreator } from 'zustand'
 
-import api from '../../api/api';
-import { AuthStore } from '../auth/authStore';
-import { controllerCountsResponseToStatistic, Statistics } from './statistics';
-
+import api from '../../api/api'
+import { AuthStore } from '../auth/authStore'
+import { controllerCountsResponseToStatistic, Statistics } from './statistics'
 
 type State = Statistics
 
 interface Actions {
-    resetStatistics: () => void,
+    resetStatistics: () => void
     getStatistics: () => Promise<void>
 }
 
@@ -22,7 +21,7 @@ const initialState: State = {
     personsCount: [],
 }
 
-export const createStatisticSlice: StateCreator<StatisticsStore & AuthStore, [], [], StatisticsStore> = ((set, get) => ({
+export const createStatisticSlice: StateCreator<StatisticsStore & AuthStore, [], [], StatisticsStore> = (set, get) => ({
     ...initialState,
     resetStatistics: () => set(initialState),
     getStatistics: async () => {
@@ -34,4 +33,4 @@ export const createStatisticSlice: StateCreator<StatisticsStore & AuthStore, [],
             }))
         }
     },
-}))
+})

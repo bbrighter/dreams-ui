@@ -76,6 +76,4 @@ describe('Management is rendered', () => {
         await userEvent.click(confirmButton)
         // TODO: Select and merge
     })
-
-
 })

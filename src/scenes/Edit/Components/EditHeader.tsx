@@ -1,11 +1,11 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import SaveIcon from '@mui/icons-material/Save'
-import { IconButton, Input } from '@mui/material';
+import { IconButton, Input } from '@mui/material'
 
-import { useNavigateHomePage } from '../../../hooks/navigate';
-import useDreams from '../../../store/store';
-import Bar from '../../Components/Bar';
-import Hide from './Hide';
+import { useNavigateHomePage } from '../../../hooks/navigate'
+import useDreams from '../../../store/store'
+import Bar from '../../Components/Bar'
+import Hide from './Hide'
 
 export default function EditHeader() {
     const loggedIn = useDreams(state => state.loggedIn)
@@ -15,29 +15,30 @@ export default function EditHeader() {
         updateDate(new Date(e.currentTarget.value))
     }
 
-    const DateInput = <Input
-        type='date'
-        value={date.toISOString().substring(0, 10)}
-        onChange={onChangeDate}
-        title='Datum'
-    />
+    const DateInput = (
+<Input
+  type="date"
+  value={date.toISOString().substring(0, 10)}
+  onChange={onChangeDate}
+  title="Datum"
+/>
+)
     const HideOrShow = () => {
         return (
             loggedIn ? <Hide /> : <></>
         )
     }
 
-
     return (
         <Bar
-            mainAction={<BackButton />}
-            secondaryAction={[
+          mainAction={<BackButton />}
+          secondaryAction={[
                 <SaveButton key={1} />,
                 <HideOrShow key={2} />,
             ]}
-            optionalMiddleAction={DateInput}
-            position='top'
-            showAuth
+          optionalMiddleAction={DateInput}
+          position="top"
+          showAuth
         />
     )
 }
@@ -46,14 +47,16 @@ function SaveButton() {
     const updateDescription = useDreams(state => state.updateDescription)
     const isSaved = useDreams(state => state.dream.isSaved)
 
-    const saveDream = () => { updateDescription() }
+    const saveDream = () => {
+        updateDescription()
+     }
 
     const color = isSaved ? 'success' : 'error'
     return (
         <IconButton
-            color={color}
-            onClick={saveDream}
-            title='Speichern'
+          color={color}
+          onClick={saveDream}
+          title="Speichern"
         >
             <SaveIcon />
         </IconButton>
@@ -71,10 +74,10 @@ export function BackButton() {
 
     return (
         <IconButton
-            onClick={handleClick}
-            title='Zurück'
+          onClick={handleClick}
+          title="Zurück"
         >
             <ArrowBackIcon />
-        </IconButton >
+        </IconButton>
     )
 }

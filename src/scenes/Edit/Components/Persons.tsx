@@ -4,7 +4,6 @@ import useDreams from '../../../store/store'
 import TagInputs from './TagInputs'
 import { categoriesToTagValue, TagValue } from './tagValues'
 
-
 export default function Persons() {
     const getCategories = useDreams(state => state.getCategories)
     const addPerson = useDreams(state => state.addPerson)
@@ -12,19 +11,21 @@ export default function Persons() {
     const usedPersons = useDreams(state => state.dream.persons)
     const personSuggestions = useDreams(state => state.persons)
 
-    useEffect(() => { getCategories() }, [])
+    useEffect(() => {
+      getCategories()
+     }, [])
 
-    const handleChange = (name: string) => { addPerson(name) }
+    const handleChange = (name: string) => addPerson(name)
 
-    const handleSave = (person: TagValue) => { removePerson(person.id) }
+    const handleSave = (person: TagValue) => removePerson(person.id)
 
     return (
         <TagInputs
-            type='Person'
-            values={categoriesToTagValue(usedPersons)}
-            options={categoriesToTagValue(personSuggestions)}
-            onSave={handleChange}
-            onDelete={handleSave}
+          type="Person"
+          values={categoriesToTagValue(usedPersons)}
+          options={categoriesToTagValue(personSuggestions)}
+          onSave={handleChange}
+          onDelete={handleSave}
         />
     )
 }

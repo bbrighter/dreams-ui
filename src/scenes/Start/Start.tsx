@@ -1,13 +1,12 @@
-import { Button, Container, List } from '@mui/material';
-import { useEffect } from 'react';
+import { Button, Container, List } from '@mui/material'
+import { useEffect } from 'react'
 
-import { useGetDreams } from '../../hooks/loadDreams';
-import { useNavigateToDream } from '../../hooks/navigate';
-import useDreams from '../../store/store';
-import Bar from '../Components/Bar';
-import Navigation from '../Components/Navigation';
-import DreamItem from './Components/DreamItem';
-
+import { useGetDreams } from '../../hooks/loadDreams'
+import { useNavigateToDream } from '../../hooks/navigate'
+import useDreams from '../../store/store'
+import Bar from '../Components/Bar'
+import Navigation from '../Components/Navigation'
+import DreamItem from './Components/DreamItem'
 
 export default function Start() {
     const createDream = useDreams(state => state.createDream)
@@ -31,20 +30,21 @@ export default function Start() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-
     const handleClick = async () => {
         const dreamId = await createDream()
         navigate(dreamId)
     }
 
-    const MainAction =
-        <Button variant="contained" onClick={handleClick}>
+    const MainAction
+        = (
+<Button variant="contained" onClick={handleClick}>
             Neu
-        </Button>
+</Button>
+)
 
     return (
         <>
-            <Bar mainAction={MainAction} position='top' showAuth />
+            <Bar mainAction={MainAction} position="top" showAuth />
             <Container sx={{ pt: '1rem', pb: '3rem' }}>
                 <List>
                     {dreams.map(d =>

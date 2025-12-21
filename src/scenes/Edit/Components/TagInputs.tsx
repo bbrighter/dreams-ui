@@ -1,14 +1,13 @@
-import { Autocomplete, AutocompleteChangeReason, Chip, TextField } from '@mui/material';
+import { Autocomplete, AutocompleteChangeReason, Chip, TextField } from '@mui/material'
 
-import { isTagValue,TagValue } from './tagValues';
-
+import { isTagValue, TagValue } from './tagValues'
 
 export default function TagInputs(props: {
     type: 'Person' | 'Category'
-    values: Array<TagValue>,
-    options: Array<TagValue>,
-    onSave: (name: string) => void,
-    onDelete: (option: TagValue) => void,
+    values: Array<TagValue>
+    options: Array<TagValue>
+    onSave: (name: string) => void
+    onDelete: (option: TagValue) => void
 }) {
     const inputLabel = props.type == 'Person' ? 'Beteiligte Personen' : 'Kategorien'
 
@@ -20,9 +19,11 @@ export default function TagInputs(props: {
         const newValue = values.at(-1)
         if (changeReason == 'createOption' && typeof (newValue) == 'string') {
             props.onSave(newValue)
-        } else if (changeReason == 'selectOption' && isTagValue(newValue)) {
+        }
+ else if (changeReason == 'selectOption' && isTagValue(newValue)) {
             props.onSave(newValue.name)
-        } else {
+        }
+ else {
             alert('Invalid handleChange:' + changeReason + newValue)
         }
     }
@@ -31,35 +32,35 @@ export default function TagInputs(props: {
 
     return (
         <Autocomplete
-            sx={{
+          sx={{
                 paddingTop: '1rem',
                 paddingBottom: '1rem',
             }}
-            disablePortal
-            value={props.values}
-            onChange={onChange}
-            freeSolo
-            multiple
-            disableClearable
-            options={options}
-            clearOnBlur
-            getOptionLabel={getValue}
-            renderTags={(value: TagValue[]) =>
-                value.map(option => (<Chip
-                    key={option.id}
-                    variant='outlined'
-                    label={option.name}
-                    onDelete={() => props.onDelete(option)}
-                />),
-                )
-            }
-            renderInput={params => (
+          disablePortal
+          value={props.values}
+          onChange={onChange}
+          freeSolo
+          multiple
+          disableClearable
+          options={options}
+          clearOnBlur
+          getOptionLabel={getValue}
+          renderTags={(value: TagValue[]) =>
+                value.map(option => (
+<Chip
+  key={option.id}
+  variant="outlined"
+  label={option.name}
+  onDelete={() => props.onDelete(option)}
+/>
+),
+                )}
+          renderInput={params => (
                 <TextField
-                    {...params}
-                    label={inputLabel}
+                  {...params}
+                  label={inputLabel}
                 />
             )}
         />
     )
 }
-

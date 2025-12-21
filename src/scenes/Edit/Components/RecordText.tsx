@@ -1,13 +1,12 @@
-import MicIcon from '@mui/icons-material/Mic';
-import MicNoneIcon from '@mui/icons-material/MicNone';
-import MicOffIcon from '@mui/icons-material/MicOff';
-import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import { useCallback, useEffect } from 'react';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import MicIcon from '@mui/icons-material/Mic'
+import MicNoneIcon from '@mui/icons-material/MicNone'
+import MicOffIcon from '@mui/icons-material/MicOff'
+import Box from '@mui/material/Box'
+import Fab from '@mui/material/Fab'
+import { useCallback, useEffect } from 'react'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
-import useDreams from '../../../store/store';
-
+import useDreams from '../../../store/store'
 
 export default function RecordText() {
     const setDescription = useDreams(state => state.setDescription)
@@ -49,19 +48,17 @@ export default function RecordText() {
         return <div></div>
     }
 
-
     const changeListening = useCallback(() => {
         if (!listening) {
             SpeechRecognition.startListening({
                 continuous: true,
                 language: 'de-DE',
             })
-        } else {
+        }
+ else {
             SpeechRecognition.stopListening()
         }
     }, [listening])
-
-
 
     const color = !isMicrophoneAvailable ? 'warning' : listening ? 'error' : 'primary'
     const icon = !isMicrophoneAvailable ? <MicNoneIcon /> : listening ? <MicIcon /> : <MicOffIcon />
@@ -69,9 +66,9 @@ export default function RecordText() {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: '1rem' }}>
             <Fab
-                title='Aufnehmen'
-                color={color}
-                onClick={changeListening}
+              title="Aufnehmen"
+              color={color}
+              onClick={changeListening}
             >
                 {icon}
             </Fab>

@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest'
 
-import { TypeParams } from './categories/categories';
-import useDreams from './store';
+import { TypeParams } from './categories/categories'
+import useDreams from './store'
 
 describe('test categories store', () => {
     it('get categories', async () => {
@@ -85,5 +85,4 @@ describe('test categories store', () => {
         const persons = useDreams.getState().persons
         expect(persons).toHaveLength(1)
     })
-
 })

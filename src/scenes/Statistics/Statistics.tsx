@@ -18,17 +18,18 @@ export default function Statistics() {
     const loggedIn = useDreams(state => state.loggedIn)
 
     const [selectedOption, setSelectedOption] = useState<StatisticToggleOptions>('person')
-    const onChangeToggleOption = (_, v: StatisticToggleOptions) => { setSelectedOption(v) }
+    const onChangeToggleOption = (_, v: StatisticToggleOptions) => {
+        setSelectedOption(v)
+     }
 
     useEffect(() => {
         getDreams(IncludeParams.ALL)
         getCategories()
     }, [loggedIn])
 
-
     return (
         <>
-            <Bar mainAction={<BackButton />} position='top' showAuth />
+            <Bar mainAction={<BackButton />} position="top" showAuth />
             <Container sx={{ padding: '2rem' }}>
                 <StatisticsToggleOption value={selectedOption} onChange={onChangeToggleOption} />
                 <Tags type={selectedOption} />

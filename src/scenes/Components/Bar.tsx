@@ -3,7 +3,6 @@ import * as React from 'react'
 
 import Authentication from './Authentication'
 
-
 export default function Bar(
     props: {
         mainAction: React.ReactNode
@@ -20,11 +19,10 @@ export default function Bar(
 
     const isTop = props.position == 'top'
 
-
     return (
         <AppBar
-            position='sticky'
-            sx={{
+          position="sticky"
+          sx={{
                 top: isTop ? 0 : 'unset',
                 bottom: isTop ? 'unset' : 0,
             }}
@@ -32,11 +30,11 @@ export default function Bar(
             <Toolbar sx={{ justifyContent: 'space-between' }}>
                 {props.mainAction}
                 {props.optionalMiddleAction}
-                <ButtonGroup variant='outlined'>
+                <ButtonGroup variant="outlined">
                     {SecondaryActions}
                     {props.showAuth && <Authentication />}
                 </ButtonGroup>
             </Toolbar>
-        </AppBar >
+        </AppBar>
     )
 }

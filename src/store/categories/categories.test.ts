@@ -3,10 +3,9 @@ import { expect, test } from 'vitest'
 import { EntityCategoriesResponse } from '../../api/generated_api'
 import { categoriesResponseToCategories } from './categories'
 
-
 test('categoriesResponseToCategories', () => {
-    const resp: EntityCategoriesResponse =
-    {
+    const resp: EntityCategoriesResponse
+    = {
         categories:
             [
                 { id: 1, name: 'Title' },

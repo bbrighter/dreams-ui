@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
-import useDreams from '../../../store/store';
-import TagInputs from './TagInputs';
-import { categoriesToTagValue, TagValue } from './tagValues';
-
+import useDreams from '../../../store/store'
+import TagInputs from './TagInputs'
+import { categoriesToTagValue, TagValue } from './tagValues'
 
 export default function Categories() {
     const getCategories = useDreams(state => state.getCategories)
@@ -12,19 +11,25 @@ export default function Categories() {
     const suggestions = useDreams(state => state.categories)
     const dreamTags = useDreams(state => state.dream.categories)
 
-    useEffect(() => { getCategories() }, [])
+    useEffect(() => {
+      getCategories()
+    }, [])
 
-    const handleSave = (name: string) => { addCategoryToDream(name) }
+    const handleSave = (name: string) => {
+      addCategoryToDream(name)
+     }
 
-    const handleDelete = (tag: TagValue) => { removeCategoryFromDream(tag.id) }
+    const handleDelete = (tag: TagValue) => {
+      removeCategoryFromDream(tag.id)
+     }
 
     return (
         <TagInputs
-            type='Category'
-            options={categoriesToTagValue(suggestions)}
-            values={categoriesToTagValue(dreamTags)}
-            onSave={handleSave}
-            onDelete={handleDelete}
+          type="Category"
+          options={categoriesToTagValue(suggestions)}
+          values={categoriesToTagValue(dreamTags)}
+          onSave={handleSave}
+          onDelete={handleDelete}
         />
     )
 }

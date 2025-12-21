@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest'
 
-import useDreams from './store';
+import useDreams from './store'
 
 describe('store', () => {
     it('load public dreams into state', async () => {
