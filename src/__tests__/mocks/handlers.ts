@@ -1,4 +1,5 @@
 import categoryHandlers from './categoryHandlers'
+import dreamPersonHandlers from './dreamPersonHandler'
 import dreamHandlers from './dreamsHandlers'
 
 const baseUrl = 'http://127.0.0.1:5000'
@@ -6,6 +7,7 @@ const baseUrl = 'http://127.0.0.1:5000'
 const handlers = [
     ...dreamHandlers(baseUrl),
     ...categoryHandlers(baseUrl),
+    ...dreamPersonHandlers(baseUrl),
 ]
 
 export default handlers

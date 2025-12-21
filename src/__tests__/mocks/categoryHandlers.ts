@@ -20,6 +20,8 @@ const categoryHandlers = (baseUrl: string) => ([
     }),
     http.delete(baseUrl + '/dreams/:dreamId/categories/:categoryId', () => HttpResponse.json({ categories: [] } as EntityCategoriesResponse)),
     http.put(baseUrl + '/dreams/:dreamId/categories', () => HttpResponse.json({ categories: [cat1, cat2] } as EntityCategoriesResponse)),
+    http.put(baseUrl + '/dreams/:dreamId/persons', () => HttpResponse.json({ categories: [cat1, cat2], persons: [person1, { id: 4, name: 'Somebody' }] } as EntityCategoriesResponse)),
+    http.delete(baseUrl + '/dreams/:dreamId/persons/:personId', () => HttpResponse.json({ categories: [cat1, cat2] } as EntityCategoriesResponse)),
     http.patch(baseUrl + '/categories/:catId/name', () => HttpResponse.json({})),
     http.patch(baseUrl + '/categories/:catId/type', () => HttpResponse.json({})),
     http.post(baseUrl + '/categories/merge', async ({ request }) => {
