@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 import { EntityCategoriesResponse, V1MergeCategoriesParams } from '../../api/generated_api'
-import { cat1, pers1 } from './initialValues'
+import { cat1, initialCategories, pers1 } from './initialValues'
 
 export const getCategories = http.get('/categories', ({ request }) => {
         const url = new URL(request.url)
@@ -12,7 +12,7 @@ export const getCategories = http.get('/categories', ({ request }) => {
                 persons: [{ count: 1, ...pers1 }],
             })
         }
-        return HttpResponse.json({ categories: [cat1], persons: [pers1] } satisfies EntityCategoriesResponse)
+        return HttpResponse.json(initialCategories())
     })
 
 export const patchCategoryName = http.patch('/categories/:catId/name', () => HttpResponse.json({}))
