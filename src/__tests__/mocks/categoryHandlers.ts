@@ -3,8 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { EntityCategoriesResponse, V1MergeCategoriesParams } from '../../api/generated_api'
 import { cat1, pers1 } from './initialValues'
 
-const categoryHandlers = (baseUrl: string) => ([
-    http.get(baseUrl + '/categories', ({ request }) => {
+export const getCategories = http.get('/categories', ({ request }) => {
         const url = new URL(request.url)
         const includeCount = url.searchParams.get('includes') == 'dreamsCount'
         if (includeCount) {
@@ -13,11 +12,14 @@ const categoryHandlers = (baseUrl: string) => ([
                 persons: [{ count: 1, ...pers1 }],
             })
         }
-        return HttpResponse.json({ categories: [cat1], persons: [pers1] } as EntityCategoriesResponse)
-    }),
-    http.patch(baseUrl + '/categories/:catId/name', () => HttpResponse.json({})),
-    http.patch(baseUrl + '/categories/:catId/type', () => HttpResponse.json({})),
-    http.post(baseUrl + '/categories/merge', async ({ request }) => {
+        return HttpResponse.json({ categories: [cat1], persons: [pers1] } satisfies EntityCategoriesResponse)
+    })
+
+export const patchCategoryName = http.patch('/categories/:catId/name', () => HttpResponse.json({}))
+
+export const patchCategoryType = http.patch('/categories/:catId/type', () => HttpResponse.json({}))
+
+export const postCategoryMerge = http.post('/categories/merge', async ({ request }) => {
         const body = await request.clone().json() as V1MergeCategoriesParams
         const newName = body.newName
         if (body.sourceCategoryId != 1 || body.targetCategoryId != 2) {
@@ -25,9 +27,7 @@ const categoryHandlers = (baseUrl: string) => ([
         }
         return HttpResponse.json({
             persons: [{ ...pers1, name: newName }],
-        } as EntityCategoriesResponse)
-    }),
-    http.delete(baseUrl + '/categories/:catId', () => HttpResponse.json({})),
-])
+        } satisfies EntityCategoriesResponse)
+    })
 
-export default categoryHandlers
+export const deleteCategory = http.delete('/categories/:catId', () => HttpResponse.json({}))

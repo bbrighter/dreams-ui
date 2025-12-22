@@ -3,7 +3,10 @@ import { EntityCategoriesResponse, EntityCategoryResponse, EntityDreamMetaRespon
 const metaDream1: EntityDreamMetaResponse = { id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false }
 const metaDream2: EntityDreamMetaResponse = { id: 2, date: '2025-02-01T12:30:00Z', visible: true, finalized: true, rating: 3 }
 const privateDream3: EntityDreamMetaResponse = { id: 3, date: '2025-02-02T13:00:00Z', visible: false, finalized: false }
-export const initialDreams = (): EntityDreamMetaResponse[] => ([metaDream1, metaDream2])
+export const initialDreams = (overrides?: EntityDreamMetaResponse[]): EntityDreamMetaResponse[] => {
+    if (overrides) return overrides
+    return [metaDream1, metaDream2]
+}
 
 export const initialPrivateDreams: EntityDreamMetaResponse[] = [...initialDreams(), privateDream3]
 

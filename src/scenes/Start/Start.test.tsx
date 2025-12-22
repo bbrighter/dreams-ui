@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
+import { getDreamsHandler } from '../../__tests__/mocks/dreamsHandlers'
+import { server } from '../../__tests__/setupTest'
 import Start from './Start'
 
 const findRowByDate = async (date: string): Promise<HTMLElement> => {
@@ -53,5 +55,13 @@ describe('start page is rendered and can be clicked', () => {
         await userEvent.click(deleteButton)
 
         expect(screen.queryByText('01.01.2025')).not.toBeInTheDocument()
+    })
+
+    it('empty list', async () => {
+        server.use(getDreamsHandler([]))
+        render(<MemoryRouter><Start /></MemoryRouter>)
+
+        expect(await screen.findByText('Neu')).toBeInTheDocument()
+        expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
     })
 })
