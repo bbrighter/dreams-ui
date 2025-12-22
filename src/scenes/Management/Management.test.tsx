@@ -49,7 +49,7 @@ describe('Management is rendered', () => {
 
     it('deleting is disabled', async () => {
         server.use(
-            http.get('http://127.0.0.1:5000/categories', () => HttpResponse.json(
+            http.get('categories', () => HttpResponse.json(
                 { categories: [{ id: 1, name: 'Category', count: 0 }] })),
         )
 

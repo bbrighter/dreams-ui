@@ -9,6 +9,15 @@ const api = new Api({
         return { headers: { Authorization: token } }
     },
 })
-api.baseUrl = (import.meta.env.PROD ? window.BASE_URL : LOCAL_URL)
+
+if (import.meta.env.DEV && import.meta.env.MODE == 'test') {
+    api.baseUrl = ''
+}
+ else if (import.meta.env.PROD) {
+    api.baseUrl = window.BASE_URL
+}
+ else {
+    api.baseUrl = LOCAL_URL
+}
 
 export default api

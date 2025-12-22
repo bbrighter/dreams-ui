@@ -1,5 +1,8 @@
+import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
+import { getDreamHandlers } from '../__tests__/mocks/dreamsHandlers'
+import { server } from '../__tests__/setupTest'
 import useDreams from './store'
 
 describe('store', () => {
@@ -52,6 +55,14 @@ describe('store', () => {
         expect(dream.visible).toBeTruthy()
         expect(dream.isSaved).toBeTruthy()
         expect(dream.finalized).toBeFalsy()
+    })
+
+    it('load private dream into state', async () => {
+        server.use(getDreamHandlers.getDreamHandler({ id: 1, visible: false }))
+        await useDreams.getState().getDream(1)
+
+        const dream = useDreams.getState().dream
+        expect(dream.visible).toBeFalsy()
     })
 
     it('change the date of a dream', async () => {
