@@ -1,19 +1,18 @@
 import { expect, test } from 'vitest'
 
 import { EntityCategoriesResponse } from '../../api/generated_api'
-import { categoriesResponseToCategories } from '../types/categories.types'
+import { categoriesResponseToCategories } from './categories.types'
 
 test('categoriesResponseToCategories', () => {
-  const resp: EntityCategoriesResponse
-    = {
-      categories:
-            [
-              { id: 1, name: 'Title' },
-              { id: 2, name: 'Title 2' },
-            ],
-      persons:
-            [{ id: 3, name: 'Person' }],
-    }
+  const resp: EntityCategoriesResponse = {
+    categories: [
+      { id: 1, name: 'Title' },
+      { id: 2, name: 'Title 2' },
+    ],
+    persons: [
+      { id: 3, name: 'Person' },
+    ],
+  }
 
   const categories = categoriesResponseToCategories(resp)
 

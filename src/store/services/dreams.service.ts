@@ -1,12 +1,14 @@
 import api from '../../api/api'
 import { EntityDreamsResponse, HttpResponse } from '../../api/generated_api'
+import { selectLoggedIn } from '../selectors'
 import { useDreams } from '../store'
 import { IncludeParams } from '../types'
 import { dreamsResponseToDreams } from '../types/dreams.types'
 
 export const dreamsService = {
   async getDreams(types?: IncludeParams) {
-    const { loggedIn, setDreams, dreamsLoaded } = useDreams.getState()
+    const { setDreams, dreamsLoaded } = useDreams.getState()
+    const loggedIn = selectLoggedIn(useDreams.getState())
     let ok = false
     let resp
     if (loggedIn && dreamsLoaded != 'all') {

@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField'
 import { useEffect, useState } from 'react'
 
 import { authService, useDreams } from '../../store'
+import { selectLoggedIn } from '../../store'
 
 const modalStyle: SxProps = {
   position: 'absolute',
@@ -27,7 +28,7 @@ export default function Authentication() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
-  const { loggedIn } = useDreams()
+  const loggedIn = useDreams(selectLoggedIn)
 
   const onClick = () => loggedIn ? authService.logout() : setOpen(true)
   const onClose = () => {

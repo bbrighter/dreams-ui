@@ -13,7 +13,7 @@ describe('useGetDreams', () => {
   })
 
   it('not logged in, not loaded', () => {
-    useDreams.setState({ loggedIn: false, dreamsLoaded: 'none' })
+    useDreams.setState({ token: '', dreamsLoaded: 'none' })
 
     renderHook(() => useGetDreams())
 
@@ -22,7 +22,7 @@ describe('useGetDreams', () => {
   })
 
   it('not logged in, loaded', () => {
-    useDreams.setState({ loggedIn: false, dreamsLoaded: 'public' })
+    useDreams.setState({ token: '', dreamsLoaded: 'public' })
 
     renderHook(() => useGetDreams())
 
@@ -31,7 +31,7 @@ describe('useGetDreams', () => {
   })
 
   it('logged in, not loaded', () => {
-    useDreams.setState({ loggedIn: true, dreamsLoaded: 'none' })
+    useDreams.setState({ token: 'token', dreamsLoaded: 'none' })
 
     renderHook(() => useGetDreams())
 
@@ -40,7 +40,7 @@ describe('useGetDreams', () => {
   })
 
   it('logged in, loaded', () => {
-    useDreams.setState({ loggedIn: true, dreamsLoaded: 'all' })
+    useDreams.setState({ token: 'token', dreamsLoaded: 'all' })
 
     renderHook(() => useGetDreams())
 
@@ -49,7 +49,7 @@ describe('useGetDreams', () => {
   })
 
   it('logged in, only public loaded', () => {
-    useDreams.setState({ loggedIn: true, dreamsLoaded: 'public' })
+    useDreams.setState({ token: 'token', dreamsLoaded: 'public' })
 
     renderHook(() => useGetDreams())
 

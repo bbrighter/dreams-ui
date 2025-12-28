@@ -3,12 +3,11 @@ import { useDreams } from '../store'
 
 export const authService = {
   login: async (password: string): Promise<boolean> => {
-    const { user, setToken, setLoggedIn } = useDreams.getState()
+    const { user, setToken } = useDreams.getState()
     try {
       const resp = await api.login.loginCreate({ name: user, password: password })
       if (!resp.ok) return false
 
-      setLoggedIn(true)
       setToken(resp.data.token)
       return resp.ok
     }

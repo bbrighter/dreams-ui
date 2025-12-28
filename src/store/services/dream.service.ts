@@ -1,10 +1,12 @@
 import api from '../../api/api'
+import { selectLoggedIn } from '../selectors'
 import { useDreams } from '../store'
 import { categoriesResponseToCategories, dreamResponseToDream } from '../types'
 
 export const dreamService = {
   async getDream(dreamId: number) {
-    const { loggedIn, setDream } = useDreams.getState()
+    const { setDream } = useDreams.getState()
+    const loggedIn = selectLoggedIn(useDreams.getState())
     const dreamIdStr = dreamId.toString()
     const resp = loggedIn
       ? await api.dreams.privateDetail(dreamIdStr)

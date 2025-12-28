@@ -4,11 +4,13 @@ import { IconButton, Input } from '@mui/material'
 
 import { useNavigateHomePage } from '../../../hooks/navigate'
 import { dreamService, useDreams } from '../../../store'
+import { selectLoggedIn } from '../../../store'
 import Bar from '../../Components/Bar'
 import Hide from './Hide'
 
 export default function EditHeader() {
-  const { loggedIn, dream } = useDreams()
+  const { dream } = useDreams()
+  const loggedIn = useDreams(selectLoggedIn)
   const date = dream.date
   const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     dreamService.patchDreamDate(new Date(e.currentTarget.value))

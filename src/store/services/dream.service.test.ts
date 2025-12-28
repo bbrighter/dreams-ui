@@ -26,8 +26,8 @@ describe('dream service', () => {
       const privateDetail = vi.spyOn(api.dreams, 'privateDetail')
       const publicDetail = vi.spyOn(api.dreams, 'dreamsDetail')
 
-      const { setLoggedIn } = useDreams.getState()
-      setLoggedIn(true)
+      const { setToken } = useDreams.getState()
+      setToken('token')
       await dreamService.getDream(3)
 
       const { dream } = useDreams.getState()

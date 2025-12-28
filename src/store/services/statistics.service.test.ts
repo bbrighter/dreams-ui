@@ -11,8 +11,8 @@ describe('statistics service', () => {
     })
     it(' not logged in', async () => {
       const statisticsList = vi.spyOn(api.statistics, 'statisticsList')
-      const { setLoggedIn } = useDreams.getState()
-      setLoggedIn(false)
+      const { setToken } = useDreams.getState()
+      setToken('')
 
       await statisticsService.getStatistics()
       expect(statisticsList).toHaveBeenCalled()
@@ -24,8 +24,8 @@ describe('statistics service', () => {
     })
     it('logged in', async () => {
       const statisticsList = vi.spyOn(api.private, 'statisticsList')
-      const { setLoggedIn } = useDreams.getState()
-      setLoggedIn(true)
+      const { setToken } = useDreams.getState()
+      setToken('token')
 
       await statisticsService.getStatistics()
       expect(statisticsList).toHaveBeenCalled()

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { postLoginHandler } from '../../__tests__/mocks/authHandlers'
 import { server } from '../../__tests__/setupTest'
+import { selectLoggedIn } from '../selectors'
 import { useDreams } from '../store'
 import { authService } from './auth.service'
 
@@ -11,7 +12,8 @@ describe('auth service', () => {
       const ok = await authService.login('password')
 
       expect(ok).toBeTruthy()
-      const { loggedIn, token } = useDreams.getState()
+      const { token } = useDreams.getState()
+      const loggedIn = selectLoggedIn(useDreams.getState())
       expect(loggedIn).toBeTruthy()
       expect(token).toBe('token')
     })
@@ -20,7 +22,8 @@ describe('auth service', () => {
       const ok = await authService.login('password')
       expect(ok).toBeFalsy()
 
-      const { loggedIn, user, token } = useDreams.getState()
+      const { user, token } = useDreams.getState()
+      const loggedIn = selectLoggedIn(useDreams.getState())
       expect(loggedIn).toBeFalsy()
       expect(user).toBe('Benni')
       expect(token).toBe('')
@@ -31,7 +34,8 @@ describe('auth service', () => {
     it('ok', async () => {
       await authService.logout()
 
-      const { loggedIn, user, token } = useDreams.getState()
+      const { user, token } = useDreams.getState()
+      const loggedIn = selectLoggedIn(useDreams.getState())
       expect(loggedIn).toBeFalsy()
       expect(user).toBe('Benni')
       expect(token).toBe('')

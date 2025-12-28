@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container'
 import { useEffect, useState } from 'react'
 
-import { categoriesService, dreamsService, IncludeParams, useDreams } from '../../store'
+import { categoriesService, dreamsService, IncludeParams, selectLoggedIn, useDreams } from '../../store'
 import Bar from '../Components/Bar'
 import Navigation from '../Components/Navigation'
 import { BackButton } from '../Edit/Components/EditHeader'
@@ -11,7 +11,7 @@ import Tags from './Components/Tags'
 import { StatisticToggleOptions } from './Components/types'
 
 export default function Statistics() {
-  const loggedIn = useDreams(state => state.loggedIn)
+  const loggedIn = useDreams(selectLoggedIn)
 
   const [selectedOption, setSelectedOption] = useState<StatisticToggleOptions>('person')
   const onChangeToggleOption = (_, v: StatisticToggleOptions) => {

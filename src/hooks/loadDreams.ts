@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 
 import { dreamsService, useDreams } from '../store'
+import { selectLoggedIn } from '../store'
 
 export const useGetDreams = () => {
-  const { dreamsLoaded, loggedIn } = useDreams()
+  const { dreamsLoaded } = useDreams()
+  const logged = useDreams(selectLoggedIn)
 
   useEffect(() => {
     dreamsService.getDreams().then().catch(err => alert(err))
-  }, [dreamsLoaded, loggedIn])
+  }, [dreamsLoaded, logged])
 }
