@@ -1,147 +1,113 @@
 import api from '../../api/api'
 import { useDreams } from '../store'
-import { categoriesResponseToCategories, dreamResponseToDream, dreamsResponseToDreams, IncludeParams } from '../types'
+import { categoriesResponseToCategories, dreamResponseToDream } from '../types'
 
 export const dreamService = {
-    async getDreams(types?: IncludeParams) {
-        const { loggedIn, setDreams, dreamsLoaded } = useDreams.getState()
-        let ok = false
-        let resp
-        if (loggedIn && dreamsLoaded != 'all') {
-            resp = await api.dreams.privateList()
-            ok = resp.ok
-        }
-        if (!loggedIn && dreamsLoaded != 'public') {
-            resp = await api.dreams.dreamsList({ includes: types })
-            ok = resp.ok
-        }
+  async getDream(dreamId: number) {
+    const { loggedIn, setDream } = useDreams.getState()
+    const dreamIdStr = dreamId.toString()
+    const resp = loggedIn
+      ? await api.dreams.privateDetail(dreamIdStr)
+      : await api.dreams.dreamsDetail(dreamIdStr)
 
-        if (!ok) return
+    if (!resp.ok) return
 
-        const which = loggedIn ? 'all' : 'public'
+    setDream(dreamResponseToDream(resp.data))
+  },
 
-        setDreams(dreamsResponseToDreams(resp.data), which)
-    },
+  async patchDreamDate(date: Date) {
+    const { setDate, changeDream, dream } = useDreams.getState()
+    const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { date: date.toISOString() })
 
-    async getDream(dreamId: number) {
-        const { loggedIn, setDream } = useDreams.getState()
-        const dreamIdStr = dreamId.toString()
-        const resp = loggedIn
-        ? await api.dreams.privateDetail(dreamIdStr)
-        : await api.dreams.dreamsDetail(dreamIdStr)
+    if (!resp.ok) return
 
-        if (!resp.ok) return
+    setDate(date)
+    changeDream(dream.id, { date: date })
+  },
 
-        setDream(dreamResponseToDream(resp.data))
-    },
+  async patchDreamDescription() {
+    const { dream } = useDreams.getState()
+    const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { description: dream.description })
 
-    async deleteDream(dreamId: number) {
-        const { removeDream } = useDreams.getState()
-        const dreamIdStr = dreamId.toString()
-        const resp = await api.dreams.dreamsDelete(dreamIdStr)
+    if (!resp.ok) return
+  },
 
-        if (!resp.ok) return
+  async patchDreamRating(rating: number) {
+    const { setRating, changeDream, dream } = useDreams.getState()
+    const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { rating: rating })
 
-        removeDream(dreamId)
-    },
+    if (!resp.ok) return
 
-    async postDream(): Promise<number> {
-        const { addDream } = useDreams.getState()
-        const date = new Date()
-        const resp = await api.dreams.dreamsCreate({ date: date.toISOString() })
+    setRating(rating)
+    changeDream(dream.id, { rating: rating })
+  },
 
-        if (!resp.ok) return 0
+  async patchDreamFinalize() {
+    const { setFinalized, changeDream, dream } = useDreams.getState()
+    const resp = await api.dreams.finalizePartialUpdate(dream.id.toString())
 
-        addDream({ date: date, id: resp.data, finalized: false, isSaved: true, description: '', visible: true, categories: [], persons: [], rating: null, transcript: '' })
-        return resp.data
-    },
+    if (!resp.ok) return
 
-    async patchDreamDate(date: Date) {
-        const { setDate, dream } = useDreams.getState()
-        const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { date: date.toISOString() })
+    setFinalized()
+    changeDream(dream.id, { finalized: true })
+  },
 
-        if (!resp.ok) return
+  async patchDreamVisiblity() {
+    const { setVisibility, changeDream, dream } = useDreams.getState()
+    const newVisible = !dream.visible
+    const resp = await api.dreams.privatePartialUpdate(dream.id.toString())
 
-        setDate(date)
-    },
+    if (!resp.ok) return
 
-    async patchDreamDescription() {
-        const { dream } = useDreams.getState()
-        const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { description: dream.description })
+    setVisibility()
+    changeDream(dream.id, { visible: newVisible })
+  },
 
-        if (!resp.ok) return
-    },
+  async addCategoryToDream(name: string) {
+    const { dream, setCategories, addCategoryToDream } = useDreams.getState()
+    const resp = await api.dreams.categoriesUpdate(dream.id.toString(), { name: name })
 
-    async patchDreamRating(rating: number) {
-        const { setRating, dream } = useDreams.getState()
-        const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { rating: rating })
+    if (!resp.ok) return
+    const { categories, persons } = categoriesResponseToCategories(resp.data)
 
-        if (!resp.ok) return
+    const newCat = resp.data.categories?.find(c => c.name == name)
+    if (!newCat) return
+    addCategoryToDream(newCat)
+    setCategories(categories, persons)
+  },
 
-        setRating(rating)
-    },
+  async removeCategoryFromDream(id: number) {
+    const { dream, removeCategoryFromDream, setCategories } = useDreams.getState()
+    const resp = await api.dreams.categoriesDelete(dream.id.toString(), id.toString())
 
-    async patchDreamFinalize() {
-        const { setFinalized, dream } = useDreams.getState()
-        const resp = await api.dreams.finalizePartialUpdate(dream.id.toString())
+    if (!resp.ok) return
+    const categories = categoriesResponseToCategories(resp.data)
 
-        if (!resp.ok) return
+    removeCategoryFromDream(id)
+    setCategories(categories.categories, categories.persons)
+  },
 
-        setFinalized()
-    },
+  async addPersonToDream(name: string) {
+    const { dream, addPersonToDream, setCategories } = useDreams.getState()
+    const resp = await api.dreams.personsUpdate(dream.id.toString(), { name: name })
 
-    async patchDreamVisiblity() {
-        const { setVisibility, dream } = useDreams.getState()
-        const resp = await api.dreams.privatePartialUpdate(dream.id.toString())
+    if (!resp.ok) return
+    const { categories, persons } = categoriesResponseToCategories(resp.data)
 
-        if (!resp.ok) return
+    const person = resp.data.persons?.find(c => c.name == name)
+    if (!person) return
+    addPersonToDream(person)
+    setCategories(categories, persons)
+  },
 
-        setVisibility()
-    },
+  async removePersonFromDream(id: number) {
+    const { dream, removePersonFromDream, setCategories } = useDreams.getState()
+    const resp = await api.dreams.personsDelete(dream.id.toString(), id.toString())
 
-    async addCategoryToDream(name: string) {
-        const { dream, addCategoryToDream, addCategory } = useDreams.getState()
-        const resp = await api.dreams.categoriesUpdate(dream.id.toString(), { name: name })
+    if (!resp.ok) return
+    const categories = categoriesResponseToCategories(resp.data)
 
-        if (!resp.ok) return
-
-        const newCat = resp.data.categories?.find(c => c.name == name)
-        if (!newCat) return
-        addCategoryToDream(newCat)
-        addCategory(newCat)
-    },
-
-    async removeCategoryFromDream(id: number) {
-        const { dream, removeCategoryFromDream, setCategories } = useDreams.getState()
-        const resp = await api.dreams.categoriesDelete(dream.id.toString(), id.toString())
-
-        if (!resp.ok) return
-        const categories = categoriesResponseToCategories(resp.data)
-
-        removeCategoryFromDream(id)
-        setCategories(categories.categories, categories.persons)
-    },
-
-    async addPersonToDream(name: string) {
-        const { dream, addPersonToDream, addPerson } = useDreams.getState()
-        const resp = await api.dreams.personsUpdate(dream.id.toString(), { name: name })
-
-        if (!resp.ok) return
-
-        const person = resp.data.persons?.find(c => c.name == name)
-        if (!person) return
-        addPersonToDream(person)
-        addPerson(person)
-    },
-
-    async removePersonFromDream(id: number) {
-        const { dream, removePersonFromDream, setCategories } = useDreams.getState()
-        const resp = await api.dreams.personsDelete(dream.id.toString(), id.toString())
-
-        if (!resp.ok) return
-        const categories = categoriesResponseToCategories(resp.data)
-
-        removePersonFromDream(id)
-        setCategories(categories.categories, categories.persons)
-    },
+    removePersonFromDream(id)
+    setCategories(categories.categories, categories.persons)
+  },
 }

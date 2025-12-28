@@ -3,37 +3,37 @@ import { AppBar, ButtonGroup, Toolbar } from '@mui/material'
 import Authentication from './Authentication'
 
 export default function Bar(
-    props: {
-        mainAction: React.ReactNode
-        secondaryAction?: Array<React.ReactNode>
-        optionalMiddleAction?: React.ReactNode
-        position: 'top' | 'bottom'
-        showAuth?: boolean
-    },
+  props: {
+    mainAction: React.ReactNode
+    secondaryAction?: Array<React.ReactNode>
+    optionalMiddleAction?: React.ReactNode
+    position: 'top' | 'bottom'
+    showAuth?: boolean
+  },
 ) {
-    let SecondaryActions = [<div key={0}></div>] as Array<React.ReactNode>
-    if (props.secondaryAction) {
-        SecondaryActions = props.secondaryAction.map((v, i) => <div key={i}>{v}</div>)
-    }
+  let SecondaryActions = [<div key={0}></div>] as Array<React.ReactNode>
+  if (props.secondaryAction) {
+    SecondaryActions = props.secondaryAction.map((v, i) => <div key={i}>{v}</div>)
+  }
 
-    const isTop = props.position == 'top'
+  const isTop = props.position == 'top'
 
-    return (
-        <AppBar
-          position="sticky"
-          sx={{
-                top: isTop ? 0 : 'unset',
-                bottom: isTop ? 'unset' : 0,
-            }}
-        >
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
-                {props.mainAction}
-                {props.optionalMiddleAction}
-                <ButtonGroup variant="outlined">
-                    {SecondaryActions}
-                    {props.showAuth && <Authentication />}
-                </ButtonGroup>
-            </Toolbar>
-        </AppBar>
-    )
+  return (
+    <AppBar
+      position="sticky"
+      sx={{
+        top: isTop ? 0 : 'unset',
+        bottom: isTop ? 'unset' : 0,
+      }}
+    >
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        {props.mainAction}
+        {props.optionalMiddleAction}
+        <ButtonGroup variant="outlined">
+          {SecondaryActions}
+          {props.showAuth && <Authentication />}
+        </ButtonGroup>
+      </Toolbar>
+    </AppBar>
+  )
 }

@@ -12,12 +12,12 @@ expect.extend(matchers)
 export const server = setupServer(...handlers)
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
+  server.listen({ onUnhandledRequest: 'warn' })
 })
 beforeEach(() => {
-        useDreams.getState().resetState()
+  useDreams.getState().resetState()
 })
 afterEach(() => {
-    server.resetHandlers()
+  server.resetHandlers()
 })
 afterAll(() => server.close())

@@ -2,7 +2,7 @@
 export { }
 
 declare global {
-    interface Window {
-        BASE_URL: string
-    }
+  interface Window {
+    BASE_URL: string
+  }
 }

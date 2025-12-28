@@ -5,28 +5,28 @@ import TagInputs from './TagInputs'
 import { categoriesToTagValue, TagValue } from './tagValues'
 
 export default function Categories() {
-    const { categories, dream } = useDreams()
-    const dreamTags = dream.categories
+  const { categories, dream } = useDreams()
+  const dreamTags = dream.categories
 
-    useEffect(() => {
-      categoriesService.list()
-    }, [])
+  useEffect(() => {
+    categoriesService.list()
+  }, [])
 
-    const handleSave = (name: string) => {
-      dreamService.addCategoryToDream(name)
-     }
+  const handleSave = (name: string) => {
+    dreamService.addCategoryToDream(name)
+  }
 
-    const handleDelete = (tag: TagValue) => {
-      dreamService.removeCategoryFromDream(tag.id)
-     }
+  const handleDelete = (tag: TagValue) => {
+    dreamService.removeCategoryFromDream(tag.id)
+  }
 
-    return (
-        <TagInputs
-          type="Category"
-          options={categoriesToTagValue(categories)}
-          values={categoriesToTagValue(dreamTags)}
-          onSave={handleSave}
-          onDelete={handleDelete}
-        />
-    )
+  return (
+    <TagInputs
+      type="Category"
+      options={categoriesToTagValue(categories)}
+      values={categoriesToTagValue(dreamTags)}
+      onSave={handleSave}
+      onDelete={handleDelete}
+    />
+  )
 }

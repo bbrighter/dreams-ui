@@ -9,24 +9,24 @@ import Navigation from '../Components/Navigation'
 import ManagementList from './ManagementList'
 
 export default function Management() {
-    const { categories, persons } = useDreams()
+  const { categories, persons } = useDreams()
 
-    useEffect(() => {
-        categoriesService.list('dreamsCount')
-    }, [])
+  useEffect(() => {
+    categoriesService.list('dreamsCount')
+  }, [])
 
-    const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(0)
 
-    return (
-        <Container sx={{ padding: 1 }}>
-            <Tabs value={tab} onChange={(_, v) => setTab(v)}>
-                <Tab label="Kategorien" />
-                <Tab label="Personen" />
-            </Tabs>
-            <List>
-                <ManagementList listItems={tab === 0 ? categories : persons} />
-            </List>
-            <Navigation activeIndex={2} />
-        </Container>
-    )
+  return (
+    <Container sx={{ padding: 1 }}>
+      <Tabs value={tab} onChange={(_, v) => setTab(v)}>
+        <Tab label="Kategorien" />
+        <Tab label="Personen" />
+      </Tabs>
+      <List>
+        <ManagementList listItems={tab === 0 ? categories : persons} />
+      </List>
+      <Navigation activeIndex={2} />
+    </Container>
+  )
 }

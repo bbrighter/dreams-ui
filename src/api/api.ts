@@ -9,20 +9,20 @@ export const registerTokenProvider = (fn: () => string) => {
 }
 
 const api = new Api({
-    securityWorker: (): RequestParams => {
-        const token = getToken()
-        return { headers: { Authorization: token } }
-    },
+  securityWorker: (): RequestParams => {
+    const token = getToken()
+    return { headers: { Authorization: token } }
+  },
 })
 
 if (import.meta.env.DEV && import.meta.env.MODE == 'test') {
-    api.baseUrl = ''
+  api.baseUrl = ''
 }
- else if (import.meta.env.PROD) {
-    api.baseUrl = window.BASE_URL
+else if (import.meta.env.PROD) {
+  api.baseUrl = window.BASE_URL
 }
- else {
-    api.baseUrl = LOCAL_URL
+else {
+  api.baseUrl = LOCAL_URL
 }
 
 export default api
