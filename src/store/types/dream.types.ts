@@ -19,6 +19,7 @@ interface DreamActions {
   setDream: (dream: Dream) => void
   addDream: (dream: Dream) => void
   setTranscript: (transcript: string) => void
+  setIsSaved: () => void
 }
 
 export type DreamSlice = DreamState & DreamActions

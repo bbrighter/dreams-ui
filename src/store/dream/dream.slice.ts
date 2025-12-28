@@ -88,5 +88,10 @@ export const createDreamSlice: StateCreator<StoreState, [['zustand/immer', never
       draft.dream.transcript = transcript
     })
   },
+  setIsSaved: () => {
+    set((draft: DreamState) => {
+      draft.dream.isSaved = true
+    })
+  },
 
 })

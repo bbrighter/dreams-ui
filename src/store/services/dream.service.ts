@@ -26,10 +26,11 @@ export const dreamService = {
   },
 
   async patchDreamDescription() {
-    const { dream } = useDreams.getState()
+    const { dream, setIsSaved } = useDreams.getState()
     const resp = await api.dreams.dreamsPartialUpdate(dream.id.toString(), { description: dream.description })
 
     if (!resp.ok) return
+    setIsSaved()
   },
 
   async patchDreamRating(rating: number) {
