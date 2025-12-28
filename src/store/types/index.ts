@@ -1,4 +1,3 @@
-export * from './auth.types'
 export * from './categories.types'
 export * from './dream.types'
 export * from './dreams.types'

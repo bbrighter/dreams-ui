@@ -1,7 +1,8 @@
 import { StateCreator } from 'zustand'
 
-import { StoreState } from '../interface'
-import { Statistic, StatisticsSlice, StatisticState } from '../types'
+import { StatisticsSlice, StatisticState } from '../interfaces'
+import { StoreState } from '../interfaces/interface'
+import { Statistic } from '../types'
 
 const setInitialState = (): StatisticState => ({
   categoriesCount: [],

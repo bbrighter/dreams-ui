@@ -6,10 +6,10 @@ import { createAuthSlice } from './auth'
 import { createCategoriesSlice } from './categories'
 import { createDreamSlice } from './dream'
 import { createDreamsSlice } from './dreams'
+import { StoreSlice } from './interfaces'
 import { createStatisticSlice } from './statistics'
-import { AuthSlice, CategorySlice, DreamSlice, DreamsSlice, StatisticsSlice } from './types'
 
-export const useDreams = create<AuthSlice & DreamSlice & DreamsSlice & CategorySlice & StatisticsSlice & { resetState: () => void }>()(
+export const useDreams = create<StoreSlice & { resetState: () => void }>()(
   immer((set, get, api) => {
     const categories = createCategoriesSlice(set, get, api)
     const dream = createDreamSlice(set, get, api)

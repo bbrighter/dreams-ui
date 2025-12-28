@@ -1,0 +1,6 @@
+export * from './auth.interface'
+export * from './categories.interface'
+export * from './dream.interface'
+export * from './dreams.interface'
+export * from './interface'
+export * from './statistics.interface'

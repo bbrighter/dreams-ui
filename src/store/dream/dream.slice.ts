@@ -1,8 +1,8 @@
 import { StateCreator } from 'zustand'
 
-import { StoreState } from '../interface'
-import { Category } from '../types'
-import { Dream, DreamSlice, DreamState } from '../types/dream.types'
+import { DreamSlice, DreamState } from '../interfaces'
+import { StoreState } from '../interfaces/interface'
+import { Category, Dream } from '../types'
 
 const createInitialState = (): DreamState => ({
   dream: {
