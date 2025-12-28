@@ -1,7 +1,7 @@
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 
-import { StatisticToggleOptions } from '../Statistics'
+import { StatisticToggleOptions } from './types'
 
 export default function SelectData(props: {
     options: Array<{ id: number, name: string }>

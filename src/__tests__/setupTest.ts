@@ -4,7 +4,7 @@ import * as matchers from '@testing-library/jest-dom/matchers'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from 'vitest'
 
-import useDreams from '../store/store'
+import { useDreams } from '../store'
 import handlers from './mocks/handlers'
 
 expect.extend(matchers)
@@ -15,7 +15,7 @@ beforeAll(() => {
     server.listen({ onUnhandledRequest: 'warn' })
 })
 beforeEach(() => {
-    useDreams.getState().resetState()
+        useDreams.getState().resetState()
 })
 afterEach(() => {
     server.resetHandlers()

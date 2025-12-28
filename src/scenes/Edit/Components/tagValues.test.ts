@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { Category } from '../../../store/categories/categories'
+import { Category } from '../../../store'
 import { isTagValue } from './tagValues'
 
 test('isTagValue', () => {

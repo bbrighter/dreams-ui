@@ -1,12 +1,14 @@
 import { create } from 'zustand'
 
+import { registerTokenProvider } from '../api/api'
 import { AuthStore, createPasswordSlice } from './auth/authStore'
-import { CategoriesStore, createCategoriesSlice } from './categories/categoriesStore'
-import { createDreamSlice, DreamStore } from './dream/dreamStore'
+import { createCategoriesSlice } from './categories'
+import { createDreamSlice } from './dream'
 import { createStatisticSlice, StatisticsStore } from './statistics/statisticsStore'
+import { CategorySlice, DreamSlice } from './types'
 
-const useDreams = create<
-    DreamStore & CategoriesStore & StatisticsStore & AuthStore & { resetState: () => void }
+export const useDreams = create<
+    DreamSlice & CategorySlice & StatisticsStore & AuthStore & { resetState: () => void }
 >((set, get, api) => {
     const categories = createCategoriesSlice(set, get, api)
     const dreams = createDreamSlice(set, get, api)
@@ -27,4 +29,4 @@ const useDreams = create<
     }
 })
 
-export default useDreams
+registerTokenProvider(() => useDreams.getState().token)

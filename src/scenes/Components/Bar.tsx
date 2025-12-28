@@ -1,5 +1,4 @@
 import { AppBar, ButtonGroup, Toolbar } from '@mui/material'
-import * as React from 'react'
 
 import Authentication from './Authentication'
 

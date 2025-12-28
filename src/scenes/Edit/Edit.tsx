@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useGetDreams } from '../../hooks/loadDreams'
 import { useSimpleDebounce } from '../../hooks/simpleDebounce'
-import useDreams from '../../store/store'
+import { dreamService, useDreams } from '../../store'
 import Categories from './Components/Categories'
 import EditFooter from './Components/EditFooter'
 import EditHeader from './Components/EditHeader'
@@ -15,13 +15,8 @@ const DEBOUNCE_TIME = 2_000
 
 export default function Edit() {
     const navigate = useNavigate()
-
-    const setDescription = useDreams(state => state.setDescription)
-    const getDream = useDreams(state => state.getDream)
-    const updateDescription = useDreams(state => state.updateDescription)
-    const isSaved = useDreams(state => state.dream.isSaved)
-    const description = useDreams(state => state.dream.description)
-    const transcript = useDreams(state => state.dream.transcript)
+    const { dream, setDescription } = useDreams()
+    const { isSaved, description, transcript } = dream
     const { id: urlId } = useParams()
 
     useGetDreams()
@@ -32,7 +27,7 @@ export default function Edit() {
             navigate('/')
             return
         }
-        getDream(urlId).catch((err) => {
+        dreamService.getDream(numericId).catch((err) => {
             if (err.status == 404) {
                 navigate('/')
                 return
@@ -42,7 +37,7 @@ export default function Edit() {
 
     const debouncedSave = useSimpleDebounce(async () => {
         if (!isSaved) {
-            await updateDescription()
+            await dreamService.patchDreamDescription()
         }
     }, DEBOUNCE_TIME)
 

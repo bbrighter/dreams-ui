@@ -1,11 +1,16 @@
-import useDreams from '../store/store'
 import { Api, RequestParams } from './generated_api'
 
 const LOCAL_URL = 'http://127.0.0.1:5000'
 
+let getToken: () => string = () => ''
+
+export const registerTokenProvider = (fn: () => string) => {
+  getToken = fn
+}
+
 const api = new Api({
     securityWorker: (): RequestParams => {
-        const token = useDreams.getState().token
+        const token = getToken()
         return { headers: { Authorization: token } }
     },
 })

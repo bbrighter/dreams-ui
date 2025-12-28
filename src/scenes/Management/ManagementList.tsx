@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField'
 import { useState } from 'react'
 import React from 'react'
 
-import useDreams from '../../store/store'
+import { categoriesService, useDreams } from '../../store'
 
 export default function ManagementList(props: {
     listItems: Array<{ id: number, name: string, count?: number }>
@@ -28,11 +28,7 @@ export default function ManagementList(props: {
 }
 
 function ManagementListItem(props: { listItem: { id: number, name: string, count?: number } }) {
-    const categories = useDreams(state => state.categories)
-    const persons = useDreams(state => state.persons)
-    const changeName = useDreams(state => state.renameCategory)
-    const deleteCategory = useDreams(state => state.deleteCategory)
-    const mergeCategories = useDreams(state => state.mergeCategories)
+    const { categories, persons } = useDreams()
     const [mode, setMode] = useState<'default' | 'edit' | 'delete' | 'merge'>('default')
     const [name, setName] = useState(props.listItem.name)
     const [mergeValue, setMergeValue] = useState(props.listItem.id)
@@ -40,17 +36,17 @@ function ManagementListItem(props: { listItem: { id: number, name: string, count
     const setDefaultMode = () => setMode('default')
 
     const onConfirmRename = async () => {
-        await changeName(props.listItem.id, name)
+        await categoriesService.rename(props.listItem.id, name)
         setDefaultMode()
     }
 
     const onConfirmDelete = async () => {
-        await deleteCategory(props.listItem.id)
+        await categoriesService.delete(props.listItem.id)
         setDefaultMode()
     }
 
     const onConfirmMerge = async () => {
-        await mergeCategories(props.listItem.id, mergeValue, props.listItem.name)
+        await categoriesService.merge(props.listItem.id, mergeValue, props.listItem.name)
         setDefaultMode()
     }
 

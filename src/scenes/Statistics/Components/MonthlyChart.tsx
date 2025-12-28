@@ -3,9 +3,9 @@ import { BarChart } from '@mui/x-charts'
 import { eachMonthOfInterval, format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
 
-import useDreams from '../../../store/store'
-import { StatisticToggleOptions } from '../Statistics'
+import { useDreams } from '../../../store'
 import SelectData from './SelectData'
+import { StatisticToggleOptions } from './types'
 
 type PivotedData = {
     month: string

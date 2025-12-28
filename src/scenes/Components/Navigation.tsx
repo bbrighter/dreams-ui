@@ -2,14 +2,14 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats'
 import SettingsIcon from '@mui/icons-material/Settings'
 import TableViewIcon from '@mui/icons-material/TableView'
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
-import * as React from 'react'
+import { useState } from 'react'
 
 import { useNavigateHomePage, useNavigateStatistics, useNavigateToManagement } from '../../hooks/navigate'
 
 export default function Navigation(props: {
     activeIndex: number
 }) {
-    const [activeTab, setActiveTab] = React.useState(props.activeIndex)
+    const [activeTab, setActiveTab] = useState(props.activeIndex)
     const goToHome = useNavigateHomePage()
     const goToStatistics = useNavigateStatistics()
     const goToManagement = useNavigateToManagement()

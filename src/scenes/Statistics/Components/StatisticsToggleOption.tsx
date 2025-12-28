@@ -1,7 +1,7 @@
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
-import { StatisticToggleOptions } from '../Statistics'
+import { StatisticToggleOptions } from './types'
 
 export default function StatisticsToggleOption(props: {
     onChange: (e: React.MouseEvent<HTMLElement>, v: StatisticToggleOptions) => void

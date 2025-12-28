@@ -1,10 +1,9 @@
 import Button from '@mui/material/Button'
 import { useState } from 'react'
 
-import useDreams from '../../../store/store'
+import { dreamService, useDreams } from '../../../store'
 
 export default function FinalizeButton() {
-    const finalizeDream = useDreams(state => state.finalizeDream)
     const finalized = useDreams(state => state.dream.finalized)
     const isRated = useDreams(state => state.dream.rating != null)
 
@@ -12,7 +11,7 @@ export default function FinalizeButton() {
 
     const finalize = async () => {
         setIsLoading(true)
-        finalizeDream().finally(() => setIsLoading(false))
+        dreamService.patchDreamFinalize().finally(() => setIsLoading(false))
     }
 
     return (

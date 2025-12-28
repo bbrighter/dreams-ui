@@ -3,16 +3,15 @@ import SaveIcon from '@mui/icons-material/Save'
 import { IconButton, Input } from '@mui/material'
 
 import { useNavigateHomePage } from '../../../hooks/navigate'
-import useDreams from '../../../store/store'
+import { dreamService, useDreams } from '../../../store'
 import Bar from '../../Components/Bar'
 import Hide from './Hide'
 
 export default function EditHeader() {
-    const loggedIn = useDreams(state => state.loggedIn)
-    const date = useDreams(state => state.dream.date)
-    const updateDate = useDreams(state => state.updateDate)
+    const { loggedIn, dream } = useDreams()
+    const date = dream.date
     const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        updateDate(new Date(e.currentTarget.value))
+        dreamService.patchDreamDate(new Date(e.currentTarget.value))
     }
 
     const DateInput = (
@@ -44,11 +43,10 @@ export default function EditHeader() {
 }
 
 function SaveButton() {
-    const updateDescription = useDreams(state => state.updateDescription)
     const isSaved = useDreams(state => state.dream.isSaved)
 
     const saveDream = () => {
-        updateDescription()
+           dreamService.patchDreamDescription()
      }
 
     const color = isSaved ? 'success' : 'error'

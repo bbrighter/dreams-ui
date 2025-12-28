@@ -18,8 +18,8 @@ export default [
     dreamCategoriesHandlers.putDreamPerson,
 
     categoryHandlers.deleteCategory,
-    categoryHandlers.getCategories,
+    categoryHandlers.getCategoriesHandler(),
     categoryHandlers.patchCategoryName,
     categoryHandlers.patchCategoryType,
-    categoryHandlers.postCategoryMerge,
+    categoryHandlers.postCategoryMergeHandler(),
 ]

@@ -3,16 +3,13 @@ import { useEffect } from 'react'
 
 import { useGetDreams } from '../../hooks/loadDreams'
 import { useNavigateToDream } from '../../hooks/navigate'
-import useDreams from '../../store/store'
+import { dreamService, useDreams } from '../../store'
 import Bar from '../Components/Bar'
 import Navigation from '../Components/Navigation'
 import DreamItem from './Components/DreamItem'
 
 export default function Start() {
-    const createDream = useDreams(state => state.createDream)
-    const dreams = useDreams(state => state.dreams)
-    const scrollPosition = useDreams(state => state.scrollPosition)
-    const setScrollPosition = useDreams(state => state.setScrollPosition)
+    const { dreams, scrollPosition, setScrollPosition } = useDreams()
 
     const navigate = useNavigateToDream()
 
@@ -31,7 +28,7 @@ export default function Start() {
     }, [])
 
     const handleClick = async () => {
-        const dreamId = await createDream()
+        const dreamId = await dreamService.postDream()
         navigate(dreamId)
     }
 

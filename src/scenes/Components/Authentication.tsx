@@ -9,7 +9,7 @@ import { SxProps } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { useEffect, useState } from 'react'
 
-import useDreams from '../../store/store'
+import { useDreams } from '../../store'
 
 const modalStyle: SxProps = {
     position: 'absolute',
@@ -27,9 +27,7 @@ export default function Authentication() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [isWrong, setIsWrong] = useState(false)
-    const login = useDreams(state => state.login)
-    const logout = useDreams(state => state.logout)
-    const loggedIn = useDreams(state => state.loggedIn)
+    const { login, logout, loggedIn } = useDreams()
 
     const onClick = () => loggedIn ? logout() : setOpen(true)
     const onClose = () => {

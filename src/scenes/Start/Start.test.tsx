@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
@@ -34,6 +34,7 @@ describe('start page is rendered and can be clicked', () => {
         render(<MemoryRouter><Start /></MemoryRouter>)
 
         const nonFinalizedRow = await findRowByDate('01.01.2025')
+
         const svg = nonFinalizedRow.querySelector('svg') as SVGElement
         expect(svg.getAttribute('class')).toMatch(/colorWarning/)
         const notRated = within(nonFinalizedRow).getByTitle('Bewertung')
@@ -59,6 +60,15 @@ describe('start page is rendered and can be clicked', () => {
 
     it('empty list', async () => {
         server.use(getDreamsHandler([]))
+        render(<MemoryRouter><Start /></MemoryRouter>)
+
+        expect(await screen.findByText('Neu')).toBeInTheDocument()
+        expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
+    })
+
+    it('private dream not visible', { skip: true }, async () => {
+        // Testing the wrong thing. If the API returns it, it is shown! We must check that not being logged in doesn't query the API
+        server.use(getDreamsHandler([{ id: 1, date: '2025-01-01T12:30:00Z', finalized: false, visible: false }]))
         render(<MemoryRouter><Start /></MemoryRouter>)
 
         expect(await screen.findByText('Neu')).toBeInTheDocument()

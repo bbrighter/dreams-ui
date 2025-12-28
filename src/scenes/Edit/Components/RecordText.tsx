@@ -6,12 +6,11 @@ import Fab from '@mui/material/Fab'
 import { useCallback, useEffect } from 'react'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
-import useDreams from '../../../store/store'
+import { useDreams } from '../../../store'
 
 export default function RecordText() {
-    const setDescription = useDreams(state => state.setDescription)
-    const description = useDreams(state => state.dream.description)
-    const setCurrentTranscript = useDreams(state => state.setTranscript)
+    const { setDescription, setTranscript, dream } = useDreams()
+    const description = dream.description
 
     const {
         transcript,
@@ -35,8 +34,8 @@ export default function RecordText() {
 
     useEffect(() => {
         const tr = listening ? transcript : ''
-        setCurrentTranscript(tr)
-    }, [transcript, listening, setCurrentTranscript])
+        setTranscript(tr)
+    }, [transcript, listening, setTranscript])
 
     useEffect(() => {
         if (!isMicrophoneAvailable) {

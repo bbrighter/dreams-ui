@@ -5,8 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-import { MetaDream } from '../../../store/dream/dreams'
-import useDreams from '../../../store/store'
+import { dreamService, MetaDream } from '../../../store'
 
 const StyledListItem = styled(ListItem)`
     :hover{
@@ -17,7 +16,6 @@ const StyledListItem = styled(ListItem)`
 export default function DreamItem(props: {
     dream: MetaDream
 }) {
-    const deleteDream = useDreams(state => state.deleteDream)
     const navigate = useNavigate()
 
     const navigateTo = (dreamId: number) => {
@@ -33,7 +31,7 @@ export default function DreamItem(props: {
                 <IconButton
                   onClick={(e) => {
                         e.stopPropagation()
-                        deleteDream(props.dream.id)
+                        dreamService.deleteDream(props.dream.id)
                     }}
                   title="Löschen"
                 >
