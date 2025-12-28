@@ -14,7 +14,7 @@ export type Statistic = {
   count: number
 }
 
-export type Statistics = {
+type Statistics = {
   categoriesCount: Array<Statistic>
   personsCount: Array<Statistic>
 }

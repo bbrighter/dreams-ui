@@ -9,8 +9,6 @@ export interface CategoryState {
 interface CategoryActions {
   resetCategories: () => void
   setCategories: (cats: Categories, pers: Categories) => void
-  addCategory: (cat: Category) => void
-  addPerson: (pers: Category) => void
   deleteCategory: (id: number) => void
   deletePerson: (id: number) => void
   renameCategory: (id: number, newName: string) => void

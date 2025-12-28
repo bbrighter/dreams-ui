@@ -26,19 +26,6 @@ export const createCategoriesSlice: StateCreator<StoreState, [['zustand/immer', 
       draft.categoriesLoaded = true
     })
   },
-
-  addCategory: (cat: Category) => {
-    if (get().categories.find(c => c.id == cat.id)) return
-    set((draft: CategoryState) => {
-      draft.categories.push(cat)
-    })
-  },
-  addPerson: (per: Category) => {
-    if (get().persons.find(p => p.id == per.id)) return
-    set((draft: CategoryState) => {
-      draft.persons.push(per)
-    })
-  },
   deleteCategory: (id: number) => {
     const filteredCats = get().categories.filter(c => c.id != id)
     set((draft: CategoryState) => {
