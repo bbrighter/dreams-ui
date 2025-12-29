@@ -1,41 +1,14 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse } from 'msw'
 
-import { EntityDreamResponse, EntityDreamsResponse } from '../../api/generated_api';
+import { EntityDreamMetaResponse, EntityDreamResponse } from '../../api/generated_api'
+import { dream1, initialDreams, initialPrivateDreams, privateDream } from './initialValues'
 
-const dreamHandlers = (baseUrl: string) => ([
-    http.get(baseUrl + '/dreams', () => (HttpResponse.json({
-        dreams: [
-            { id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false },
-            { id: 4, date: '2025-02-01T12:30:00Z', visible: true, finalized: true, rating: 3 },
-        ],
-    } as EntityDreamsResponse))),
-
-    http.post(baseUrl + '/dreams', () => (HttpResponse.json(3))),
-    http.get(baseUrl + '/dreams/private', () => (HttpResponse.json({
-        dreams: [
-            { id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false },
-            { id: 2, date: '2025-02-02T13:00:00Z', visible: false, finalized: false },
-        ],
-    } as EntityDreamsResponse))),
-
-    http.get(baseUrl + '/dreams/:id', () => (HttpResponse.json({
-        id: 1, date: '2025-01-01T12:30:00Z', visible: true, finalized: false,
-        description: 'description',
-        categories: [{ id: 1, name: 'Category' }],
-        persons: [{ id: 1, name: 'Person' }],
-    } as EntityDreamResponse))),
-
-    http.get(baseUrl + '/dreams/private/:id', () => (HttpResponse.json({
-        id: 2, date: '2025-02-02T13:00:00Z', visible: false, finalized: false,
-        description: 'description',
-        categories: [{ id: 10, name: 'cat name' }],
-        persons: [{ id: 100, name: 'person name' }],
-    } as EntityDreamResponse))),
-
-    http.delete(baseUrl + '/dreams/:id', () => (HttpResponse.json())),
-    http.patch(baseUrl + '/dreams/:id', () => (HttpResponse.json())),
-    http.patch(baseUrl + '/dreams/:id/finalize', () => (HttpResponse.json())),
-])
-
-
-export default dreamHandlers
+export const getDreamsHandler = (overrides?: EntityDreamMetaResponse[]) => http.get('/dreams', () => (HttpResponse.json({ dreams: initialDreams(overrides) })))
+export const postDreamsHandler = (overrides?: number) => http.post('/dreams', () => (HttpResponse.json(overrides || 4)))
+export const getDreamsPrivateHandler = http.get('/dreams/private', () => (HttpResponse.json({ dreams: initialPrivateDreams })))
+export const getDreamHandler = (overrides?: Partial<EntityDreamResponse>) => http.get('/dreams/:id', () => (HttpResponse.json(dream1(overrides))))
+export const getDreamPrivateHandler = http.get('/dreams/private/:id', () => (HttpResponse.json(privateDream())))
+export const deleteDreamHandler = http.delete('/dreams/:id', () => (HttpResponse.json()))
+export const patchDreamHandler = http.patch('/dreams/:id', () => (HttpResponse.json()))
+export const patchDreamFinalizeHandler = http.patch('/dreams/:id/finalize', () => (HttpResponse.json()))
+export const patchPrivateDreamHandler = http.patch('/dreams/private/:id', () => (HttpResponse.json()))

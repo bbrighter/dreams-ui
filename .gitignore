@@ -11,6 +11,9 @@
 # production
 /dist
 
+# dependency cruiser
+graph.svg
+
 # misc
 .DS_Store
 .env.local

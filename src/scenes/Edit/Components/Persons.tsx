@@ -1,30 +1,27 @@
 import { useEffect } from 'react'
 
-import useDreams from '../../../store/store'
+import { categoriesService, dreamService, useDreams } from '../../../store'
 import TagInputs from './TagInputs'
 import { categoriesToTagValue, TagValue } from './tagValues'
 
-
 export default function Persons() {
-    const getCategories = useDreams(state => state.getCategories)
-    const addPerson = useDreams(state => state.addPerson)
-    const removePerson = useDreams(state => state.removePerson)
-    const usedPersons = useDreams(state => state.dream.persons)
-    const personSuggestions = useDreams(state => state.persons)
+  const usedPersons = useDreams(state => state.dream.persons)
+  const personSuggestions = useDreams(state => state.persons)
 
-    useEffect(() => { getCategories() }, [])
+  useEffect(() => {
+    categoriesService.list()
+  }, [])
 
-    const handleChange = (name: string) => { addPerson(name) }
+  const handleChange = (name: string) => dreamService.addPersonToDream(name)
+  const handleDelete = (person: TagValue) => dreamService.removePersonFromDream(person.id)
 
-    const handleSave = (person: TagValue) => { removePerson(person.id) }
-
-    return (
-        <TagInputs
-            type='Person'
-            values={categoriesToTagValue(usedPersons)}
-            options={categoriesToTagValue(personSuggestions)}
-            onSave={handleChange}
-            onDelete={handleSave}
-        />
-    )
+  return (
+    <TagInputs
+      type="Person"
+      values={categoriesToTagValue(usedPersons)}
+      options={categoriesToTagValue(personSuggestions)}
+      onSave={handleChange}
+      onDelete={handleDelete}
+    />
+  )
 }

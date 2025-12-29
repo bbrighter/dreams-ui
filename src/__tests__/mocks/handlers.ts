@@ -1,11 +1,34 @@
-import categoryHandlers from './categoryHandlers';
-import dreamHandlers from './dreamsHandlers';
+import * as authHandlers from './authHandlers'
+import * as categoryHandlers from './categoryHandlers'
+import * as dreamCategoriesHandlers from './dreamCategoriesHandler'
+import * as dreamHandlers from './dreamsHandlers'
+import * as statisticsHandler from './statisticsHandler'
 
-const baseUrl = 'http://127.0.0.1:5000'
+export default [
+  dreamHandlers.deleteDreamHandler,
+  dreamHandlers.getDreamHandler(),
+  dreamHandlers.getDreamPrivateHandler,
+  dreamHandlers.getDreamsHandler(),
+  dreamHandlers.getDreamsPrivateHandler,
+  dreamHandlers.patchDreamFinalizeHandler,
+  dreamHandlers.patchDreamHandler,
+  dreamHandlers.patchPrivateDreamHandler,
+  dreamHandlers.postDreamsHandler(),
 
-const handlers = [
-    ...dreamHandlers(baseUrl),
-    ...categoryHandlers(baseUrl),
+  dreamCategoriesHandlers.deleteDreamCategory,
+  dreamCategoriesHandlers.deleteDreamPerson,
+  dreamCategoriesHandlers.putDreamCategory(),
+  dreamCategoriesHandlers.putDreamPerson(),
+
+  categoryHandlers.deleteCategory,
+  categoryHandlers.getCategoriesHandler(),
+  categoryHandlers.patchCategoryName,
+  categoryHandlers.patchCategoryType,
+  categoryHandlers.postCategoryMergeHandler(),
+
+  authHandlers.postLoginHandler(),
+  authHandlers.postLogoutHandler(),
+
+  statisticsHandler.getPrivateStatisticsHandler(),
+  statisticsHandler.getStatisticsHandler(),
 ]
-
-export default handlers

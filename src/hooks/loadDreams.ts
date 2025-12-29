@@ -1,18 +1,13 @@
 import { useEffect } from 'react'
 
-import useDreams from '../store/store'
+import { dreamsService, useDreams } from '../store'
+import { selectLoggedIn } from '../store'
 
 export const useGetDreams = () => {
-    const getDreams = useDreams(state => state.getDreams)
-    const isLoaded = useDreams(state => state.dreamsLoaded)
-    const loggedIn = useDreams(state => state.loggedIn)
+  const { dreamsLoaded } = useDreams()
+  const logged = useDreams(selectLoggedIn)
 
-    useEffect(() => {
-        if (isLoaded == 'none' && !loggedIn) {
-            getDreams().then().catch(err => alert(err))
-        }
-        if (isLoaded == 'public' && loggedIn) {
-            getDreams().then().catch(err => alert(err))
-        }
-    }, [isLoaded, getDreams, loggedIn])
+  useEffect(() => {
+    dreamsService.getDreams().then().catch(err => alert(err))
+  }, [dreamsLoaded, logged])
 }

@@ -1,8 +1,8 @@
 // src/globals.d.ts
-export { };
+export { }
 
 declare global {
-    interface Window {
-        BASE_URL: string;
-    }
+  interface Window {
+    BASE_URL: string
+  }
 }
