@@ -9,8 +9,7 @@ import { SxProps } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import { useEffect, useState } from 'react'
 
-import { authService, useDreams } from '../../store'
-import { selectLoggedIn } from '../../store'
+import { authService, selectLoggedIn, useDreams } from '../../store'
 
 const modalStyle: SxProps = {
   position: 'absolute',

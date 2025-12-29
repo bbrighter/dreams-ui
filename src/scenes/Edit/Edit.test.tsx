@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
+import { selectLoggedIn, useDreams } from '../../store'
 import Edit from './Edit'
 
 const rendering = () => render(
@@ -190,5 +191,20 @@ describe('viewing and editing a single dream', () => {
     expect(finalizeButton).not.toBeDisabled()
     await userEvent.click(finalizeButton)
     expect(finalizeButton).toBeDisabled()
+  })
+
+  it('hide', async () => {
+    await act(async () => {
+      useDreams.getState().setToken('token')
+      rendering()
+    })
+
+    const hideButton = await screen.findByTestId('hideButton')
+
+    expect(hideButton).toBeInTheDocument()
+    await userEvent.click(hideButton)
+
+    const unhideButton = await screen.findByTestId('RemoveModeratorIcon')
+    expect(unhideButton).toBeInTheDocument()
   })
 })

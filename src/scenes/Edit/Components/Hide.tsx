@@ -6,10 +6,12 @@ import { dreamService, useDreams } from '../../../store'
 
 export default function Hide() {
   const visible = useDreams(state => state.dream.visible)
-  const handleClick = () => dreamService.patchDreamVisiblity()
+  const handleClick = () => {
+    dreamService.patchDreamVisiblity()
+  }
 
   return (
-    <IconButton onClick={handleClick}>
+    <IconButton onClick={handleClick} data-testid="hideButton">
       {visible ? <RemoveModeratorIcon /> : <ShieldIcon />}
     </IconButton>
   )
