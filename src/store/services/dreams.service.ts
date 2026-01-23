@@ -1,13 +1,12 @@
-import api from '../../api/api'
-import { EntityDreamsResponse, HttpResponse } from '../../api/generated_api'
-import { selectLoggedIn } from '../selectors'
+import { selectLoggedIn } from '../auth'
+import { IncludeParams } from '../categories'
+import { dreamsResponseToDreams } from '../dreams'
 import { useDreams } from '../store'
-import { IncludeParams } from '../types'
-import { dreamsResponseToDreams } from '../types/dreams.types'
 
 export const dreamsService = {
   async getDreams(types?: IncludeParams) {
-    const { setDreams, dreamsLoaded } = useDreams.getState()
+    const { setDreams, dreamsLoaded, api } = useDreams.getState()
+    if (!api) return
     const loggedIn = selectLoggedIn(useDreams.getState())
     let ok = false
     let resp
@@ -28,7 +27,8 @@ export const dreamsService = {
   },
 
   async deleteDream(dreamId: number) {
-    const { removeDream } = useDreams.getState()
+    const { removeDream, api } = useDreams.getState()
+    if (!api) return
     const dreamIdStr = dreamId.toString()
     const resp = await api.dreams.dreamsDelete(dreamIdStr)
 
@@ -38,7 +38,8 @@ export const dreamsService = {
   },
 
   async postDream(): Promise<number> {
-    const { addDream, addDreamToList } = useDreams.getState()
+    const { addDream, addDreamToList, api } = useDreams.getState()
+    if (!api) return 0
     const date = new Date()
     const resp = await api.dreams.dreamsCreate({ date: date.toISOString() })
 

@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { putDreamCategory, putDreamPerson } from '../../__tests__/mocks/dreamCategoriesHandler'
 import { getDreamHandler, getDreamsHandler } from '../../__tests__/mocks/dreamsHandlers'
 import { server } from '../../__tests__/setupTest'
-import api from '../../api/api'
 import { useDreams } from '../store'
 import { categoriesService } from './categories.service'
 import { dreamService } from './dream.service'
@@ -12,8 +11,9 @@ describe('dream service', () => {
   describe('get dream', () => {
     beforeEach(() => vi.resetAllMocks())
     it('not logged in', async () => {
-      const privateDetail = vi.spyOn(api.dreams, 'privateDetail')
-      const publicDetail = vi.spyOn(api.dreams, 'dreamsDetail')
+      const { api } = useDreams.getState()
+      const privateDetail = vi.spyOn(api!.dreams, 'privateDetail')
+      const publicDetail = vi.spyOn(api!.dreams, 'dreamsDetail')
       await dreamService.getDream(1)
 
       const { dream } = useDreams.getState()
@@ -23,10 +23,10 @@ describe('dream service', () => {
     })
 
     it('logged in', async () => {
-      const privateDetail = vi.spyOn(api.dreams, 'privateDetail')
-      const publicDetail = vi.spyOn(api.dreams, 'dreamsDetail')
+      const { api, setToken } = useDreams.getState()
+      const privateDetail = vi.spyOn(api!.dreams, 'privateDetail')
+      const publicDetail = vi.spyOn(api!.dreams, 'dreamsDetail')
 
-      const { setToken } = useDreams.getState()
       setToken('token')
       await dreamService.getDream(3)
 
@@ -97,7 +97,8 @@ describe('dream service', () => {
       vi.resetAllMocks()
     })
     it('new category', async () => {
-      const categoriesUpdate = vi.spyOn(api.dreams, 'categoriesUpdate')
+      const { api } = useDreams.getState()
+      const categoriesUpdate = vi.spyOn(api!.dreams, 'categoriesUpdate')
       await dreamService.addCategoryToDream('new category')
 
       const { dream, categories } = useDreams.getState()
@@ -107,8 +108,9 @@ describe('dream service', () => {
     })
 
     it('existing category', async () => {
+      const { api } = useDreams.getState()
       server.use(putDreamCategory({ categories: [{ name: 'Category', id: 1 }] }))
-      const categoriesUpdate = vi.spyOn(api.dreams, 'categoriesUpdate')
+      const categoriesUpdate = vi.spyOn(api!.dreams, 'categoriesUpdate')
       await dreamService.addCategoryToDream('Category')
 
       const { dream, categories } = useDreams.getState()
@@ -140,7 +142,8 @@ describe('dream service', () => {
       vi.resetAllMocks()
     })
     it('new person', async () => {
-      const personsUpdate = vi.spyOn(api.dreams, 'personsUpdate')
+      const { api } = useDreams.getState()
+      const personsUpdate = vi.spyOn(api!.dreams, 'personsUpdate')
       await dreamService.addPersonToDream('new person')
 
       const { dream, persons } = useDreams.getState()
@@ -149,8 +152,9 @@ describe('dream service', () => {
       expect(personsUpdate).toHaveBeenCalledWith('1', { name: 'new person' })
     })
     it('existing person', async () => {
+      const { api } = useDreams.getState()
       server.use(putDreamPerson({ persons: [{ id: 1, name: 'Person' }] }))
-      const personsUpdate = vi.spyOn(api.dreams, 'personsUpdate')
+      const personsUpdate = vi.spyOn(api!.dreams, 'personsUpdate')
       await dreamService.addPersonToDream('Person')
 
       const { dream, persons } = useDreams.getState()

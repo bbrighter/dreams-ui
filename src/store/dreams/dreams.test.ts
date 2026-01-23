@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 
 import { EntityDreamsResponse } from '../../api/generated_api'
-import { dreamsResponseToDreams } from '../types/dreams.types'
+import { dreamsResponseToDreams } from './dreams.types'
 
 test('dreamsResponseToDreams', () => {
   const resp: EntityDreamsResponse = {

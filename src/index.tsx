@@ -7,12 +7,16 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 
 import scenes from './scenes'
+import { useDreams } from './store'
 
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
 })
+
+const init = useDreams.getState().initApi
+await init()
 
 const container = document.getElementById('root')!
 const root = createRoot(container)

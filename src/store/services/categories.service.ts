@@ -1,10 +1,10 @@
-import api from '../../api/api'
+import { categoriesResponseToCategories, TypeParams } from '../categories'
 import { useDreams } from '../store'
-import { categoriesResponseToCategories, TypeParams } from '../types'
 
 export const categoriesService = {
   async list(includes?: 'dreamsCount') {
-    const { setCategories } = useDreams.getState()
+    const { setCategories, api } = useDreams.getState()
+    if (!api) return
     const resp = await api.categories.categoriesList({ includes: includes })
 
     if (!resp.ok) return
@@ -15,7 +15,8 @@ export const categoriesService = {
   },
 
   async rename(id: number, newName: string) {
-    const { renameCategory, renamePerson, categories, persons } = useDreams.getState()
+    const { renameCategory, renamePerson, categories, persons, api } = useDreams.getState()
+    if (!api) return
     const isCategory = categories.some(c => c.id == id)
     const isPerson = persons.some(p => p.id == id)
     if (!isCategory && !isPerson) return
@@ -28,7 +29,8 @@ export const categoriesService = {
   },
 
   async delete(id: number) {
-    const { deleteCategory, deletePerson, categories, persons } = useDreams.getState()
+    const { deleteCategory, deletePerson, categories, persons, api } = useDreams.getState()
+    if (!api) return
     const isCategory = categories.some(c => c.id == id)
     const isPerson = persons.some(p => p.id == id)
     if (!isCategory && !isPerson) return
@@ -41,7 +43,8 @@ export const categoriesService = {
   },
 
   async changeType(id: number) {
-    const { changeCategoryType, changePersonType, categories, persons } = useDreams.getState()
+    const { changeCategoryType, changePersonType, categories, persons, api } = useDreams.getState()
+    if (!api) return
     const isCategory = categories.some(c => c.id == id)
     const isPerson = persons.some(p => p.id == id)
 
@@ -60,7 +63,8 @@ export const categoriesService = {
   },
 
   async merge(sourceId: number, targetId: number, newName: string) {
-    const { setCategories } = useDreams.getState()
+    const { setCategories, api } = useDreams.getState()
+    if (!api) return
     const resp = await api.categories.mergeCreate({ sourceCategoryId: sourceId, targetCategoryId: targetId, newName: newName })
     if (!resp.ok) return
 

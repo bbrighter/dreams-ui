@@ -1,4 +1,4 @@
-import { Categories } from '../types'
+import { Categories } from './categories.types'
 
 export interface CategoryState {
   categories: Categories

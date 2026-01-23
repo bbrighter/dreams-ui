@@ -1,4 +1,4 @@
-import { Statistic, Statistics } from '../types'
+import { Statistic, Statistics } from './statistics.types'
 
 export type StatisticState = Statistics
 
