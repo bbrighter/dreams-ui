@@ -33,14 +33,20 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Test
-      run: pnpm test
+    - name: Typescript
+      run: pnpm tsc
 
     - name: Lint
       run: pnpm run lint 
 
     - name: Knip
       run: pnpm run knip
+
+    - name: Dependency cruiser
+      run: pnpm dependencies:ci
+
+    - name: Test
+      run: pnpm test
 
   build:
     needs: test
