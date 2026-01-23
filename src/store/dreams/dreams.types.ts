@@ -1,5 +1,5 @@
 import { EntityDreamsResponse } from '../../api/generated_api'
-import { Category } from './categories.types'
+import { Category } from '../categories'
 
 export type MetaDream = {
   id: number

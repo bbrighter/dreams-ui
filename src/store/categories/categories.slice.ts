@@ -1,8 +1,7 @@
 import { StateCreator } from 'zustand'
 
-import { CategorySlice, CategoryState } from '../interfaces'
-import { StoreState } from '../interfaces/interface'
-import { Categories } from '../types'
+import { CategorySlice, CategoryState } from './categories.interface'
+import { Categories } from './categories.types'
 
 const createInitialSlice = (): CategoryState => ({
   categories: [],
@@ -10,7 +9,7 @@ const createInitialSlice = (): CategoryState => ({
   persons: [],
 })
 
-export const createCategoriesSlice: StateCreator<StoreState, [['zustand/immer', never]], [], CategorySlice> = (set, get) => ({
+export const createCategoriesSlice: StateCreator<CategoryState, [['zustand/immer', never]], [], CategorySlice> = (set, get) => ({
   ...createInitialSlice(),
   resetCategories: () => {
     const { categories, categoriesLoaded, persons } = createInitialSlice()

@@ -1,4 +1,4 @@
-import { Dreams, MetaDream } from '../types'
+import { Dreams, MetaDream } from './dreams.types'
 
 export interface DreamsState {
   dreams: Dreams

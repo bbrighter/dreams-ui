@@ -1,12 +1,12 @@
-import api from '../../api/api'
-import { selectLoggedIn } from '../selectors'
+import { selectLoggedIn } from '../auth'
 import { useDreams } from '../store'
 
 const STATISTICS_LIMITS = 40
 
 export const statisticsService = {
   getStatistics: async () => {
-    const { setStatistics } = useDreams.getState()
+    const { setStatistics, api } = useDreams.getState()
+    if (!api) return
     const loggedIn = selectLoggedIn(useDreams.getState())
     const resp = loggedIn
       ? await api.private.statisticsList({ limit: STATISTICS_LIMITS })

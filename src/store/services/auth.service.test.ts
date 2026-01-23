@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { postLoginHandler } from '../../__tests__/mocks/authHandlers'
 import { server } from '../../__tests__/setupTest'
-import { selectLoggedIn } from '../selectors'
+import { selectLoggedIn } from '../auth'
 import { useDreams } from '../store'
 import { authService } from './auth.service'
 

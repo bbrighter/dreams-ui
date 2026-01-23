@@ -1,5 +1,5 @@
 import { EntityDreamResponse } from '../../api/generated_api'
-import { Category, categoryResponseToCategories } from './categories.types'
+import { Category, categoryResponseToCategories } from '../categories'
 
 export type Dream = {
   id: number

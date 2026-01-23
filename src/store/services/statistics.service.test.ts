@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import api from '../../api/api'
 import { useDreams } from '../store'
 import { statisticsService } from './statistics.service'
 
@@ -9,9 +8,9 @@ describe('statistics service', () => {
     beforeEach(() => {
       vi.resetAllMocks()
     })
-    it(' not logged in', async () => {
-      const statisticsList = vi.spyOn(api.statistics, 'statisticsList')
-      const { setToken } = useDreams.getState()
+    it('not logged in', async () => {
+      const { setToken, api } = useDreams.getState()
+      const statisticsList = vi.spyOn(api!.statistics, 'statisticsList')
       setToken('')
 
       await statisticsService.getStatistics()
@@ -23,8 +22,8 @@ describe('statistics service', () => {
       expect(personsCount[0].count).toBe(5)
     })
     it('logged in', async () => {
-      const statisticsList = vi.spyOn(api.private, 'statisticsList')
-      const { setToken } = useDreams.getState()
+      const { setToken, api } = useDreams.getState()
+      const statisticsList = vi.spyOn(api!.private, 'statisticsList')
       setToken('token')
 
       await statisticsService.getStatistics()

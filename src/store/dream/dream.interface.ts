@@ -1,4 +1,5 @@
-import { Category, Dream } from '../types'
+import { Category } from '../categories'
+import { Dream } from './dream.types'
 
 export interface DreamState {
   dream: Dream

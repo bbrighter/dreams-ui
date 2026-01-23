@@ -14,8 +14,10 @@ export const server = setupServer(...handlers)
 beforeAll(() => {
   server.listen({ onUnhandledRequest: 'warn' })
 })
-beforeEach(() => {
+beforeEach(async () => {
   useDreams.getState().resetState()
+  const init = useDreams.getState().initApi
+  await init()
 })
 afterEach(() => {
   server.resetHandlers()

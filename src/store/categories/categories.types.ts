@@ -1,6 +1,6 @@
 import { EntityCategoriesResponse, EntityCategoryResponse } from '../../api/generated_api'
 
-export interface Category {
+export type Category = {
   id: number
   name: string
   count?: number

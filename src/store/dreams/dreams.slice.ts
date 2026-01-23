@@ -1,8 +1,7 @@
 import { StateCreator } from 'zustand'
 
-import { DreamsSlice, DreamsState } from '../interfaces'
-import { StoreState } from '../interfaces/interface'
-import { Dreams, MetaDream } from '../types/dreams.types'
+import { DreamsSlice, DreamsState } from './dreams.interface'
+import { Dreams, MetaDream } from './dreams.types'
 
 const createInitialState = (): DreamsState => ({
   dreams: [],
@@ -10,7 +9,7 @@ const createInitialState = (): DreamsState => ({
   scrollPosition: 0,
 })
 
-export const createDreamsSlice: StateCreator<StoreState, [['zustand/immer', never]], [], DreamsSlice> = (set, get) => ({
+export const createDreamsSlice: StateCreator<DreamsState, [['zustand/immer', never]], [], DreamsSlice> = (set, get) => ({
   ...createInitialState(),
   resetDreams: () => set((draft: DreamsState) => {
     draft.dreams = createInitialState().dreams
