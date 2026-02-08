@@ -18,7 +18,6 @@ export type MonthlyStatistics = Array<{
 }>
 
 export const respToMonthlyStatistics = (resp: EntityStatistics): MonthlyStatistics => {
-  console.log(resp)
   return resp.statistics.map((s) => {
     const catMap = new Map<number, number>()
     s.categories.forEach(c => catMap.set(c.id, c.count))

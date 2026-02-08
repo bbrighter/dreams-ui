@@ -7,11 +7,6 @@ export const getRowByText = (text: string): HTMLElement => {
   return element.closest('li')!
 }
 
-export const getEditButton = (text: string): HTMLElement => {
-  const row = getRowByText(text)
-  return within(row).getByTitle('Umbenennen')
-}
-
 export const clickEditButton = async (text: string) => {
   await waitFor(async () => {
     const row = getRowByText(text)

@@ -10,8 +10,8 @@ export const initialDreams = (overrides?: EntityDreamMetaResponse[]): EntityDrea
 
 export const initialPrivateDreams: EntityDreamMetaResponse[] = [...initialDreams(), privateDream3]
 
-export const cat1: EntityCategoryResponse = { id: 1, name: 'Category', type: EntityCategoryType.TypeCategory }
-export const pers1: EntityCategoryResponse = { id: 2, name: 'Person', type: EntityCategoryType.TypePerson }
+const cat1: EntityCategoryResponse = { id: 1, name: 'Category', type: EntityCategoryType.TypeCategory }
+const pers1: EntityCategoryResponse = { id: 2, name: 'Person', type: EntityCategoryType.TypePerson }
 
 export const dream1 = (overrides: Partial<EntityDreamResponse> = {}): EntityDreamResponse => ({
   ...metaDream1,

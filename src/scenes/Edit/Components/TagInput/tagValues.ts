@@ -10,7 +10,3 @@ export function isTagValue(t: unknown): t is TagValue {
     && 'id' in t && typeof (t.id) == 'number'
     && 'name' in t && typeof (t.name) == 'string'
 }
-
-export function categoriesToTagValue(ts: Array<Category>): Array<TagValue> {
-  return ts
-}
