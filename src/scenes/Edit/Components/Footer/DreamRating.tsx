@@ -1,27 +1,22 @@
 import Rating from '@mui/material/Rating'
-import { useEffect, useState } from 'react'
 
-import { dreamService, useDreams } from '../../../store'
+import { dreamService, useDreams } from '../../../../store'
 
 export default function DreamRating() {
   const rating = useDreams(state => state.dream.rating)
-  const [value, setValue] = useState<number | null>(rating)
+  const setRating = useDreams(state => state.setRating)
 
   const onChange = (_: React.SyntheticEvent, v: number | null) => {
     if (v != null) {
-      setValue(v)
-      dreamService.patchDreamRating(v)
+      setRating(v)
+      dreamService.saveDream()
     }
   }
-
-  useEffect(() => {
-    setValue(rating)
-  }, [rating])
 
   return (
     <Rating
       title="Bewertung"
-      value={value}
+      value={rating}
       onChange={onChange}
     />
   )

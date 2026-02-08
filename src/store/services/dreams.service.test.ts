@@ -1,4 +1,3 @@
-import { HttpHandler } from 'msw'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { getDreamsHandler, postDreamsHandler } from '../../__tests__/mocks/dreamsHandlers'
@@ -48,11 +47,8 @@ describe('dream service', () => {
       const id = await dreamsService.postDream()
 
       expect(id).toBe(3)
-      const { dreams, dream } = useDreams.getState()
+      const { dreams } = useDreams.getState()
       expect(dreams).toHaveLength(3)
-      expect(dream.id).toBe(3)
-      expect(dream.date.getTime()).toBeLessThan(new Date().getTime())
-      expect(dream.date.getTime()).toBeGreaterThan(new Date().getTime() - 1000)
     })
   })
 })

@@ -1,25 +1,20 @@
 import Container from '@mui/material/Container'
 import { useEffect, useState } from 'react'
 
-import { categoriesService, dreamsService, IncludeParams, selectLoggedIn, useDreams } from '../../store'
-import Bar from '../Components/Bar'
-import Navigation from '../Components/Navigation'
-import { BackButton } from '../Edit/Components/EditHeader'
-import MonthlyChart from './Components/MonthlyChart'
-import StatisticsToggleOption from './Components/StatisticsToggleOption'
-import Tags from './Components/Tags'
-import { StatisticToggleOptions } from './Components/types'
+import { categoriesService, CategoryType, useIsLoggedIn } from '../../store'
+import { Bar, Navigation } from '../Components'
+import { BackButton } from '../Edit/Components/Header/EditHeader'
+import { MonthlyChart, StatisticsToggleOption, Tags } from './Components'
 
 export default function Statistics() {
-  const loggedIn = useDreams(selectLoggedIn)
+  const loggedIn = useIsLoggedIn()
 
-  const [selectedOption, setSelectedOption] = useState<StatisticToggleOptions>('person')
-  const onChangeToggleOption = (_, v: StatisticToggleOptions) => {
+  const [selectedOption, setSelectedOption] = useState<CategoryType>('person')
+  const onChangeToggleOption = (_, v: CategoryType) => {
     setSelectedOption(v)
   }
 
   useEffect(() => {
-    dreamsService.getDreams(IncludeParams.ALL)
     categoriesService.list()
   }, [loggedIn])
 

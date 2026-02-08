@@ -1,11 +1,9 @@
 import { Button, Container, List } from '@mui/material'
 import { useEffect } from 'react'
 
-import { useGetDreams } from '../../hooks/loadDreams'
 import { useNavigateToDream } from '../../hooks/navigate'
 import { dreamsService, useDreams } from '../../store'
-import Bar from '../Components/Bar'
-import Navigation from '../Components/Navigation'
+import { Bar, Navigation } from '../Components'
 import DreamItem from './Components/DreamItem'
 
 export default function Start() {
@@ -13,9 +11,8 @@ export default function Start() {
 
   const navigate = useNavigateToDream()
 
-  useGetDreams()
-
   useEffect(() => {
+    dreamsService.getDreams()
     window.scrollTo(0, scrollPosition)
   }, [])
 

@@ -1,19 +1,37 @@
-import { selectLoggedIn } from '../auth'
+import { controllerCountsResponseToStatistic, respToMonthlyStatistics } from '../statistics/statistics.types'
 import { useDreams } from '../store'
 
 const STATISTICS_LIMITS = 40
 
 export const statisticsService = {
-  getStatistics: async () => {
+  getStatistics: async (limit?: number) => {
     const { setStatistics, api } = useDreams.getState()
     if (!api) return
-    const loggedIn = selectLoggedIn(useDreams.getState())
-    const resp = loggedIn
-      ? await api.private.statisticsList({ limit: STATISTICS_LIMITS })
-      : await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
-    if (!resp.ok) return
+    // const loggedIn = selectLoggedIn(useDreams.getState())
+    // const resp = loggedIn
+    //   ? await api.private.statisticsList({ limit: STATISTICS_LIMITS })
+    //   : await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
+    const resp = await api.countCategories.countCategoriesList({ limit: limit ? limit : STATISTICS_LIMITS })
+    if (!resp.ok) {
+      console.error('error')
+      return
+    }
 
-    const { categories, persons } = resp.data
-    setStatistics(categories, persons)
+    const statistics = controllerCountsResponseToStatistic(resp.data)
+    setStatistics(statistics)
+  },
+
+  getMonthlyStatistics: async () => {
+    const { setMonthlyStatistics, api } = useDreams.getState()
+    if (!api) return
+
+    const resp = await api.countCategories.monthlyList()
+    if (!resp.ok) {
+      console.error('error')
+      return
+    }
+
+    const monthly = respToMonthlyStatistics(resp.data)
+    setMonthlyStatistics(monthly)
   },
 }

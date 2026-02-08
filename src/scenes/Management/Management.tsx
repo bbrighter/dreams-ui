@@ -4,15 +4,18 @@ import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { useEffect, useState } from 'react'
 
-import { categoriesService, useDreams } from '../../store'
-import Navigation from '../Components/Navigation'
+import { categoriesService, statisticsService } from '../../store'
+import { useStatistics } from '../../store/selectors'
+import { Navigation } from '../Components'
 import ManagementList from './ManagementList'
 
 export default function Management() {
-  const { categories, persons } = useDreams()
+  const personStatistics = useStatistics('person')
+  const tagStatistics = useStatistics('category')
 
   useEffect(() => {
-    categoriesService.list('dreamsCount')
+    statisticsService.getStatistics(0)
+    categoriesService.list()
   }, [])
 
   const [tab, setTab] = useState(0)
@@ -24,7 +27,7 @@ export default function Management() {
         <Tab label="Personen" />
       </Tabs>
       <List>
-        <ManagementList listItems={tab === 0 ? categories : persons} />
+        <ManagementList listItems={tab === 0 ? tagStatistics : personStatistics} />
       </List>
       <Navigation activeIndex={2} />
     </Container>

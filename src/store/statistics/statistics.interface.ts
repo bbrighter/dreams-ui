@@ -1,10 +1,14 @@
-import { Statistic, Statistics } from './statistics.types'
+import { MonthlyStatistics, Statistics } from './statistics.types'
 
-export type StatisticState = Statistics
+export type StatisticState = {
+  statistics: Statistics
+  monthlyStatistics: MonthlyStatistics
+}
 
 interface StatisticActions {
   resetStatistics: () => void
-  setStatistics: (cats: Array<Statistic>, persons: Array<Statistic>) => void
+  setStatistics: (s: Statistics) => void
+  setMonthlyStatistics: (m: MonthlyStatistics) => void
 }
 
 export type StatisticsSlice = StatisticState & StatisticActions

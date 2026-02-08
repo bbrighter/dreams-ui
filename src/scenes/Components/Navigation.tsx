@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { useNavigateHomePage, useNavigateStatistics, useNavigateToManagement } from '../../hooks/navigate'
 
-export default function Navigation(props: {
+export function Navigation(props: {
   activeIndex: number
 }) {
   const [activeTab, setActiveTab] = useState(props.activeIndex)

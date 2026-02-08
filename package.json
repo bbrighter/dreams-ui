@@ -27,7 +27,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "openapi": "swagger-typescript-api generate -p C:\\Users\\Test\\go\\src\\github.com\\bbrighter\\dreams-api\\docs\\swagger.json -o ./src/api -n generated_api.ts",
+    "openapi": "swagger-typescript-api generate -p ~/Dokumente/Code/dreams-api/docs/swagger.json -o ./src/api -n generated_api.ts",
     "tsc": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

@@ -1,6 +1,7 @@
 import { StateCreator } from 'zustand'
 
-import { Api } from '../../api/generated_api'
+import { Api, RequestParams } from '../../api/generated_api'
+import { AuthState } from '../auth'
 import { ApiSlice, ApiState } from './api.type'
 
 const initialState = (): ApiState => ({
@@ -8,7 +9,7 @@ const initialState = (): ApiState => ({
 })
 
 export const createApiSlice: StateCreator<
-  ApiState,
+  ApiState & AuthState,
   [['zustand/immer', never]],
   [],
   ApiSlice
@@ -31,7 +32,12 @@ export const createApiSlice: StateCreator<
       baseUrl = config.apiUrl
     }
 
-    const api = new Api()
+    const api = new Api({
+      securityWorker: (): RequestParams => {
+        const token = get().token
+        return { headers: { Authorization: token } }
+      },
+    })
     api.baseUrl = baseUrl
     set((draft) => {
       draft.api = api

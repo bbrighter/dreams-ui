@@ -1,8 +1,20 @@
 import { StateCreator } from 'zustand'
 
-import { Category } from '../categories'
-import { DreamSlice, DreamState } from './dream.interface'
-import { Dream } from './dream.types'
+import { Dream, hashDream } from './dream.types'
+
+interface DreamActions {
+  resetDream: () => void
+  setDate: (date: Date) => void
+  setDescription: (desc: string) => void
+  setFinalized: () => void
+  setVisibility: (isVisible: boolean) => void
+  setRating: (rating: number) => void
+  setDreamCategories: (cats: Array<number>) => void
+  setDream: (dream: Dream) => void
+  setHash: (dream: Dream) => void
+}
+
+type DreamState = { dream: Dream, hash: string }
 
 const createInitialState = (): DreamState => ({
   dream: {
@@ -10,37 +22,34 @@ const createInitialState = (): DreamState => ({
     description: '',
     finalized: false,
     id: 0,
-    isSaved: false,
-    persons: [],
     categories: [],
     visible: true,
     rating: null,
-    transcript: '',
   },
-})
+  hash: '' }
+)
+
+export type DreamSlice = DreamActions & DreamState
 
 export const createDreamSlice: StateCreator<DreamState, [['zustand/immer', never]], [], DreamSlice> = (set, get) => ({
   ...createInitialState(),
   resetDream: () => set((draft: DreamState) => {
-    draft.dream = createInitialState().dream
+    draft = createInitialState()
   }),
 
   setDate: (date: Date) => {
     set((draft: DreamState) => {
       draft.dream.date = date
-      draft.dream.isSaved = false
     })
   },
   setDescription: (description: string) => {
     set((draft: DreamState) => {
       draft.dream.description = description
-      draft.dream.isSaved = false
     })
   },
-  setVisibility: () => {
-    const newVisiblity = !get().dream.visible
+  setVisibility: (isVisible: boolean) => {
     set((draft: DreamState) => {
-      draft.dream.visible = newVisiblity
+      draft.dream.visible = isVisible
     })
   },
   setRating: (rating: number) => {
@@ -58,40 +67,14 @@ export const createDreamSlice: StateCreator<DreamState, [['zustand/immer', never
       draft.dream = dream
     })
   },
-  addDream: (dream: Dream) => {
+  setDreamCategories: (cats: Array<number>) => {
     set((draft: DreamState) => {
-      draft.dream = dream
+      draft.dream.categories = cats
     })
   },
-  addCategoryToDream: (category: Category) => {
+  setHash: (dream: Dream) => {
     set((draft: DreamState) => {
-      draft.dream.categories.push(category)
+      draft.hash = hashDream(dream)
     })
   },
-  removeCategoryFromDream: (catId: number) => {
-    set((draft: DreamState) => {
-      draft.dream.categories = get().dream.categories.filter(c => c.id != catId)
-    })
-  },
-  addPersonToDream: (person: Category) => {
-    set((draft: DreamState) => {
-      draft.dream.persons.push(person)
-    })
-  },
-  removePersonFromDream: (personId: number) => {
-    set((draft: DreamState) => {
-      draft.dream.persons = get().dream.persons.filter(p => p.id != personId)
-    })
-  },
-  setTranscript: (transcript: string) => {
-    set((draft: DreamState) => {
-      draft.dream.transcript = transcript
-    })
-  },
-  setIsSaved: () => {
-    set((draft: DreamState) => {
-      draft.dream.isSaved = true
-    })
-  },
-
 })

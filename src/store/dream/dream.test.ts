@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { EntityDreamResponse } from '../../api/generated_api'
+import { EntityCategoryType, EntityDreamResponse } from '../../api/generated_api'
 import { dreamResponseToDream } from './dream.types'
 
 test('dreamResponseToDream', () => {
@@ -8,8 +8,7 @@ test('dreamResponseToDream', () => {
     id: 1,
     date: '2024-01-04T19:54:20.113Z',
     description: 'description',
-    persons: [],
-    categories: [],
+    categories: [{ id: 1, name: 'name', type: EntityCategoryType.TypeCategory }],
     visible: true,
     finalized: false,
   }
@@ -21,8 +20,8 @@ test('dreamResponseToDream', () => {
   expect(dream.date.getMonth()).toBe(0) // 0 is January
   expect(dream.date.getFullYear()).toBe(2024)
   expect(dream.description).toBe('description')
-  expect(dream.persons).toHaveLength(0)
-  expect(dream.categories).toHaveLength(0)
+  expect(dream.categories).toHaveLength(1)
+  expect(dream.categories[0]).toBe(1)
   expect(dream.visible).toBe(true)
   expect(dream.finalized).toBe(false)
 })

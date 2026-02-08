@@ -1,23 +1,29 @@
 import { StateCreator } from 'zustand'
 
 import { StatisticsSlice, StatisticState } from './statistics.interface'
-import { Statistic } from './statistics.types'
+import { MonthlyStatistics, Statistics } from './statistics.types'
 
 const setInitialState = (): StatisticState => ({
-  categoriesCount: [],
-  personsCount: [],
+  monthlyStatistics: [],
+  statistics: [],
 })
 
 export const createStatisticSlice: StateCreator<StatisticState, [['zustand/immer', never]], [], StatisticsSlice> = (set, get) => ({
   ...setInitialState(),
   resetStatistics: () => set((draft: StatisticState) => {
-    const { categoriesCount, personsCount } = setInitialState()
-    draft.categoriesCount = categoriesCount
-    draft.personsCount = personsCount
+    const { monthlyStatistics, statistics } = setInitialState()
+    draft.monthlyStatistics = monthlyStatistics
+    draft.statistics = statistics
   }),
-  setStatistics: (cats: Array<Statistic>, pers: Array<Statistic>) =>
+
+  setStatistics: (s: Statistics) =>
     set((draft: StatisticState) => {
-      draft.categoriesCount = cats
-      draft.personsCount = pers
+      draft.statistics = s
     }),
+
+  setMonthlyStatistics: (m: MonthlyStatistics) => {
+    set((draft: StatisticState) => {
+      draft.monthlyStatistics = m
+    })
+  },
 })

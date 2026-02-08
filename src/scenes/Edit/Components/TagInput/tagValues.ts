@@ -1,4 +1,4 @@
-import { Category } from '../../../store'
+import { Category } from '../../../../store'
 
 export interface TagValue {
   id: number

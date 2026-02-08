@@ -2,25 +2,16 @@ import Box from '@mui/material/Box'
 import { useEffect } from 'react'
 import { TagCloud } from 'react-tagcloud'
 
-import { statisticsService, useDreams } from '../../../store'
-import { StatisticToggleOptions } from './types'
+import { CategoryType, statisticsService, useStatistics } from '../../../store'
 
-export default function Tags(props: {
-  type: StatisticToggleOptions
-}) {
-  const { categoriesCount, personsCount, persons, categories } = useDreams()
-
+export function Tags({ type }: { type: CategoryType }) {
   useEffect(() => {
-    statisticsService.getStatistics()
+    statisticsService.getStatistics(40)
   }, [])
 
-  const count = props.type == 'person' ? personsCount : categoriesCount
-  const names = props.type == 'person' ? persons : categories
+  const counts = useStatistics(type)
 
-  const tags = count.map((s) => {
-    const name = names.find(n => n.id == s.id)?.name || ''
-    return { key: s.id.toString(), value: name, count: s.count }
-  })
+  const tags = counts.map(s => ({ key: s.id.toString(), value: s.name, count: s.count }))
 
   return (
     <Box sx={{ position: 'relative', width: '80%', left: '10%', mt: '1rem', mb: '1rem' }}>

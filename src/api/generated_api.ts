@@ -10,44 +10,71 @@
  * ---------------------------------------------------------------
  */
 
-export interface EntityCategoriesResponse {
-  categories?: EntityCategoryResponse[];
-  persons?: EntityCategoryResponse[];
+export enum EntityCategoryType {
+  TypePerson = "person",
+  TypeCategory = "category",
 }
 
-export interface EntityCategoryResponse {
-  count?: number;
-  id: number;
+export interface ControllerLoginRequest {
+  name: string;
+  password: string;
+}
+
+export interface ControllerMergeCategoriesParams {
+  newName: string;
+  sourceCategoryId: number;
+  targetCategoryId: number;
+}
+
+export interface ControllerPostCategoryRequestBody {
+  categoryType: EntityCategoryType;
   name: string;
 }
 
-export interface EntityCountResponse {
+export interface ControllerPostDreamRequest {
+  date: string;
+  description?: string;
+}
+
+export interface ControllerUpdateDreamRequest {
+  date?: string;
+  description?: string;
+  rating?: number;
+}
+
+export interface EntityCategoriesCountResponse {
+  categories: EntityCountByCat[];
+}
+
+export interface EntityCategoriesResponse {
+  categories: EntityCategoryResponse[];
+}
+
+export interface EntityCategoryResponse {
+  id: number;
+  name: string;
+  type: EntityCategoryType;
+}
+
+export interface EntityCountByCat {
   count: number;
   id: number;
 }
 
-export interface EntityCountsResponse {
-  categories: EntityCountResponse[];
-  persons: EntityCountResponse[];
-}
-
 export interface EntityDreamMetaResponse {
-  categories?: EntityCategoryResponse[];
   date: string;
   finalized: boolean;
   id: number;
-  persons?: EntityCategoryResponse[];
   rating?: number;
   visible: boolean;
 }
 
 export interface EntityDreamResponse {
-  categories?: EntityCategoryResponse[];
+  categories: EntityCategoryResponse[];
   date: string;
   description: string;
   finalized: boolean;
   id: number;
-  persons?: EntityCategoryResponse[];
   rating?: number;
   visible: boolean;
 }
@@ -60,26 +87,14 @@ export interface EntityLoginResponse {
   token: string;
 }
 
-export interface V1LoginRequest {
-  name: string;
-  password: string;
+export interface EntityStatistic {
+  categories: EntityCountByCat[];
+  dreamCount: number;
+  month: string;
 }
 
-export interface V1MergeCategoriesParams {
-  newName: string;
-  sourceCategoryId: number;
-  targetCategoryId: number;
-}
-
-export interface V1PostDreamRequest {
-  date: string;
-  description?: string;
-}
-
-export interface V1UpdateDreamRequest {
-  date?: string;
-  description?: string;
-  rating?: number;
+export interface EntityStatistics {
+  statistics: EntityStatistic[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -128,6 +143,7 @@ type CancelToken = Symbol | string | number;
 
 export enum ContentType {
   Json = "application/json",
+  JsonApi = "application/vnd.api+json",
   FormData = "multipart/form-data",
   UrlEncoded = "application/x-www-form-urlencoded",
   Text = "text/plain",
@@ -194,12 +210,20 @@ export class HttpClient<SecurityDataType = unknown> {
       input !== null && (typeof input === "object" || typeof input === "string")
         ? JSON.stringify(input)
         : input,
+    [ContentType.JsonApi]: (input: any) =>
+      input !== null && (typeof input === "object" || typeof input === "string")
+        ? JSON.stringify(input)
+        : input,
     [ContentType.Text]: (input: any) =>
       input !== null && typeof input !== "string"
         ? JSON.stringify(input)
         : input,
-    [ContentType.FormData]: (input: any) =>
-      Object.keys(input || {}).reduce((formData, key) => {
+    [ContentType.FormData]: (input: any) => {
+      if (input instanceof FormData) {
+        return input;
+      }
+
+      return Object.keys(input || {}).reduce((formData, key) => {
         const property = input[key];
         formData.append(
           key,
@@ -210,7 +234,8 @@ export class HttpClient<SecurityDataType = unknown> {
               : `${property}`,
         );
         return formData;
-      }, new FormData()),
+      }, new FormData());
+    },
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   };
 
@@ -296,13 +321,14 @@ export class HttpClient<SecurityDataType = unknown> {
             : payloadFormatter(body),
       },
     ).then(async (response) => {
-      const r = response.clone() as HttpResponse<T, E>;
+      const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
+      const responseToParse = responseFormat ? response.clone() : response;
       const data = !responseFormat
         ? r
-        : await response[responseFormat]()
+        : await responseToParse[responseFormat]()
             .then((data) => {
               if (r.ok) {
                 r.data = data;
@@ -340,17 +366,10 @@ export class Api<
      * @name CategoriesList
      * @request GET:/categories
      */
-    categoriesList: (
-      query?: {
-        /** Comma separated list of child objects. Possible entries: dreamsCount */
-        includes?: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    categoriesList: (params: RequestParams = {}) =>
       this.request<EntityCategoriesResponse, any>({
         path: `/categories`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -417,14 +436,50 @@ export class Api<
      * @request POST:/categories/merge
      */
     mergeCreate: (
-      mergeCategoriesParams: V1MergeCategoriesParams,
+      mergeCategoriesParams: ControllerMergeCategoriesParams,
       params: RequestParams = {},
     ) =>
-      this.request<EntityCategoriesResponse, any>({
+      this.request<EntityCategoriesCountResponse, any>({
         path: `/categories/merge`,
         method: "POST",
         body: mergeCategoriesParams,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  countCategories = {
+    /**
+     * @description Get count per category and person
+     *
+     * @name CountCategoriesList
+     * @request GET:/count-categories
+     */
+    countCategoriesList: (
+      query?: {
+        /** Limit of returned results */
+        limit?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EntityCategoriesCountResponse, any>({
+        path: `/count-categories`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get count per month
+     *
+     * @name MonthlyList
+     * @request GET:/count-categories/monthly
+     */
+    monthlyList: (params: RequestParams = {}) =>
+      this.request<EntityStatistics, any>({
+        path: `/count-categories/monthly`,
+        method: "GET",
         format: "json",
         ...params,
       }),
@@ -436,17 +491,10 @@ export class Api<
      * @name DreamsList
      * @request GET:/dreams
      */
-    dreamsList: (
-      query?: {
-        /** Comma separated list of child objects. Possible entries: categories, persons */
-        includes?: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    dreamsList: (params: RequestParams = {}) =>
       this.request<EntityDreamsResponse, any>({
         path: `/dreams`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -458,7 +506,7 @@ export class Api<
      * @request POST:/dreams
      */
     dreamsCreate: (
-      postDreamRequest: V1PostDreamRequest,
+      postDreamRequest: ControllerPostDreamRequest,
       params: RequestParams = {},
     ) =>
       this.request<number, void>({
@@ -552,7 +600,7 @@ export class Api<
      */
     dreamsPartialUpdate: (
       dreamId: string,
-      updateDreamRequest: V1UpdateDreamRequest,
+      updateDreamRequest: ControllerUpdateDreamRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, void>({
@@ -564,29 +612,44 @@ export class Api<
       }),
 
     /**
-     * @description Add a category to a dream
+     * @description Add a new person or category to a dream
+     *
+     * @name CategoriesCreate
+     * @request POST:/dreams/{dreamId}/categories
+     */
+    categoriesCreate: (
+      dreamId: string,
+      params: ControllerPostCategoryRequestBody,
+      requestParams: RequestParams = {},
+    ) =>
+      this.request<number, void>({
+        path: `/dreams/${dreamId}/categories`,
+        method: "POST",
+        body: params,
+        type: ContentType.Json,
+        format: "json",
+        ...requestParams,
+      }),
+
+    /**
+     * @description Add an exiting person or category to a dream
      *
      * @name CategoriesUpdate
-     * @request PUT:/dreams/{dreamId}/categories
+     * @request PUT:/dreams/{dreamId}/categories/{categoryId}
      */
     categoriesUpdate: (
       dreamId: string,
-      query: {
-        /** Name of a category */
-        name: string;
-      },
+      categoryId: string,
       params: RequestParams = {},
     ) =>
-      this.request<EntityCategoriesResponse, void>({
-        path: `/dreams/${dreamId}/categories`,
+      this.request<void, void>({
+        path: `/dreams/${dreamId}/categories/${categoryId}`,
         method: "PUT",
-        query: query,
-        format: "json",
         ...params,
       }),
 
     /**
-     * @description Remove a category from a dream
+     * @description Delete a category or person from a dream
      *
      * @name CategoriesDelete
      * @request DELETE:/dreams/{dreamId}/categories/{categoryId}
@@ -596,10 +659,9 @@ export class Api<
       categoryId: string,
       params: RequestParams = {},
     ) =>
-      this.request<EntityCategoriesResponse, void>({
+      this.request<void, void>({
         path: `/dreams/${dreamId}/categories/${categoryId}`,
         method: "DELETE",
-        format: "json",
         ...params,
       }),
 
@@ -615,46 +677,6 @@ export class Api<
         method: "PATCH",
         ...params,
       }),
-
-    /**
-     * @description Add a person to a dream
-     *
-     * @name PersonsUpdate
-     * @request PUT:/dreams/{dreamId}/persons
-     */
-    personsUpdate: (
-      dreamId: string,
-      query: {
-        /** Name of person */
-        name: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<EntityCategoriesResponse, void>({
-        path: `/dreams/${dreamId}/persons`,
-        method: "PUT",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Delete a person from a dream
-     *
-     * @name PersonsDelete
-     * @request DELETE:/dreams/{dreamId}/persons/{personId}
-     */
-    personsDelete: (
-      dreamId: string,
-      personId: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<EntityCategoriesResponse, void>({
-        path: `/dreams/${dreamId}/persons/${personId}`,
-        method: "DELETE",
-        format: "json",
-        ...params,
-      }),
   };
   login = {
     /**
@@ -663,7 +685,10 @@ export class Api<
      * @name LoginCreate
      * @request POST:/login
      */
-    loginCreate: (loginRequest: V1LoginRequest, params: RequestParams = {}) =>
+    loginCreate: (
+      loginRequest: ControllerLoginRequest,
+      params: RequestParams = {},
+    ) =>
       this.request<EntityLoginResponse, void>({
         path: `/login`,
         method: "POST",
@@ -684,52 +709,6 @@ export class Api<
       this.request<void, void>({
         path: `/logout`,
         method: "POST",
-        ...params,
-      }),
-  };
-  private = {
-    /**
-     * @description Get count per category and person
-     *
-     * @name StatisticsList
-     * @request GET:/private/statistics
-     * @secure
-     */
-    statisticsList: (
-      query?: {
-        /** Limit of returned results */
-        limit?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<EntityCountsResponse, any>({
-        path: `/private/statistics`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  statistics = {
-    /**
-     * @description Get count per category and person
-     *
-     * @name StatisticsList
-     * @request GET:/statistics
-     */
-    statisticsList: (
-      query?: {
-        /** Limit of returned results */
-        limit?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<EntityCountsResponse, any>({
-        path: `/statistics`,
-        method: "GET",
-        query: query,
-        format: "json",
         ...params,
       }),
   };
