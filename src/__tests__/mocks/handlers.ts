@@ -18,7 +18,7 @@ export default [
   dreamCategoriesHandlers.deleteDreamCategory,
   dreamCategoriesHandlers.deleteDreamPerson,
   dreamCategoriesHandlers.putDreamCategory(),
-  dreamCategoriesHandlers.putDreamPerson(),
+  dreamCategoriesHandlers.postDreamCategory(),
 
   categoryHandlers.deleteCategory,
   categoryHandlers.getCategoriesHandler(),
@@ -29,6 +29,6 @@ export default [
   authHandlers.postLoginHandler(),
   authHandlers.postLogoutHandler(),
 
-  statisticsHandler.getPrivateStatisticsHandler(),
-  statisticsHandler.getStatisticsHandler(),
+  statisticsHandler.getCountCategoriesHandler(),
+  statisticsHandler.getCountCategoriesMonthlyHandler(),
 ]

@@ -1,4 +1,4 @@
-import { Category } from '../../../store'
+import { Category } from '../../../../store'
 
 export interface TagValue {
   id: number
@@ -9,8 +9,4 @@ export function isTagValue(t: unknown): t is TagValue {
   return typeof (t) == 'object' && t != null
     && 'id' in t && typeof (t.id) == 'number'
     && 'name' in t && typeof (t.name) == 'string'
-}
-
-export function categoriesToTagValue(ts: Array<Category>): Array<TagValue> {
-  return ts
 }

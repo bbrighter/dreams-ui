@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
-import { registerTokenProvider } from '../api/api'
 import { createApiSlice } from './api'
 import { createAuthSlice } from './auth'
 import { createCategoriesSlice } from './categories'
@@ -35,5 +34,3 @@ export const useDreams = create<StoreSlice & { resetState: () => void }>()(
       },
     }
   }))
-
-registerTokenProvider(() => useDreams.getState().token)

@@ -1,8 +1,8 @@
 import { AppBar, ButtonGroup, Toolbar } from '@mui/material'
 
-import Authentication from './Authentication'
+import { Authentication } from './Authentication'
 
-export default function Bar(
+export function Bar(
   props: {
     mainAction: React.ReactNode
     secondaryAction?: Array<React.ReactNode>
@@ -25,6 +25,7 @@ export default function Bar(
         top: isTop ? 0 : 'unset',
         bottom: isTop ? 'unset' : 0,
       }}
+      data-testid={`app-bar-${props.position}`}
     >
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         {props.mainAction}

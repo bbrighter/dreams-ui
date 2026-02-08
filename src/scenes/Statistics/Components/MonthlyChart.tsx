@@ -1,37 +1,30 @@
 import Box from '@mui/material/Box'
 import { BarChart } from '@mui/x-charts'
-import { eachMonthOfInterval, format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
 
-import { useDreams } from '../../../store'
+import { CategoryType, statisticsService, useDreams, usePersons, useTags } from '../../../store'
 import SelectData from './SelectData'
-import { StatisticToggleOptions } from './types'
 
-type PivotedData = {
-  month: string
-  date: Date
-  selected: number
-  unselected: number
-}
-
-export default function MonthlyChart(props: {
-  type: StatisticToggleOptions
-}) {
-  const dreams = useDreams(state => state.dreams)
+export function MonthlyChart({ type }: { type: CategoryType }) {
+  const [selectedId, setSelectedId] = useState<number>(0)
+  const statistics = useDreams(state => state.monthlyStatistics)
+  const tags = useTags()
+  const persons = usePersons()
   const categories = useDreams(state => state.categories)
-  const persons = useDreams(state => state.persons)
 
-  const [selectedId, setSelectedId] = useState(0)
+  useEffect(() => {
+    statisticsService.getMonthlyStatistics()
+  }, [])
+
   useEffect(() => {
     setSelectedId(0)
-  }, [props.type])
+  }, [type])
 
   const data: Array<{ id: number, name: string }> = useMemo(() =>
-    props.type == 'person' ? persons : categories,
-  [props.type, persons, categories])
+    type == 'person' ? persons : tags,
+  [type, statistics, tags])
 
-  const label = useMemo(() => data.find(d => d.id == selectedId)?.name || 'Alle',
-    [selectedId, props.type])
+  const label = categories.find(c => c.id == selectedId)?.name ?? 'Alle'
 
   const series = useMemo(() => {
     const series = [{ dataKey: 'selected', label: label, stack: 'all', color: '#0b22f7' }]
@@ -39,34 +32,20 @@ export default function MonthlyChart(props: {
       series.push({ dataKey: 'unselected', label: 'Sonstige', stack: 'all', color: '#9c9c9c' })
     }
     return series
-  }, [selectedId, props.type])
+  }, [selectedId, type])
 
   const dataset = useMemo(() => {
-    if (dreams.length == 0) return
-    if (data.length == 0) return
-
-    const allMonths = eachMonthOfInterval({ start: dreams[0].date, end: dreams[dreams.length - 1].date })
-    return allMonths
-      .map((m) => {
-        const monthlyDreams = dreams.filter(d => d.date.getFullYear() == m.getFullYear() && d.date.getMonth() == m.getMonth())
-        const result: PivotedData = monthlyDreams.reduce((acc, item) => {
-          const data = props.type == 'person' ? item.persons : item.categories
-          const isSelected = selectedId == 0 ? true : data.some(d => d.id == selectedId)
-          return {
-            ...acc,
-            selected: acc.selected + (isSelected ? 1 : 0),
-            unselected: acc.unselected + (isSelected ? 0 : 1),
-          }
-        }, { selected: 0, unselected: 0, month: format(m, 'MM/yyyy'), date: m } as PivotedData)
-        return result
-      })
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-  }, [dreams, data, selectedId, props.type])
+    return statistics.map((s) => {
+      const selected = selectedId > 0 ? s.categoryCount.get(selectedId) ?? 0 : s.numberOfDreams
+      const unselected = s.numberOfDreams - selected
+      return { selected: selected, unselected: unselected, month: s.month }
+    })
+  }, [selectedId, type, statistics, tags, persons])
 
   return (
     <Box sx={{ pt: '2rem' }}>
       <SelectData
-        type={props.type}
+        type={type}
         options={data}
         value={selectedId}
         onChange={setSelectedId}

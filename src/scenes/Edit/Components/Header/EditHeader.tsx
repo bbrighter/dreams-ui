@@ -2,18 +2,19 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import SaveIcon from '@mui/icons-material/Save'
 import { IconButton, Input } from '@mui/material'
 
-import { useNavigateHomePage } from '../../../hooks/navigate'
-import { dreamService, useDreams } from '../../../store'
-import { selectLoggedIn } from '../../../store'
-import Bar from '../../Components/Bar'
+import { useNavigateHomePage } from '../../../../hooks/navigate'
+import { dreamService, useDreams } from '../../../../store'
+import { useIsLoggedIn, useIsSaved } from '../../../../store/selectors'
+import { Bar } from '../../../Components'
 import Hide from './Hide'
 
-export default function EditHeader() {
-  const { dream } = useDreams()
-  const loggedIn = useDreams(selectLoggedIn)
-  const date = dream.date
+export function EditHeader() {
+  const date = useDreams(state => state.dream.date)
+  const setDate = useDreams(state => state.setDate)
+  const loggedIn = useIsLoggedIn()
   const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    dreamService.patchDreamDate(new Date(e.currentTarget.value))
+    setDate(new Date(e.currentTarget.value))
+    dreamService.saveDream()
   }
 
   const DateInput = (
@@ -45,10 +46,10 @@ export default function EditHeader() {
 }
 
 function SaveButton() {
-  const isSaved = useDreams(state => state.dream.isSaved)
+  const isSaved = useIsSaved()
 
   const saveDream = () => {
-    dreamService.patchDreamDescription()
+    dreamService.saveDream()
   }
 
   const color = isSaved ? 'success' : 'error'

@@ -1,75 +1,76 @@
-import { categoriesResponseToCategories, TypeParams } from '../categories'
+import { EntityCategoryType } from '../../api/generated_api'
+import { categoriesResponseToCategories, CategoryType } from '../categories'
+import { selectCategory } from '../selectors/category.selectors'
 import { useDreams } from '../store'
 
 export const categoriesService = {
-  async list(includes?: 'dreamsCount') {
-    const { setCategories, api } = useDreams.getState()
+  async list() {
+    const { setCategories, api, setCategoriesLoaded, categoriesLoaded } = useDreams.getState()
+    if (categoriesLoaded) return
     if (!api) return
-    const resp = await api.categories.categoriesList({ includes: includes })
+    const resp = await api.categories.categoriesList()
 
-    if (!resp.ok) return
+    if (!resp.ok) {
+      console.error('error')
+      return
+    }
 
-    const { categories, persons } = categoriesResponseToCategories(resp.data)
+    const categories = categoriesResponseToCategories(resp.data)
 
-    setCategories(categories, persons)
+    setCategories(categories)
+    setCategoriesLoaded(true)
   },
 
   async rename(id: number, newName: string) {
-    const { renameCategory, renamePerson, categories, persons, api } = useDreams.getState()
+    const { renameCategory, api } = useDreams.getState()
     if (!api) return
-    const isCategory = categories.some(c => c.id == id)
-    const isPerson = persons.some(p => p.id == id)
-    if (!isCategory && !isPerson) return
 
     const resp = await api.categories.idNamePartialUpdate(id.toString(), { name: newName })
-    if (!resp.ok) return
+    if (!resp.ok) {
+      console.error('error')
+      return
+    }
 
-    if (isCategory) renameCategory(id, newName)
-    if (isPerson) renamePerson(id, newName)
+    renameCategory(id, newName)
   },
 
   async delete(id: number) {
-    const { deleteCategory, deletePerson, categories, persons, api } = useDreams.getState()
+    const { setCategories, categories, api } = useDreams.getState()
     if (!api) return
-    const isCategory = categories.some(c => c.id == id)
-    const isPerson = persons.some(p => p.id == id)
-    if (!isCategory && !isPerson) return
-
     const resp = await api.categories.deleteCategories(id.toString())
     if (!resp.ok) return
 
-    if (isCategory) deleteCategory(id)
-    if (isPerson) deletePerson(id)
+    setCategories(categories.filter(c => c.id != id))
   },
 
   async changeType(id: number) {
-    const { changeCategoryType, changePersonType, categories, persons, api } = useDreams.getState()
+    const { setCategoryType: changeCategoryType, api } = useDreams.getState()
     if (!api) return
-    const isCategory = categories.some(c => c.id == id)
-    const isPerson = persons.some(p => p.id == id)
 
-    if (isCategory) {
-      const resp = await api.categories.idTypePartialUpdate(id.toString(), { type: TypeParams.PERSON })
-      if (!resp.ok) return
-      changeCategoryType(id)
+    const invertedType = selectCategory(id)?.type == 'category' ? EntityCategoryType.TypePerson : EntityCategoryType.TypeCategory
+
+    const resp = await api.categories.idTypePartialUpdate(id.toString(), { type: invertedType })
+    if (!resp.ok) {
+      console.error('error')
       return
     }
-    if (isPerson) {
-      const resp = await api.categories.idTypePartialUpdate(id.toString(), { type: TypeParams.CATEGORY })
-      if (!resp.ok) return
-      changePersonType(id)
-      return
-    }
+    changeCategoryType(id, invertedType)
   },
 
   async merge(sourceId: number, targetId: number, newName: string) {
-    const { setCategories, api } = useDreams.getState()
+    const { setCategories, api, categories } = useDreams.getState()
     if (!api) return
     const resp = await api.categories.mergeCreate({ sourceCategoryId: sourceId, targetCategoryId: targetId, newName: newName })
-    if (!resp.ok) return
+    if (!resp.ok) {
+      console.error('error')
+      return
+    }
 
-    const { categories, persons } = categoriesResponseToCategories(resp.data)
-    setCategories(categories, persons)
+    const newCategories = categories.map((c) => {
+      return c.id == targetId ? { ...c, name: newName } : c
+    }).filter(c => c.id != sourceId)
+
+    setCategories(newCategories)
   },
 
 }

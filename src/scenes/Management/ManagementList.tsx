@@ -13,7 +13,8 @@ import TextField from '@mui/material/TextField'
 import { useState } from 'react'
 import React from 'react'
 
-import { categoriesService, useDreams } from '../../store'
+import { categoriesService } from '../../store'
+import { usePersons, useTags } from '../../store/selectors'
 
 export default function ManagementList(props: {
   listItems: Array<{ id: number, name: string, count?: number }>
@@ -28,7 +29,8 @@ export default function ManagementList(props: {
 }
 
 function ManagementListItem(props: { listItem: { id: number, name: string, count?: number } }) {
-  const { categories, persons } = useDreams()
+  const tags = useTags()
+  const persons = usePersons()
   const [mode, setMode] = useState<'default' | 'edit' | 'delete' | 'merge'>('default')
   const [name, setName] = useState(props.listItem.name)
   const [mergeValue, setMergeValue] = useState(props.listItem.id)
@@ -113,7 +115,7 @@ function ManagementListItem(props: { listItem: { id: number, name: string, count
               size="small"
               sx={{ 'minHeight': 0, '& .MuiSelect-select': { py: 0 } }}
             >
-              {categories.map(c => (
+              {tags.map(c => (
                 <MenuItem key={c.id} value={c.id}>
                   <ListItemText primary={c.name} secondary="Kategorie" />
                 </MenuItem>

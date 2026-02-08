@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { postLoginHandler } from '../../__tests__/mocks/authHandlers'
 import { server } from '../../__tests__/setupTest'
-import { selectLoggedIn } from '../auth'
+import { isLoggedIn } from '../selectors'
 import { useDreams } from '../store'
 import { authService } from './auth.service'
 
@@ -13,7 +13,7 @@ describe('auth service', () => {
 
       expect(ok).toBeTruthy()
       const { token } = useDreams.getState()
-      const loggedIn = selectLoggedIn(useDreams.getState())
+      const loggedIn = isLoggedIn()
       expect(loggedIn).toBeTruthy()
       expect(token).toBe('token')
     })
@@ -23,7 +23,7 @@ describe('auth service', () => {
       expect(ok).toBeFalsy()
 
       const { user, token } = useDreams.getState()
-      const loggedIn = selectLoggedIn(useDreams.getState())
+      const loggedIn = isLoggedIn()
       expect(loggedIn).toBeFalsy()
       expect(user).toBe('Benni')
       expect(token).toBe('')
@@ -35,7 +35,7 @@ describe('auth service', () => {
       await authService.logout()
 
       const { user, token } = useDreams.getState()
-      const loggedIn = selectLoggedIn(useDreams.getState())
+      const loggedIn = isLoggedIn()
       expect(loggedIn).toBeFalsy()
       expect(user).toBe('Benni')
       expect(token).toBe('')

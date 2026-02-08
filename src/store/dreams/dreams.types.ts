@@ -6,8 +6,6 @@ export type MetaDream = {
   date: Date
   visible: boolean
   finalized: boolean
-  persons: Array<Category>
-  categories: Array<Category>
   rating: number | null
 }
 
@@ -21,8 +19,6 @@ export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {
       date: date,
       visible: d.visible,
       finalized: d.finalized,
-      persons: d.persons ?? [],
-      categories: d.categories ?? [],
       rating: d.rating ?? null,
     }
   })

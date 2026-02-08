@@ -4,13 +4,14 @@ import ButtonGroup from '@mui/material/ButtonGroup'
 import IconButton from '@mui/material/IconButton'
 import { useEffect, useState } from 'react'
 
-import { useNavigateToDream } from '../../../hooks/navigate'
-import { useDreams } from '../../../store'
-import Bar from '../../Components/Bar'
+import { useNavigateToDream } from '../../../../hooks/navigate'
+import { useDreams } from '../../../../store'
+import { useIsSaved } from '../../../../store/selectors'
+import { Bar } from '../../../Components'
 import DreamRating from './DreamRating'
 import FinalizeButton from './FinalizeButton'
 
-export default function EditFooter() {
+export function EditFooter() {
   return (
     <Bar
       mainAction={<DreamRating />}
@@ -26,7 +27,7 @@ function NextOrPreviousDream() {
   const navigate = useNavigateToDream()
   const dreams = useDreams(state => state.dreams)
   const currentDreamId = useDreams(state => state.dream.id)
-  const isSaved = useDreams(state => state.dream.isSaved)
+  const isSaved = useIsSaved()
 
   const [nextDreamIndex, setNextDreamIndex] = useState(-1)
   const [prevDreamIndex, setPrevDreamIndex] = useState(-1)
