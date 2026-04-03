@@ -1,7 +1,7 @@
-import { EntityCategoryType } from '../../api/generated_api'
-import { categoriesResponseToCategories, CategoryType } from '../categories'
-import { selectCategory } from '../selectors/category.selectors'
-import { useDreams } from '../store'
+import { EntityCategoryType } from "../../api/generated_api"
+import { categoriesResponseToCategories } from "../categories"
+import { selectCategory } from "../selectors/category.selectors"
+import { useDreams } from "../store"
 
 export const categoriesService = {
   async list() {
@@ -11,7 +11,7 @@ export const categoriesService = {
     const resp = await api.categories.categoriesList()
 
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 
@@ -27,7 +27,7 @@ export const categoriesService = {
 
     const resp = await api.categories.idNamePartialUpdate(id.toString(), { name: newName })
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 
@@ -47,11 +47,11 @@ export const categoriesService = {
     const { setCategoryType: changeCategoryType, api } = useDreams.getState()
     if (!api) return
 
-    const invertedType = selectCategory(id)?.type == 'category' ? EntityCategoryType.TypePerson : EntityCategoryType.TypeCategory
+    const invertedType = selectCategory(id)?.type == "category" ? EntityCategoryType.TypePerson : EntityCategoryType.TypeCategory
 
     const resp = await api.categories.idTypePartialUpdate(id.toString(), { type: invertedType })
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
     changeCategoryType(id, invertedType)
@@ -62,7 +62,7 @@ export const categoriesService = {
     if (!api) return
     const resp = await api.categories.mergeCreate({ sourceCategoryId: sourceId, targetCategoryId: targetId, newName: newName })
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 

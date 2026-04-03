@@ -1,7 +1,7 @@
-import Button from '@mui/material/Button'
-import { useState } from 'react'
+import Button from "@mui/material/Button"
+import { useState } from "react"
 
-import { dreamService, useDreams } from '../../../../store'
+import { dreamService, useDreams } from "../../../../store"
 
 export default function FinalizeButton() {
   const finalized = useDreams(state => state.dream.finalized)

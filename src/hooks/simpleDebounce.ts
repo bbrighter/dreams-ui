@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from "react"
 
 export function useSimpleDebounce(callback: () => void, delay: number) {
   const timeout = useRef<NodeJS.Timeout | null>(null)

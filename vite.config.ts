@@ -1,15 +1,15 @@
 /// <reference types="vitest/config"/>
-import react from '@vitejs/plugin-react-swc'
-import { visualizer } from 'rollup-plugin-visualizer'
-import { defineConfig } from 'vite'
-import { checker } from 'vite-plugin-checker'
+import react from "@vitejs/plugin-react"
+import { visualizer } from "rollup-plugin-visualizer"
+import { defineConfig } from "vite"
+import { checker } from "vite-plugin-checker"
 
 export default defineConfig({
-  base: '/dreams',
+  base: "/dreams",
   plugins: [
     react(),
     visualizer({
-      filename: 'bundle-stats.html',
+      filename: "bundle-stats.html",
       open: true,
     }),
     checker({
@@ -18,10 +18,10 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: 'src/__tests__/setupTest.ts',
+    environment: "jsdom",
+    setupFiles: "src/__tests__/setupTest.ts",
     coverage: {
-      provider: 'v8',
+      provider: "v8",
     },
   },
 })

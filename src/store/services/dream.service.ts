@@ -1,7 +1,7 @@
-import { CategoryType, toEntityCategoryType } from '../categories'
-import { dreamResponseToDream } from './../dream/dream.types'
-import { dreamIdStr } from './../selectors'
-import { useDreams } from './../store'
+import { CategoryType, toEntityCategoryType } from "../categories"
+import { dreamIdStr } from "./../selectors"
+import { useDreams } from "./../store"
+import { dreamResponseToDream } from "./../types"
 
 export const dreamService = {
   getDream: async (id: number) => {
@@ -9,7 +9,7 @@ export const dreamService = {
     if (!api) return
     const resp = await api.dreams.dreamsDetail(id.toString())
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
     }
     const dream = dreamResponseToDream(resp.data)
     setDream(dream)
@@ -25,7 +25,7 @@ export const dreamService = {
       rating: dream.rating ? dream.rating : undefined,
     })
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
     setHash(dream)
@@ -36,7 +36,7 @@ export const dreamService = {
     if (!api) return
     const resp = await api.dreams.categoriesCreate(dreamIdStr(), { name: name, categoryType: toEntityCategoryType(type) })
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
     const catId = resp.data
@@ -50,7 +50,7 @@ export const dreamService = {
     if (!api) return
     const resp = await api.dreams.categoriesUpdate(dreamIdStr(), catId.toString())
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 
@@ -62,7 +62,7 @@ export const dreamService = {
     if (!api) return
     const resp = await api.dreams.categoriesDelete(dreamIdStr(), catId.toString())
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 
@@ -74,7 +74,7 @@ export const dreamService = {
     if (!api) return
     const resp = await api.dreams.finalizePartialUpdate(dreamIdStr())
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
     setFinalized()
@@ -85,7 +85,7 @@ export const dreamService = {
     if (!api) return
     const resp = await api.dreams.privatePartialUpdate(dreamIdStr())
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
     setVisibility(!dream.visible)

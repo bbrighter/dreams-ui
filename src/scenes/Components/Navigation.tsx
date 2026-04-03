@@ -1,10 +1,12 @@
-import QueryStatsIcon from '@mui/icons-material/QueryStats'
-import SettingsIcon from '@mui/icons-material/Settings'
-import TableViewIcon from '@mui/icons-material/TableView'
-import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
-import { useState } from 'react'
+import QueryStatsIcon from "@mui/icons-material/QueryStats"
+import SettingsIcon from "@mui/icons-material/Settings"
+import TableViewIcon from "@mui/icons-material/TableView"
+import BottomNavigation from "@mui/material/BottomNavigation"
+import BottomNavigationAction from "@mui/material/BottomNavigationAction"
+import Paper from "@mui/material/Paper"
+import { useState } from "react"
 
-import { useNavigateHomePage, useNavigateStatistics, useNavigateToManagement } from '../../hooks/navigate'
+import { useNavigateHomePage, useNavigateStatistics, useNavigateToManagement } from "../../hooks/navigate"
 
 export function Navigation(props: {
   activeIndex: number
@@ -27,12 +29,12 @@ export function Navigation(props: {
         goToManagement()
         break
       default:
-        alert('Huch! ' + newValue)
+        alert("Huch! " + newValue)
     }
   }
 
   return (
-    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100 }}>
+    <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}>
       <BottomNavigation showLabels value={activeTab} onChange={handleChange}>
         <BottomNavigationAction label="Übersicht" icon={<TableViewIcon />} />
         <BottomNavigationAction label="Auswertung" icon={<QueryStatsIcon />} />

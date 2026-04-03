@@ -3,134 +3,134 @@
 module.exports = {
   forbidden: [
     {
-      name: 'no-circular',
-      severity: 'error',
+      name: "no-circular",
+      severity: "error",
       from: {},
       to: {
         circular: true,
       },
     },
     {
-      name: 'no-orphans',
-      severity: 'error',
+      name: "no-orphans",
+      severity: "error",
       from: {
         orphan: true,
         pathNot: [
-          '(^|/)[.][^/]+[.](?:js|cjs|mjs|ts|cts|mts|json)$', // dot files
-          '[.]d[.]ts$', // TypeScript declaration files
-          '(^|/)tsconfig[.]json$', // TypeScript config
-          '(^|/)(?:babel|webpack)[.]config[.](?:js|cjs|mjs|ts|cts|mts|json)$', // other configs
+          "(^|/)[.][^/]+[.](?:js|cjs|mjs|ts|cts|mts|json)$", // dot files
+          "[.]d[.]ts$", // TypeScript declaration files
+          "(^|/)tsconfig[.]json$", // TypeScript config
+          "(^|/)(?:babel|webpack)[.]config[.](?:js|cjs|mjs|ts|cts|mts|json)$", // other configs
         ],
       },
       to: {},
     },
     {
-      name: 'no-deprecated-core',
-      severity: 'warn',
+      name: "no-deprecated-core",
+      severity: "warn",
       from: {},
       to: {
         dependencyTypes: [
-          'core',
+          "core",
         ],
         path: [
-          '^v8/tools/codemap$',
-          '^v8/tools/consarray$',
-          '^v8/tools/csvparser$',
-          '^v8/tools/logreader$',
-          '^v8/tools/profile_view$',
-          '^v8/tools/profile$',
-          '^v8/tools/SourceMap$',
-          '^v8/tools/splaytree$',
-          '^v8/tools/tickprocessor-driver$',
-          '^v8/tools/tickprocessor$',
-          '^node-inspect/lib/_inspect$',
-          '^node-inspect/lib/internal/inspect_client$',
-          '^node-inspect/lib/internal/inspect_repl$',
-          '^async_hooks$',
-          '^punycode$',
-          '^domain$',
-          '^constants$',
-          '^sys$',
-          '^_linklist$',
-          '^_stream_wrap$',
+          "^v8/tools/codemap$",
+          "^v8/tools/consarray$",
+          "^v8/tools/csvparser$",
+          "^v8/tools/logreader$",
+          "^v8/tools/profile_view$",
+          "^v8/tools/profile$",
+          "^v8/tools/SourceMap$",
+          "^v8/tools/splaytree$",
+          "^v8/tools/tickprocessor-driver$",
+          "^v8/tools/tickprocessor$",
+          "^node-inspect/lib/_inspect$",
+          "^node-inspect/lib/internal/inspect_client$",
+          "^node-inspect/lib/internal/inspect_repl$",
+          "^async_hooks$",
+          "^punycode$",
+          "^domain$",
+          "^constants$",
+          "^sys$",
+          "^_linklist$",
+          "^_stream_wrap$",
         ],
       },
     },
     {
-      name: 'not-to-deprecated',
-      severity: 'warn',
+      name: "not-to-deprecated",
+      severity: "warn",
       from: {},
       to: {
         dependencyTypes: [
-          'deprecated',
+          "deprecated",
         ],
       },
     },
     {
-      name: 'no-non-package-json',
-      severity: 'error',
+      name: "no-non-package-json",
+      severity: "error",
       from: {},
       to: {
         dependencyTypes: [
-          'npm-no-pkg',
-          'npm-unknown',
+          "npm-no-pkg",
+          "npm-unknown",
         ],
       },
     },
     {
-      name: 'not-to-unresolvable',
-      severity: 'error',
+      name: "not-to-unresolvable",
+      severity: "error",
       from: {},
       to: {
         couldNotResolve: true,
       },
     },
     {
-      name: 'no-duplicate-dep-types',
-      severity: 'warn',
+      name: "no-duplicate-dep-types",
+      severity: "warn",
       from: {},
       to: {
         moreThanOneDependencyType: true,
-        dependencyTypesNot: ['type-only'],
+        dependencyTypesNot: ["type-only"],
       },
     },
     {
-      name: 'not-to-dev-dep',
-      severity: 'error',
+      name: "not-to-dev-dep",
+      severity: "error",
       from: {
-        path: '^(src)',
+        path: "^(src)",
         // pathNot: '[.](?:spec|test)[.](?:js|mjs|cjs|jsx|ts|mts|cts|tsx)$',
-        pathNot: '([.]test[.])|(__tests__)|vite-env.d.ts',
+        pathNot: "([.]test[.])|(__tests__)|vite-env.d.ts",
       },
       to: {
         dependencyTypes: [
-          'npm-dev',
+          "npm-dev",
         ],
         dependencyTypesNot: [
-          'type-only',
+          "type-only",
         ],
         pathNot: [
-          'node_modules/@types/',
+          "node_modules/@types/",
         ],
       },
     },
     {
-      name: 'optional-deps-used',
-      severity: 'info',
+      name: "optional-deps-used",
+      severity: "info",
       from: {},
       to: {
         dependencyTypes: [
-          'npm-optional',
+          "npm-optional",
         ],
       },
     },
     {
-      name: 'peer-deps-used',
-      severity: 'warn',
+      name: "peer-deps-used",
+      severity: "warn",
       from: {},
       to: {
         dependencyTypes: [
-          'npm-peer',
+          "npm-peer",
         ],
       },
     },
@@ -140,7 +140,7 @@ module.exports = {
     /* Which modules not to follow further when encountered */
     doNotFollow: {
       /* path: an array of regular expressions in strings to match against */
-      path: ['node_modules', '.*test.*'],
+      path: ["node_modules", ".*test.*"],
     },
 
     /* Which modules to exclude */
@@ -213,7 +213,7 @@ module.exports = {
        defaults to './tsconfig.json'.
      */
     tsConfig: {
-      fileName: 'tsconfig.json',
+      fileName: "tsconfig.json",
     },
 
     /* Webpack configuration to use to get resolve options from.
@@ -255,11 +255,11 @@ module.exports = {
      */
     enhancedResolveOptions: {
       /* What to consider as an 'exports' field in package.jsons */
-      exportsFields: ['exports'],
+      exportsFields: ["exports"],
       /* List of conditions to check for in the exports field.
          Only works when the 'exportsFields' array is non-empty.
       */
-      conditionNames: ['import', 'require', 'node', 'default', 'types'],
+      conditionNames: ["import", "require", "node", "default", "types"],
       /* The extensions, by default are the same as the ones dependency-cruiser
          can access (run `npx depcruise --info` to see which ones that are in
          _your_ environment). If that list is larger than you need you can pass
@@ -268,7 +268,7 @@ module.exports = {
        */
       // extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"],
       /* What to consider a 'main' field in package.json */
-      mainFields: ['module', 'main', 'types', 'typings'],
+      mainFields: ["module", "main", "types", "typings"],
       /* A list of alias fields in package.jsons
 
          See [this specification](https://github.com/defunctzombie/package-browser-field-spec) and
@@ -295,7 +295,7 @@ module.exports = {
            collapses everything in node_modules to one folder deep so you see
            the external modules, but their innards.
          */
-        collapsePattern: 'node_modules/(?:@[^/]+/[^/]+|[^/]+)',
+        collapsePattern: "node_modules/(?:@[^/]+/[^/]+|[^/]+)",
 
         /* Options to tweak the appearance of your graph.See
            https://github.com/sverweij/dependency-cruiser/blob/main/doc/options-reference.md#reporteroptions
@@ -317,7 +317,7 @@ module.exports = {
            dependency graph reporter (`archi`) you probably want to tweak
            this collapsePattern to your situation.
         */
-        collapsePattern: '^(?:packages|src|lib(s?)|app(s?)|bin|test(s?)|spec(s?))/[^/]+|node_modules/(?:@[^/]+/[^/]+|[^/]+)',
+        collapsePattern: "^(?:packages|src|lib(s?)|app(s?)|bin|test(s?)|spec(s?))/[^/]+|node_modules/(?:@[^/]+/[^/]+|[^/]+)",
 
         /* Options to tweak the appearance of your graph. If you don't specify a
            theme for 'archi' dependency-cruiser will use the one specified in the

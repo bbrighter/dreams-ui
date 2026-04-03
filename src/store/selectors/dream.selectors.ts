@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
+import { useMemo } from "react"
 
-import { Categories, Category } from '../categories'
-import { Dream, hashDream } from '../dream'
-import { useDreams } from '../store'
+import { Categories } from "../categories"
+import { useDreams } from "../store"
+import { hashDream } from "../types"
 
 export const dreamIdStr = (): string => {
   const { dream } = useDreams.getState()
@@ -24,7 +24,7 @@ export const useDreamCategories = (): { categories: Categories, persons: Categor
       if (!cat) {
         return { categories: prev.categories, persons: prev.persons }
       }
-      if (cat.type == 'person') {
+      if (cat.type == "person") {
         return { categories: prev.categories, persons: [...prev.persons, cat] }
       }
       else {
@@ -32,4 +32,11 @@ export const useDreamCategories = (): { categories: Categories, persons: Categor
       }
     }, { categories: [] as Categories, persons: [] as Categories })
   }, [categories, dreamCategories])
+}
+
+export const useDreamWithCategory = (categoryId: number) => {
+  const dreams = useDreams(state => state.dreams)
+  return useMemo(
+    () => [...dreams].filter(d => d.categories.includes(categoryId),
+    ), [dreams, categoryId])
 }

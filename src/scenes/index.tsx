@@ -1,12 +1,12 @@
-import React, { JSX, lazy, LazyExoticComponent, ReactNode, Suspense } from 'react'
-import { createBrowserRouter } from 'react-router-dom'
+import React, { JSX, lazy, LazyExoticComponent, ReactNode, Suspense } from "react"
+import { createBrowserRouter } from "react-router-dom"
 
-import ErrorBoundary from './Errors'
+import ErrorBoundary from "./Errors"
 
-const Edit = lazy(() => import('./Edit'))
-const Management = lazy(() => import('./Management'))
-const Start = lazy(() => import('./Start'))
-const Statistics = lazy(() => import('./Statistics'))
+const Edit = lazy(() => import("./Edit"))
+const Management = lazy(() => import("./Management"))
+const Start = lazy(() => import("./Start"))
+const Statistics = lazy(() => import("./Statistics"))
 
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => {
   const fallback = <div>Loading...</div>
@@ -32,10 +32,10 @@ type Route = {
 }
 
 const rawRoutes: Array<RawRoute> = [
-  { path: '/', element: Start, name: 'Start' },
-  { path: 'dreams/:id', element: Edit, name: 'Edit Dream' },
-  { path: 'statistics', element: Statistics, name: 'Statistics' },
-  { path: 'management', element: Management, name: 'Management' },
+  { path: "/", element: Start, name: "Start" },
+  { path: "dreams/:id", element: Edit, name: "Edit Dream" },
+  { path: "statistics", element: Statistics, name: "Statistics" },
+  { path: "management", element: Management, name: "Management" },
 ]
 
 const routes: Array<Route> = rawRoutes.map(v => (
@@ -46,5 +46,5 @@ const routes: Array<Route> = rawRoutes.map(v => (
   }))
 
 export default createBrowserRouter(routes, {
-  basename: '/dreams',
+  basename: "/dreams",
 })

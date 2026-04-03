@@ -1,7 +1,7 @@
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
+import MenuItem from "@mui/material/MenuItem"
+import Select from "@mui/material/Select"
 
-import { CategoryType } from '../../../store'
+import { CategoryType } from "../../../store"
 
 export default function SelectData(props: {
   options: Array<{ id: number, name: string }>

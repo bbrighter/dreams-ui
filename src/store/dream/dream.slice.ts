@@ -1,6 +1,7 @@
-import { StateCreator } from 'zustand'
+import { StateCreator } from "zustand"
 
-import { Dream, hashDream } from './dream.types'
+import { Dream, hashDream } from "../types"
+
 
 interface DreamActions {
   resetDream: () => void
@@ -19,23 +20,21 @@ type DreamState = { dream: Dream, hash: string }
 const createInitialState = (): DreamState => ({
   dream: {
     date: new Date(),
-    description: '',
+    description: "",
     finalized: false,
     id: 0,
     categories: [],
     visible: true,
     rating: null,
   },
-  hash: '' }
+  hash: "" }
 )
 
 export type DreamSlice = DreamActions & DreamState
 
-export const createDreamSlice: StateCreator<DreamState, [['zustand/immer', never]], [], DreamSlice> = (set, get) => ({
+export const createDreamSlice: StateCreator<DreamState, [["zustand/immer", never]], [], DreamSlice> = (set) => ({
   ...createInitialState(),
-  resetDream: () => set((draft: DreamState) => {
-    draft = createInitialState()
-  }),
+  resetDream: () => set(createInitialState()),
 
   setDate: (date: Date) => {
     set((draft: DreamState) => {

@@ -1,4 +1,4 @@
-import { EntityCategoriesCountResponse, EntityStatistics } from '../../api/generated_api'
+import { EntityCategoriesCountResponse, EntityStatistics } from "../../api/generated_api"
 
 export type Statistic = {
   id: number

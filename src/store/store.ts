@@ -1,13 +1,13 @@
-import { create } from 'zustand'
-import { immer } from 'zustand/middleware/immer'
+import { create } from "zustand"
+import { immer } from "zustand/middleware/immer"
 
-import { createApiSlice } from './api'
-import { createAuthSlice } from './auth'
-import { createCategoriesSlice } from './categories'
-import { createDreamSlice } from './dream'
-import { createDreamsSlice } from './dreams'
-import { StoreSlice } from './interface'
-import { createStatisticSlice } from './statistics'
+import { createApiSlice } from "./api"
+import { createAuthSlice } from "./auth"
+import { createCategoriesSlice } from "./categories"
+import { createDreamSlice } from "./dream"
+import { createDreamsSlice } from "./dreams"
+import { StoreSlice } from "./interface"
+import { createStatisticSlice } from "./statistics"
 
 export const useDreams = create<StoreSlice & { resetState: () => void }>()(
   immer((set, get, store) => {

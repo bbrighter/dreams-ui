@@ -1,16 +1,16 @@
-import { useMemo } from 'react'
+import { useMemo } from "react"
 
-import { Category, CategoryType } from '../categories'
-import { useDreams } from '../store'
+import { Category, CategoryType } from "../categories"
+import { useDreams } from "../store"
 
 export const usePersons = () => {
   const categories = useDreams(state => state.categories)
-  return categories.filter(c => c.type == 'person')
+  return categories.filter(c => c.type == "person")
 }
 
 export const useTags = () => {
   const categories = useDreams(state => state.categories)
-  return categories.filter(c => c.type == 'category')
+  return categories.filter(c => c.type == "category")
 }
 
 export const selectCategory = (id: number): Category | undefined => {

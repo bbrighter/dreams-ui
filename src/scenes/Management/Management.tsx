@@ -1,17 +1,17 @@
-import Container from '@mui/material/Container'
-import List from '@mui/material/List'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
-import { useEffect, useState } from 'react'
+import Container from "@mui/material/Container"
+import List from "@mui/material/List"
+import Tab from "@mui/material/Tab"
+import Tabs from "@mui/material/Tabs"
+import { useEffect, useState } from "react"
 
-import { categoriesService, statisticsService } from '../../store'
-import { useStatistics } from '../../store/selectors'
-import { Navigation } from '../Components'
-import ManagementList from './ManagementList'
+import { categoriesService, statisticsService } from "../../store"
+import { useStatistics } from "../../store/selectors"
+import { Navigation } from "../Components"
+import ManagementList from "./ManagementList"
 
 export default function Management() {
-  const personStatistics = useStatistics('person')
-  const tagStatistics = useStatistics('category')
+  const personStatistics = useStatistics("person")
+  const tagStatistics = useStatistics("category")
 
   useEffect(() => {
     statisticsService.getStatistics(0)

@@ -1,8 +1,8 @@
-import { StateCreator } from 'zustand'
+import { StateCreator } from "zustand"
 
-import { Api, RequestParams } from '../../api/generated_api'
-import { AuthState } from '../auth'
-import { ApiSlice, ApiState } from './api.type'
+import { Api, RequestParams } from "../../api/generated_api"
+import { AuthState } from "../auth"
+import { ApiSlice, ApiState } from "./api.type"
 
 const initialState = (): ApiState => ({
   api: null,
@@ -10,7 +10,7 @@ const initialState = (): ApiState => ({
 
 export const createApiSlice: StateCreator<
   ApiState & AuthState,
-  [['zustand/immer', never]],
+  [["zustand/immer", never]],
   [],
   ApiSlice
 > = (set, get) => ({
@@ -21,14 +21,14 @@ export const createApiSlice: StateCreator<
 
     let baseUrl: string
 
-    if (import.meta.env.DEV && import.meta.env.MODE == 'test') {
-      baseUrl = ''
+    if (import.meta.env.DEV && import.meta.env.MODE == "test") {
+      baseUrl = ""
     }
     else if (import.meta.env.DEV) {
-      baseUrl = 'http://localhost:5000'
+      baseUrl = "http://localhost:5000"
     }
     else {
-      const config = await fetch(`${import.meta.env.BASE_URL}/config.json`, { cache: 'no-store' }).then(r => r.json())
+      const config = await fetch(`${import.meta.env.BASE_URL}/config.json`, { cache: "no-store" }).then(r => r.json())
       baseUrl = config.apiUrl
     }
 

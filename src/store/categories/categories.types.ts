@@ -1,9 +1,9 @@
-import { EntityCategoriesResponse, EntityCategoryType } from '../../api/generated_api'
+import { EntityCategoriesResponse, EntityCategoryType } from "../../api/generated_api"
 
 export type CategoryType = `${EntityCategoryType}`
 
 export const toEntityCategoryType = (t: CategoryType): EntityCategoryType => {
-  return t == 'category' ? EntityCategoryType.TypeCategory : EntityCategoryType.TypePerson
+  return t == "category" ? EntityCategoryType.TypeCategory : EntityCategoryType.TypePerson
 }
 
 export type Category = {

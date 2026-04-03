@@ -1,8 +1,8 @@
-import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator'
-import ShieldIcon from '@mui/icons-material/Shield'
-import { IconButton } from '@mui/material'
+import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator"
+import ShieldIcon from "@mui/icons-material/Shield"
+import IconButton from "@mui/material/IconButton"
 
-import { dreamService, useDreams } from '../../../../store'
+import { dreamService, useDreams } from "../../../../store"
 
 export default function Hide() {
   const visible = useDreams(state => state.dream.visible)

@@ -1,12 +1,13 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import SaveIcon from '@mui/icons-material/Save'
-import { IconButton, Input } from '@mui/material'
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import SaveIcon from "@mui/icons-material/Save"
+import IconButton from "@mui/material/IconButton"
+import Input from "@mui/material/Input"
 
-import { useNavigateHomePage } from '../../../../hooks/navigate'
-import { dreamService, useDreams } from '../../../../store'
-import { useIsLoggedIn, useIsSaved } from '../../../../store/selectors'
-import { Bar } from '../../../Components'
-import Hide from './Hide'
+import { useNavigateHomePage } from "../../../../hooks/navigate"
+import { dreamService, useDreams } from "../../../../store"
+import { useIsLoggedIn, useIsSaved } from "../../../../store/selectors"
+import { Bar } from "../../../Components"
+import Hide from "./Hide"
 
 export function EditHeader() {
   const date = useDreams(state => state.dream.date)
@@ -52,7 +53,7 @@ function SaveButton() {
     dreamService.saveDream()
   }
 
-  const color = isSaved ? 'success' : 'error'
+  const color = isSaved ? "success" : "error"
   return (
     <IconButton
       color={color}

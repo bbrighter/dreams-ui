@@ -1,18 +1,15 @@
-import { Button, Container, List } from '@mui/material'
-import { useEffect } from 'react'
+import Container from "@mui/material/Container"
+import { useEffect } from "react"
 
-import { useNavigateToDream } from '../../hooks/navigate'
-import { dreamsService, useDreams } from '../../store'
-import { Bar, Navigation } from '../Components'
-import DreamItem from './Components/DreamItem'
+import { useDreams } from "../../store"
+import { Bar, Navigation } from "../Components"
+import { AddDreamButton, CategoryFilter, DreamList } from "./Components"
 
 export default function Start() {
-  const { dreams, scrollPosition, setScrollPosition } = useDreams()
-
-  const navigate = useNavigateToDream()
+  const scrollPosition = useDreams(state => state.scrollPosition)
+  const setScrollPosition = useDreams(state => state.setScrollPosition)
 
   useEffect(() => {
-    dreamsService.getDreams()
     window.scrollTo(0, scrollPosition)
   }, [])
 
@@ -20,31 +17,17 @@ export default function Start() {
     const handleScroll = () => {
       setScrollPosition(window.scrollY)
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const handleClick = async () => {
-    const dreamId = await dreamsService.postDream()
-    navigate(dreamId)
-  }
-
-  const MainAction
-    = (
-      <Button variant="contained" onClick={handleClick}>
-        Neu
-      </Button>
-    )
 
   return (
     <>
-      <Bar mainAction={MainAction} position="top" showAuth />
-      <Container sx={{ pt: '1rem', pb: '3rem' }}>
-        <List>
-          {dreams.map(d =>
-            (<DreamItem key={d.id} dream={d} />),
-          )}
-        </List>
+      <Bar mainAction={<AddDreamButton/>} position="top" showAuth />
+      <Container sx={{ pt: "1rem", pb: "3rem" }}>
+        <CategoryFilter />
+        <DreamList/>
         <Navigation activeIndex={0} />
       </Container>
     </>

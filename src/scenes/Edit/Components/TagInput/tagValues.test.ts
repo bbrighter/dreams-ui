@@ -1,30 +1,30 @@
-import { expect, test } from 'vitest'
+import { expect, test } from "vitest"
 
-import { Category } from '../../../../store'
-import { isTagValue } from './tagValues'
+import { Category } from "../../../../store"
+import { isTagValue } from "./tagValues"
 
-test('isTagValue', () => {
-  const u = { id: 1, name: 'name' }
+test("isTagValue", () => {
+  const u = { id: 1, name: "name" }
   expect(isTagValue(u)).toBeTruthy()
 
-  const notT = { id: 1, label: 'label' }
+  const notT = { id: 1, label: "label" }
   expect(isTagValue(notT)).toBeFalsy()
 })
 
-test('categoryIsTagValue', () => {
+test("categoryIsTagValue", () => {
   const cat: Category = {
     id: 1,
-    name: 'name',
-    type: 'category',
+    name: "name",
+    type: "category",
   }
   expect(isTagValue(cat)).toBeTruthy()
 })
 
-test('personIsTagValue', () => {
+test("personIsTagValue", () => {
   const cat: Category = {
     id: 1,
-    name: 'name',
-    type: 'category',
+    name: "name",
+    type: "category",
   }
   expect(isTagValue(cat)).toBeTruthy()
 })
