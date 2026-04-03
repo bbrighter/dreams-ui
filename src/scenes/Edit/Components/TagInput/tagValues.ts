@@ -1,4 +1,4 @@
-export interface TagValue {
+interface TagValue {
   id: number
   name: string
 }

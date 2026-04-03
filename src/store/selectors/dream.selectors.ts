@@ -33,10 +33,3 @@ export const useDreamCategories = (): { categories: Categories, persons: Categor
     }, { categories: [] as Categories, persons: [] as Categories })
   }, [categories, dreamCategories])
 }
-
-export const useDreamWithCategory = (categoryId: number) => {
-  const dreams = useDreams(state => state.dreams)
-  return useMemo(
-    () => [...dreams].filter(d => d.categories.includes(categoryId),
-    ), [dreams, categoryId])
-}
