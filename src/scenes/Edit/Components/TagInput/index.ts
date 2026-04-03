@@ -1,1 +1,1 @@
-export * from './TagInputs'
+export * from "./TagInputs"

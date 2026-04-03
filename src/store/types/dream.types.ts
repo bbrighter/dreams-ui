@@ -1,4 +1,4 @@
-import { EntityCategoryType, EntityDreamResponse } from '../../api/generated_api'
+import { EntityDreamResponse } from "../../api/generated_api"
 
 export type Dream = {
   id: number
@@ -23,7 +23,7 @@ export function dreamResponseToDream(resp: EntityDreamResponse): Dream {
 }
 
 export const hashDream = (dream: Dream) => {
-  return 'D' + dream.description
-    + 'T' + dream.date.toISOString()
-    + 'R' + dream.rating?.toString()
+  return "D" + dream.description
+    + "T" + dream.date.toISOString()
+    + "R" + dream.rating?.toString()
 }

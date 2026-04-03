@@ -1,9 +1,9 @@
-import Box from '@mui/material/Box'
-import { BarChart } from '@mui/x-charts'
-import { useEffect, useMemo, useState } from 'react'
+import Box from "@mui/material/Box"
+import { BarChart } from "@mui/x-charts/BarChart"
+import { useEffect, useMemo, useState } from "react"
 
-import { CategoryType, statisticsService, useDreams, usePersons, useTags } from '../../../store'
-import SelectData from './SelectData'
+import { CategoryType, statisticsService, useDreams, usePersons, useTags } from "../../../store"
+import SelectData from "./SelectData"
 
 export function MonthlyChart({ type }: { type: CategoryType }) {
   const [selectedId, setSelectedId] = useState<number>(0)
@@ -21,15 +21,15 @@ export function MonthlyChart({ type }: { type: CategoryType }) {
   }, [type])
 
   const data: Array<{ id: number, name: string }> = useMemo(() =>
-    type == 'person' ? persons : tags,
+    type == "person" ? persons : tags,
   [type, statistics, tags])
 
-  const label = categories.find(c => c.id == selectedId)?.name ?? 'Alle'
+  const label = categories.find(c => c.id == selectedId)?.name ?? "Alle"
 
   const series = useMemo(() => {
-    const series = [{ dataKey: 'selected', label: label, stack: 'all', color: '#0b22f7' }]
+    const series = [{ dataKey: "selected", label: label, stack: "all", color: "#0b22f7" }]
     if (data.some(d => d.id == selectedId)) {
-      series.push({ dataKey: 'unselected', label: 'Sonstige', stack: 'all', color: '#9c9c9c' })
+      series.push({ dataKey: "unselected", label: "Sonstige", stack: "all", color: "#9c9c9c" })
     }
     return series
   }, [selectedId, type])
@@ -43,7 +43,7 @@ export function MonthlyChart({ type }: { type: CategoryType }) {
   }, [selectedId, type, statistics, tags, persons])
 
   return (
-    <Box sx={{ pt: '2rem' }}>
+    <Box sx={{ pt: "2rem" }}>
       <SelectData
         type={type}
         options={data}
@@ -54,9 +54,9 @@ export function MonthlyChart({ type }: { type: CategoryType }) {
       {dataset
         && (
           <BarChart
-            sx={{ height: '400px' }}
+            sx={{ height: "400px" }}
             dataset={dataset}
-            xAxis={[{ dataKey: 'month', label: 'Datum' }]}
+            xAxis={[{ dataKey: "month", label: "Datum" }]}
             series={series}
           />
         )}

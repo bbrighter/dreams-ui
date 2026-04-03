@@ -1,4 +1,10 @@
 {
-    "editor.formatOnSave": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "[typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "js/ts.preferences.autoImportSpecifierExcludeRegexes": [
+    "^@mui/[^/]+$"
+  ]
 }

@@ -1,5 +1,5 @@
-import { controllerCountsResponseToStatistic, respToMonthlyStatistics } from '../statistics/statistics.types'
-import { useDreams } from '../store'
+import { controllerCountsResponseToStatistic, respToMonthlyStatistics } from "../statistics/statistics.types"
+import { useDreams } from "../store"
 
 const STATISTICS_LIMITS = 40
 
@@ -13,7 +13,7 @@ export const statisticsService = {
     //   : await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
     const resp = await api.countCategories.countCategoriesList({ limit: limit ? limit : STATISTICS_LIMITS })
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 
@@ -27,7 +27,7 @@ export const statisticsService = {
 
     const resp = await api.countCategories.monthlyList()
     if (!resp.ok) {
-      console.error('error')
+      console.error("error")
       return
     }
 

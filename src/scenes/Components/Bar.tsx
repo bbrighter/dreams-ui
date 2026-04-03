@@ -1,13 +1,16 @@
-import { AppBar, ButtonGroup, Toolbar } from '@mui/material'
 
-import { Authentication } from './Authentication'
+import AppBar from "@mui/material/AppBar"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import Toolbar from "@mui/material/Toolbar"
+
+import { Authentication } from "./Authentication"
 
 export function Bar(
   props: {
     mainAction: React.ReactNode
     secondaryAction?: Array<React.ReactNode>
     optionalMiddleAction?: React.ReactNode
-    position: 'top' | 'bottom'
+    position: "top" | "bottom"
     showAuth?: boolean
   },
 ) {
@@ -16,18 +19,18 @@ export function Bar(
     SecondaryActions = props.secondaryAction.map((v, i) => <div key={i}>{v}</div>)
   }
 
-  const isTop = props.position == 'top'
+  const isTop = props.position == "top"
 
   return (
     <AppBar
       position="sticky"
       sx={{
-        top: isTop ? 0 : 'unset',
-        bottom: isTop ? 'unset' : 0,
+        top: isTop ? 0 : "unset",
+        bottom: isTop ? "unset" : 0,
       }}
       data-testid={`app-bar-${props.position}`}
     >
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
         {props.mainAction}
         {props.optionalMiddleAction}
         <ButtonGroup variant="outlined">

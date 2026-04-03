@@ -1,42 +1,42 @@
-import { act, render, screen, waitFor, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { act, render, screen, waitFor, within } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { MemoryRouter, Route, Routes } from "react-router-dom"
+import { describe, expect, it, vi } from "vitest"
 
-import { useDreams } from '../../../store'
-import Edit from '../Edit'
-import { getCategoryInput, getDescriptionInput, getFinalizeButton, getHeaderBar, getPersonInput, getSaveButton, getStarButton } from './utils'
+import { useDreams } from "../../../store"
+import Edit from "../Edit"
+import { getCategoryInput, getDescriptionInput, getFinalizeButton, getHeaderBar, getPersonInput, getSaveButton, getStarButton } from "./utils"
 
 const rendering = () => render(
-  <MemoryRouter initialEntries={['/dreams/1']}>
+  <MemoryRouter initialEntries={["/dreams/1"]}>
     <Routes>
       <Route path="/dreams/:id" element={<Edit />} />
     </Routes>
   </MemoryRouter>,
 )
 
-describe('viewing and editing a single dream', () => {
-  it('everything is rendered', async () => {
+describe("viewing and editing a single dream", () => {
+  it("everything is rendered", async () => {
     rendering()
 
     await waitFor(() => {
       const header = getHeaderBar()
       expect(getSaveButton()).toBeInTheDocument()
-      expect(within(header).getByTitle('Zurück')).toBeInTheDocument()
-      expect(within(header).getByDisplayValue('2025-01-01')).toBeInTheDocument()
-      expect(within(header).getByTitle('Datum')).toBeInTheDocument()
+      expect(within(header).getByTitle("Zurück")).toBeInTheDocument()
+      expect(within(header).getByDisplayValue("2025-01-01")).toBeInTheDocument()
+      expect(within(header).getByTitle("Datum")).toBeInTheDocument()
 
       expect(getDescriptionInput()).toBeInTheDocument()
-      expect(screen.getByText('description')).toBeInTheDocument()
+      expect(screen.getByText("description")).toBeInTheDocument()
 
       expect(getCategoryInput()).toBeInTheDocument()
-      expect(screen.getByText('Category')).toBeInTheDocument()
+      expect(screen.getByText("Category")).toBeInTheDocument()
 
       expect(getPersonInput()).toBeInTheDocument()
-      expect(screen.getByText('Person')).toBeInTheDocument()
+      expect(screen.getByText("Person")).toBeInTheDocument()
 
-      expect(screen.getByTitle('Nächster Traum')).not.toBeDisabled()
-      expect(screen.getByTitle('Vorheriger Traum')).toBeDisabled()
+      expect(screen.getByTitle("Nächster Traum")).not.toBeDisabled()
+      expect(screen.getByTitle("Vorheriger Traum")).toBeDisabled()
 
       expect(getFinalizeButton()).toBeDisabled()
 
@@ -47,7 +47,7 @@ describe('viewing and editing a single dream', () => {
     })
   })
 
-  it('edit description', { skip: true }, async () => {
+  it("edit description", { skip: true }, async () => {
     vi.useFakeTimers()
     rendering()
 
@@ -57,75 +57,75 @@ describe('viewing and editing a single dream', () => {
     })
 
     const saveButton = getSaveButton()
-    expect(saveButton.getAttribute('class')).match(/colorSuccess/)
+    expect(saveButton.getAttribute("class")).match(/colorSuccess/)
 
     const descriptionInput = getDescriptionInput()
 
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime, delay: 0 })
     await act(async () => {
-      user.type(descriptionInput, ' and more text')
+      user.type(descriptionInput, " and more text")
       vi.advanceTimersToNextTimer()
     })
 
-    expect(screen.getByText('description and more text')).toBeInTheDocument()
-    expect(saveButton.getAttribute('class')).match(/colorError/)
+    expect(screen.getByText("description and more text")).toBeInTheDocument()
+    expect(saveButton.getAttribute("class")).match(/colorError/)
 
     await act(async () => {
       await vi.runAllTimersAsync()
       await Promise.resolve()
     })
 
-    expect(saveButton.getAttribute('class')).match(/colorSuccess/)
+    expect(saveButton.getAttribute("class")).match(/colorSuccess/)
 
     vi.useRealTimers()
   })
 
-  it('remove category', async () => {
+  it("remove category", async () => {
     rendering()
 
-    const category = (await screen.findByText('Category')).closest('div')!
-    const deleteCategory = category.querySelector('svg')!
+    const category = (await screen.findByText("Category")).closest("div")!
+    const deleteCategory = category.querySelector("svg")!
     expect(deleteCategory).not.toBeNull()
     await userEvent.click(deleteCategory)
-    expect(screen.queryByText('Category')).toBeNull()
+    expect(screen.queryByText("Category")).toBeNull()
   })
 
-  it('add category', async () => {
+  it("add category", async () => {
     rendering()
 
     const categoryInput = await waitFor(() => getCategoryInput())
-    await userEvent.type(categoryInput, 'New category{enter}')
+    await userEvent.type(categoryInput, "New category{enter}")
 
-    expect(screen.getByRole('button', { name: 'New category' })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "New category" })).toBeInTheDocument()
   })
 
-  it('remove person', async () => {
+  it("remove person", async () => {
     rendering()
 
-    const personChip = (await screen.findByText('Person')).closest('div')!
+    const personChip = (await screen.findByText("Person")).closest("div")!
     expect(personChip).toBeInTheDocument()
-    const remove = personChip.querySelector('.MuiChip-deleteIcon')!
+    const remove = personChip.querySelector(".MuiChip-deleteIcon")!
     await userEvent.click(remove)
-    expect(screen.queryByText('Person')).not.toBeInTheDocument()
+    expect(screen.queryByText("Person")).not.toBeInTheDocument()
   })
 
-  it('add person', async () => {
+  it("add person", async () => {
     rendering()
 
     const personInput = await waitFor(() => getPersonInput())
-    await userEvent.type(personInput, 'Somebody{enter}')
-    expect(screen.getByText('Somebody')).toBeInTheDocument()
+    await userEvent.type(personInput, "Somebody{enter}")
+    expect(screen.getByText("Somebody")).toBeInTheDocument()
   })
 
-  it('rate and finalize', async () => {
+  it("rate and finalize", async () => {
     rendering()
 
-    const rating = await screen.findByTitle('Bewertung')
+    const rating = await screen.findByTitle("Bewertung")
     expect(rating).toBeInTheDocument()
     const finalizeButton = getFinalizeButton()
     expect(finalizeButton).toBeDisabled()
 
-    const stars = within(rating).getAllByRole('radio')
+    const stars = within(rating).getAllByRole("radio")
     await userEvent.click(stars[0])
 
     expect(finalizeButton).not.toBeDisabled()
@@ -166,20 +166,20 @@ describe('viewing and editing a single dream', () => {
   //     // })
   // })
 
-  it('set stars', async () => {
+  it("set stars", async () => {
     rendering()
 
-    const ratingBar = await screen.findByTitle('Bewertung')
+    const ratingBar = await screen.findByTitle("Bewertung")
     expect(ratingBar).toBeInTheDocument()
-    const stars2 = within(ratingBar).getByLabelText('2 Stars')
+    const stars2 = within(ratingBar).getByLabelText("2 Stars")
     await userEvent.click(stars2)
     const label = ratingBar.querySelector(`label[for="${stars2.id}"]`)!
-    const icon = label.querySelector('.MuiRating-icon')!
-    expect(icon).toHaveClass('MuiRating-iconFilled')
-    expect(icon).not.toHaveClass('MuiRating-iconEmpty')
+    const icon = label.querySelector(".MuiRating-icon")!
+    expect(icon).toHaveClass("MuiRating-iconFilled")
+    expect(icon).not.toHaveClass("MuiRating-iconEmpty")
   })
 
-  it('finalize', async () => {
+  it("finalize", async () => {
     rendering()
 
     const finalizeButton = await waitFor(() => getFinalizeButton())
@@ -193,13 +193,13 @@ describe('viewing and editing a single dream', () => {
     expect(finalizeButton).toBeDisabled()
   })
 
-  it('hide', async () => {
+  it("hide", async () => {
     await act(async () => {
-      useDreams.getState().setToken('token')
+      useDreams.getState().setToken("token")
       rendering()
     })
 
-    const hideButton = await screen.findByTestId('hideButton')
+    const hideButton = await screen.findByTestId("hideButton")
 
     expect(hideButton).toBeInTheDocument()
     await userEvent.click(hideButton)

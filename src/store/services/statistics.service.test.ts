@@ -1,10 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
-import { useDreams } from '../store'
-import { statisticsService } from './statistics.service'
+import { useDreams } from "../store"
+import { statisticsService } from "./statistics.service"
 
-describe('statistics service', () => {
-  describe('get statistics', () => {
+describe("statistics service", () => {
+  describe("get statistics", () => {
     beforeEach(() => {
       vi.resetAllMocks()
     })
@@ -33,7 +33,7 @@ describe('statistics service', () => {
     //   expect(personsCount[0].count).toBe(6)
     // })
 
-    it('get count categories', async () => {
+    it("get count categories", async () => {
       await statisticsService.getStatistics()
 
       const { statistics } = useDreams.getState()
@@ -43,13 +43,13 @@ describe('statistics service', () => {
       expect(statistics[1]).toStrictEqual({ id: 2, count: 3 })
     })
 
-    it('get monthly statistics', async () => {
+    it("get monthly statistics", async () => {
       await statisticsService.getMonthlyStatistics()
 
       const { monthlyStatistics } = useDreams.getState()
       expect(monthlyStatistics).toHaveLength(2)
       const febStats = monthlyStatistics[0]
-      expect(febStats.month).toBe('02/2022')
+      expect(febStats.month).toBe("02/2022")
       expect(febStats.numberOfDreams).toBe(10)
       expect(febStats.categoryCount.get(1)).toBe(7)
       expect(febStats.categoryCount.get(2)).toBe(3)

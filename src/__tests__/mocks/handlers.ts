@@ -1,8 +1,8 @@
-import * as authHandlers from './authHandlers'
-import * as categoryHandlers from './categoryHandlers'
-import * as dreamCategoriesHandlers from './dreamCategoriesHandler'
-import * as dreamHandlers from './dreamsHandlers'
-import * as statisticsHandler from './statisticsHandler'
+import * as authHandlers from "./authHandlers"
+import * as categoryHandlers from "./categoryHandlers"
+import * as dreamCategoriesHandlers from "./dreamCategoriesHandler"
+import * as dreamHandlers from "./dreamsHandlers"
+import * as statisticsHandler from "./statisticsHandler"
 
 export default [
   dreamHandlers.deleteDreamHandler,

@@ -1,5 +1,4 @@
-import { Api } from '../../api/generated_api'
-import { AuthState } from '../auth'
+import { Api } from "../../api/generated_api"
 
 export type ApiState = {
   api: Api<unknown> | null

@@ -61,14 +61,6 @@ export interface EntityCountByCat {
   id: number;
 }
 
-export interface EntityDreamMetaResponse {
-  date: string;
-  finalized: boolean;
-  id: number;
-  rating?: number;
-  visible: boolean;
-}
-
 export interface EntityDreamResponse {
   categories: EntityCategoryResponse[];
   date: string;
@@ -80,7 +72,7 @@ export interface EntityDreamResponse {
 }
 
 export interface EntityDreamsResponse {
-  dreams: EntityDreamMetaResponse[];
+  dreams: EntityDreamResponse[];
 }
 
 export interface EntityLoginResponse {

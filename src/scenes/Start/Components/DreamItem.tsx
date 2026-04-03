@@ -1,11 +1,15 @@
-import styled from '@emotion/styled'
-import CloudIcon from '@mui/icons-material/Cloud'
-import CloudOffIcon from '@mui/icons-material/CloudOff'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import styled from "@emotion/styled"
+import CloudIcon from "@mui/icons-material/Cloud"
+import CloudOffIcon from "@mui/icons-material/CloudOff"
+import DeleteIcon from "@mui/icons-material/Delete"
+import IconButton from "@mui/material/IconButton"
+import ListItem from "@mui/material/ListItem"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
+import ListItemText from "@mui/material/ListItemText"
+import Rating from "@mui/material/Rating"
+import { useNavigate } from "react-router-dom"
 
-import { dreamsService, MetaDream } from '../../../store'
+import { dreamsService } from "../../../store"
 
 const StyledListItem = styled(ListItem)`
     :hover{
@@ -13,16 +17,26 @@ const StyledListItem = styled(ListItem)`
         background-color: rgba(0,0,0,0.2);
     }
 `
-export default function DreamItem(props: {
-  dream: MetaDream
+
+type DreamListItemType = {
+  id: number
+  date: Date
+  finalized: boolean
+  visible: boolean
+  rating: number | null
+
+}
+
+export function DreamItem(props: {
+  dream: DreamListItemType
 }) {
   const navigate = useNavigate()
 
   const navigateTo = (dreamId: number) => {
-    navigate('/dreams/' + dreamId)
+    navigate("/dreams/" + dreamId)
   }
 
-  const color = props.dream.finalized ? 'inherit' : 'warning'
+  const color = props.dream.finalized ? "inherit" : "warning"
 
   return (
     <StyledListItem
@@ -39,11 +53,11 @@ export default function DreamItem(props: {
         </IconButton>
       )}
     >
-      <ListItemAvatar>
+      <ListItemAvatar data-testid="dream-icon">
         {props.dream.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
       </ListItemAvatar>
       <ListItemText>
-        {props.dream.date.toLocaleDateString('de-DE', { dateStyle: 'medium' })}
+        {props.dream.date.toLocaleDateString("de-DE", { dateStyle: "medium" })}
       </ListItemText>
       <Rating
         title="Bewertung"

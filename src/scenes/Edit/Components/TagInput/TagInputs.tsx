@@ -1,7 +1,9 @@
-import { Autocomplete, AutocompleteChangeReason, Chip, TextField } from '@mui/material'
+import Autocomplete, { AutocompleteChangeReason } from "@mui/material/Autocomplete"
+import Chip from "@mui/material/Chip"
+import TextField from "@mui/material/TextField"
 
-import { Category, CategoryType, dreamService } from '../../../../store'
-import { useDreamCategories, usePersons, useTags } from '../../../../store/selectors'
+import { Category, CategoryType, dreamService } from "../../../../store"
+import { useDreamCategories, usePersons, useTags } from "../../../../store/selectors"
 
 export function TagInputs({ type }: {
   type: CategoryType
@@ -10,26 +12,26 @@ export function TagInputs({ type }: {
   const { categories, persons } = useDreamCategories()
   const tagValues = useTags()
   const personValues = usePersons()
-  const values = type == 'category' ? categories : persons
-  const allOptions = type == 'category' ? tagValues : personValues
+  const values = type == "category" ? categories : persons
+  const allOptions = type == "category" ? tagValues : personValues
   const options = allOptions.filter(o => !values.some(v => v.id == o.id))
   //   const options = allOptions
 
   const getValue = (option: Category | string): string => {
-    return typeof (option) == 'string' ? option : option.name
+    return typeof (option) == "string" ? option : option.name
   }
 
   const onChange = (_: React.SyntheticEvent, values: (Category | string)[], changeReason: AutocompleteChangeReason) => {
     const newValue = values.at(-1)
     if (!newValue) return
-    if (changeReason == 'createOption' && typeof (newValue) == 'string') {
+    if (changeReason == "createOption" && typeof (newValue) == "string") {
       addNewCategory(newValue, type)
     }
-    else if (changeReason == 'selectOption' && typeof newValue != 'string') {
+    else if (changeReason == "selectOption" && typeof newValue != "string") {
       addExistingCategory(newValue.id)
     }
     else {
-      alert('Invalid handleChange:' + changeReason + newValue)
+      alert("Invalid handleChange:" + changeReason + newValue)
     }
   }
 
@@ -37,12 +39,12 @@ export function TagInputs({ type }: {
     removeCategory(id)
   }
 
-  const inputLabel = type == 'person' ? 'Beteiligte Personen' : 'Kategorien'
+  const inputLabel = type == "person" ? "Beteiligte Personen" : "Kategorien"
   return (
     <Autocomplete
       sx={{
-        paddingTop: '1rem',
-        paddingBottom: '1rem',
+        paddingTop: "1rem",
+        paddingBottom: "1rem",
       }}
       disablePortal
       value={values}

@@ -1,4 +1,4 @@
-import { MonthlyStatistics, Statistics } from './statistics.types'
+import { MonthlyStatistics, Statistics } from "./statistics.types"
 
 export type StatisticState = {
   statistics: Statistics

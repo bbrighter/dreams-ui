@@ -1,30 +1,30 @@
-import LockIcon from '@mui/icons-material/Lock'
-import LockOpenIcon from '@mui/icons-material/LockOpen'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Fade from '@mui/material/Fade'
-import IconButton from '@mui/material/IconButton'
-import Modal from '@mui/material/Modal'
-import { SxProps } from '@mui/material/styles'
-import TextField from '@mui/material/TextField'
-import { useEffect, useState } from 'react'
+import LockIcon from "@mui/icons-material/Lock"
+import LockOpenIcon from "@mui/icons-material/LockOpen"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Fade from "@mui/material/Fade"
+import IconButton from "@mui/material/IconButton"
+import Modal from "@mui/material/Modal"
+import { SxProps } from "@mui/material/styles"
+import TextField from "@mui/material/TextField"
+import { useEffect, useState } from "react"
 
-import { authService, useIsLoggedIn } from '../../store'
+import { authService, useIsLoggedIn } from "../../store"
 
 const modalStyle: SxProps = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
   width: 300,
-  padding: '3rem',
+  padding: "3rem",
 
 }
 
 export function Authentication() {
   const [open, setOpen] = useState(false)
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
   const loggedIn = useIsLoggedIn()
@@ -32,7 +32,7 @@ export function Authentication() {
   const onClick = () => loggedIn ? authService.logout() : setOpen(true)
   const onClose = () => {
     setOpen(false)
-    setPassword('')
+    setPassword("")
     setIsWrong(false)
   }
 
@@ -71,7 +71,7 @@ export function Authentication() {
             />
             <Button
               variant="contained"
-              sx={{ mt: '1rem' }}
+              sx={{ mt: "1rem" }}
               onClick={loginClick}
               loading={loading}
             >

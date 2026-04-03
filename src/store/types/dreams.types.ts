@@ -1,15 +1,7 @@
-import { EntityDreamsResponse } from '../../api/generated_api'
-import { Category } from '../categories'
+import { EntityDreamsResponse } from "../../api/generated_api"
+import { Dream } from "./dream.types"
 
-export type MetaDream = {
-  id: number
-  date: Date
-  visible: boolean
-  finalized: boolean
-  rating: number | null
-}
-
-export type Dreams = Array<MetaDream>
+export type Dreams = Array<Dream>
 
 export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {
   return resp.dreams.map((d) => {
@@ -20,6 +12,8 @@ export function dreamsResponseToDreams(resp: EntityDreamsResponse): Dreams {
       visible: d.visible,
       finalized: d.finalized,
       rating: d.rating ?? null,
+      categories: d.categories?.map(v => v.id) ?? [],
+      description: d.description,
     }
   })
 }
