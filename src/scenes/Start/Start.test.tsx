@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { MemoryRouter } from "react-router-dom"
+import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { describe, expect, it, vi } from "vitest"
 
 import { getDreamsHandler } from "../../__tests__/mocks/dreamsHandlers"
@@ -73,5 +73,50 @@ describe("start page is rendered and can be clicked", () => {
 
     expect(await screen.findByText("Neu")).toBeInTheDocument()
     expect(screen.queryByRole("listitem")).not.toBeInTheDocument()
+  })
+
+  it("filtering by category", async () => {
+    render(<MemoryRouter><Start /></MemoryRouter>)
+
+    const filter = await screen.findByRole("combobox")
+    expect(filter).toBeVisible()
+    await userEvent.type(filter, "Category")
+    const option = screen.getByText("Category", { selector: "li" })
+    expect(option).toBeInTheDocument()
+    await userEvent.click(option)
+
+    expect(screen.queryAllByTestId("dream-icon")).toHaveLength(1)
+  })
+
+  it("add new dream navigates to correct view", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Routes>
+          <Route path="/" element={<Start/>}/>
+          <Route path="/dreams/4" element={<>Single dream</>}/>
+        </Routes></MemoryRouter>,
+    )
+
+    const addButton = await screen.findByRole("button", { name: "Neu" })
+    expect(addButton).toBeEnabled()
+
+    await userEvent.click(addButton)
+    expect(screen.getByText("Single dream")).toBeInTheDocument()
+  })
+
+  it("navigate to dream via list item click", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Routes>
+          <Route path="/" element={<Start/>}/>
+          <Route path="/dreams/1" element={<>Single dream</>}/>
+        </Routes></MemoryRouter>,
+    )
+
+    const dream1 = await findRowByDate("01.01.2025")
+    expect(dream1).toBeInTheDocument()
+
+    await userEvent.click(dream1)
+    expect(screen.getByText("Single dream")).toBeInTheDocument()
   })
 })

@@ -53,7 +53,7 @@ export function DreamItem(props: {
         </IconButton>
       )}
     >
-      <ListItemAvatar>
+      <ListItemAvatar data-testid="dream-icon">
         {props.dream.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
       </ListItemAvatar>
       <ListItemText>

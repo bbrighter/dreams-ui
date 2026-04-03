@@ -19,6 +19,7 @@ export const CategoryFilter = () => {
 
   return (
     <Autocomplete
+      data-testid="filter-dreams-search"
       freeSolo
       options={sortedCategories}
       getOptionLabel={(v: Category) => v.name}
