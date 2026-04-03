@@ -26,6 +26,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "test:once": "vitest run",
     "openapi": "swagger-typescript-api generate -p ~/Dokumente/Code/dreams-api/docs/swagger.json -o ./src/api -n generated_api.ts",
     "tsc": "tsc --noEmit",
     "lint": "eslint .",
@@ -33,7 +34,8 @@
     "knip": "knip",
     "dependencies:ci": "npx depcruise src  --include-only \"^src\"",
     "dependencies:table": "npx depcruise src  --include-only \"^src\" --output-type html > graph.html",
-    "dependencies:graph": "npx depcruise --include-only \"^src\" --output-type dot src | dot -T svg > graph.svg"
+    "dependencies:graph": "npx depcruise --include-only \"^src\" --output-type dot src | dot -T svg > graph.svg",
+    "check": "pnpm tsc && pnpm lint && pnpm knip && pnpm test:once"
   },
   "engines": {
     "node": ">=24 <25",
