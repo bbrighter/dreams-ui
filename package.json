@@ -17,9 +17,9 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "knip": "knip",
-    "dependencies:ci": "npx depcruise src  --include-only \"^src\"",
-    "dependencies:table": "npx depcruise src  --include-only \"^src\" --output-type html > graph.html",
-    "dependencies:graph": "npx depcruise --include-only \"^src\" --output-type dot src | dot -T svg > graph.svg",
+    "dependencies:ci": "pnpm exec depcruise src  --include-only \"^src\"",
+    "dependencies:table": "pnpm exec depcruise src  --include-only \"^src\" --output-type html > graph.html",
+    "dependencies:graph": "pnpm exec depcruise --include-only \"^src\" --output-type dot src | dot -T svg > graph.svg",
     "check": "pnpm tsc && pnpm lint && pnpm knip && pnpm test:once"
   },
   "dependencies": {
@@ -31,7 +31,6 @@
     "@tanstack/react-virtual": "^3.14.10",
     "@vitejs/plugin-react": "^6.1.0",
     "@vitest/coverage-v8": "^4.1.11",
-    "dependency-cruiser": "^17.4.3",
     "immer": "^11.1.18",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -49,6 +48,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@types/react-tagcloud": "^2.3.2",
+    "dependency-cruiser": "^18.2.0",
     "jsdom": "^27.4.0",
     "knip": "^6.32.3",
     "msw": "^2.15.0",
