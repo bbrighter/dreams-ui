@@ -1,21 +1,7 @@
 import { StateCreator } from "zustand";
 
-import { StoreSlice } from "../interface";
+import { DreamSlice, DreamState, StoreSlice } from "../interface";
 import { Dream, hashDream } from "../types";
-
-interface DreamActions {
-  resetDream: () => void;
-  setDate: (date: Date) => void;
-  setDescription: (desc: string) => void;
-  setFinalized: () => void;
-  setVisibility: (isVisible: boolean) => void;
-  setRating: (rating: number) => void;
-  setDreamCategories: (cats: Array<number>) => void;
-  setDream: (dream: Dream) => void;
-  setHash: (dream: Dream) => void;
-}
-
-type DreamState = { dream: Dream; hash: string };
 
 const createInitialState = (): DreamState => ({
   dream: {
@@ -29,8 +15,6 @@ const createInitialState = (): DreamState => ({
   },
   hash: "",
 });
-
-export type DreamSlice = DreamActions & DreamState;
 
 export const createDreamSlice: StateCreator<
   StoreSlice,

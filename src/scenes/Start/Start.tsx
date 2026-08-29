@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 import { useEffect } from "react";
 
-import { useDreams } from "../../store";
+import { useDreams } from "../../store/store";
 import { Bar, Navigation } from "../Components";
 import { AddDreamButton, CategoryFilter, DreamList } from "./Components";
 

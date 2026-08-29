@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
-import { Category, CategoryType } from "../categories";
 import { useDreams } from "../store";
+import { Category, CategoryType } from "../types/categories.types";
 
 export const usePersons = () => {
   const categories = useDreams((state) => state.categories);

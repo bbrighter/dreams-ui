@@ -2,7 +2,9 @@ import Autocomplete, { AutocompleteChangeReason } from "@mui/material/Autocomple
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 
-import { Category, CategoryType, dreamService } from "../../../../store";
+import { dreamService } from "@/store/services";
+import { Category, CategoryType } from "@/store/types/categories.types";
+
 import { useDreamCategories, usePersons, useTags } from "../../../../store/selectors";
 
 export function TagInputs({ type }: { type: CategoryType }) {

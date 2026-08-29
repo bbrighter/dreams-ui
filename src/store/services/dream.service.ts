@@ -1,6 +1,6 @@
-import { CategoryType, toEntityCategoryType } from "../categories";
+import { useDreams } from "../store";
+import { CategoryType, toEntityCategoryType } from "../types/categories.types";
 import { dreamIdStr } from "./../selectors";
-import { useDreams } from "./../store";
 import { dreamResponseToDream } from "./../types";
 
 export const dreamService = {

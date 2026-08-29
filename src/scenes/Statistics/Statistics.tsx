@@ -1,7 +1,9 @@
 import Container from "@mui/material/Container";
 import { MouseEvent, useEffect, useState } from "react";
 
-import { categoriesService, CategoryType, useIsLoggedIn } from "../../store";
+import { useIsLoggedIn } from "../../store/selectors";
+import { categoriesService } from "../../store/services";
+import { CategoryType } from "../../store/types/categories.types";
 import { Bar, Navigation } from "../Components";
 import { BackButton } from "../Edit/Components/Header/EditHeader";
 import { MonthlyChart, StatisticsToggleOption, Tags } from "./Components";

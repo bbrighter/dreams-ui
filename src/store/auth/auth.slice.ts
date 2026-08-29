@@ -1,7 +1,6 @@
 import { StateCreator } from "zustand";
 
-import { StoreSlice } from "../interface";
-import { AuthSlice, AuthState } from "./auth.types";
+import { AuthSlice, AuthState, StoreSlice } from "../interface";
 
 const createInitialState = (): AuthState => ({
   token: "",

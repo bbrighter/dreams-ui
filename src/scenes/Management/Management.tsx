@@ -4,7 +4,8 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { useEffect, useState } from "react";
 
-import { categoriesService, statisticsService } from "../../store";
+import { categoriesService, statisticsService } from "@/store/services";
+
 import { useStatistics } from "../../store/selectors";
 import { Navigation } from "../Components";
 import ManagementList from "./ManagementList";

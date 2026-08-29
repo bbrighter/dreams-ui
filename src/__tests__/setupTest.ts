@@ -3,7 +3,7 @@ import * as matchers from "@testing-library/jest-dom/matchers";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll, beforeEach, expect } from "vitest";
 
-import { useDreams } from "../store";
+import { useDreams } from "../store/store";
 import handlers from "./mocks/handlers";
 
 expect.extend(matchers);

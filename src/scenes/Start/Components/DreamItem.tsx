@@ -9,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
 
-import { dreamsService } from "../../../store";
+import { dreamsService } from "@/store/services";
 
 const StyledListItem = styled(ListItem)`
   :hover {

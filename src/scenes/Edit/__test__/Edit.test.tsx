@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
-import { useDreams } from "../../../store";
+import { useDreams } from "../../../store/store";
 import Edit from "../Edit";
 import {
   getCategoryInput,

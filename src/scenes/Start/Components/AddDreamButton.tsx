@@ -1,7 +1,8 @@
 import Button from "@mui/material/Button";
 
+import { dreamsService } from "@/store/services";
+
 import { useNavigateToDream } from "../../../hooks/navigate";
-import { dreamsService } from "../../../store";
 
 export const AddDreamButton = () => {
   const navigate = useNavigateToDream();

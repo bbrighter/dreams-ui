@@ -3,8 +3,10 @@ import SaveIcon from "@mui/icons-material/Save";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 
+import { dreamService } from "@/store/services";
+import { useDreams } from "@/store/store";
+
 import { useNavigateHomePage } from "../../../../hooks/navigate";
-import { dreamService, useDreams } from "../../../../store";
 import { useIsLoggedIn, useIsSaved } from "../../../../store/selectors";
 import { Bar } from "../../../Components";
 import Hide from "./Hide";

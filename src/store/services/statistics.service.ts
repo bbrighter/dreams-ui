@@ -1,8 +1,8 @@
+import { useDreams } from "../store";
 import {
   controllerCountsResponseToStatistic,
   respToMonthlyStatistics,
-} from "../statistics/statistics.types";
-import { useDreams } from "../store";
+} from "../types/statistics.types";
 
 const STATISTICS_LIMITS = 40;
 

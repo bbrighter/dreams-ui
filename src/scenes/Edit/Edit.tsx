@@ -5,8 +5,9 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useSimpleDebounce } from "../../hooks/simpleDebounce";
-import { categoriesService, dreamService, useDreams } from "../../store";
 import { useIsSaved } from "../../store/selectors";
+import { categoriesService, dreamService } from "../../store/services";
+import { useDreams } from "../../store/store";
 import { EditFooter, EditHeader, TagInputs } from "./Components";
 
 const DEBOUNCE_TIME = 2_000;

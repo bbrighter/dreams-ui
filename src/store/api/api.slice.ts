@@ -1,8 +1,7 @@
 import { StateCreator } from "zustand";
 
 import { Api, RequestParams } from "../../api/generated_api";
-import { StoreSlice } from "../interface";
-import { ApiSlice, ApiState } from "./api.type";
+import { ApiSlice, ApiState, StoreSlice } from "../interface";
 
 const initialState = (): ApiState => ({
   api: null,

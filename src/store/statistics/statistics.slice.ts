@@ -1,8 +1,7 @@
 import { StateCreator } from "zustand";
 
-import { StoreSlice } from "../interface";
-import { StatisticsSlice, StatisticState } from "./statistics.interface";
-import { MonthlyStatistics, Statistics } from "./statistics.types";
+import { StatisticsSlice, StatisticState, StoreSlice } from "../interface";
+import { MonthlyStatistics, Statistics } from "../types/statistics.types";
 
 const setInitialState = (): StatisticState => ({
   monthlyStatistics: [],

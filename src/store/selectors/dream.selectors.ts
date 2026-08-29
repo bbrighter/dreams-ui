@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
-import { Categories } from "../categories";
 import { useDreams } from "../store";
 import { hashDream } from "../types";
+import { Categories } from "../types/categories.types";
 
 export const dreamIdStr = (): string => {
   const { dream } = useDreams.getState();

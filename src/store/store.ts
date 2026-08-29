@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-import { createApiSlice } from "./api";
-import { createAuthSlice } from "./auth";
-import { createCategoriesSlice } from "./categories";
-import { createDreamSlice } from "./dream";
-import { createDreamsSlice } from "./dreams";
+import { createApiSlice } from "./api/api.slice";
+import { createAuthSlice } from "./auth/auth.slice";
+import { createCategoriesSlice } from "./categories/categories.slice";
+import { createDreamSlice } from "./dream/dream.slice";
+import { createDreamsSlice } from "./dreams/dreams.slice";
 import { StoreSlice } from "./interface";
-import { createStatisticSlice } from "./statistics";
+import { createStatisticSlice } from "./statistics/statistics.slice";
 
 export const useDreams = create<StoreSlice>()(
   immer((...a) => {

@@ -5,8 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import { useEffect, useState } from "react";
 
 import { useNavigateToDream } from "../../../../hooks/navigate";
-import { useDreams } from "../../../../store";
 import { useIsSaved } from "../../../../store/selectors";
+import { useDreams } from "../../../../store/store";
 import { Bar } from "../../../Components";
 import DreamRating from "./DreamRating";
 import FinalizeButton from "./FinalizeButton";

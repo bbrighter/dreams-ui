@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
 import scenes from "./scenes";
-import { useDreams } from "./store";
+import { useDreams } from "./store/store";
 
 const darkTheme = createTheme({
   palette: {

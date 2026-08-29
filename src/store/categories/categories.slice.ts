@@ -1,8 +1,7 @@
 import { StateCreator } from "zustand";
 
-import { StoreSlice } from "../interface";
-import { CategorySlice, CategoryState } from "./categories.interface";
-import { Categories, CategoryType } from "./categories.types";
+import { CategorySlice, CategoryState, StoreSlice } from "../interface";
+import { Categories, CategoryType } from "../types/categories.types";
 
 const createInitialSlice = (): CategoryState => ({
   categories: [],

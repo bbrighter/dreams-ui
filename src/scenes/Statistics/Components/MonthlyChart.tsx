@@ -2,7 +2,10 @@ import Box from "@mui/material/Box";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useEffect, useMemo, useState } from "react";
 
-import { CategoryType, statisticsService, useDreams, usePersons, useTags } from "../../../store";
+import { usePersons, useTags } from "../../../store/selectors";
+import { statisticsService } from "../../../store/services";
+import { useDreams } from "../../../store/store";
+import { CategoryType } from "../../../store/types/categories.types";
 import SelectData from "./SelectData";
 
 export function MonthlyChart({ type }: { type: CategoryType }) {
