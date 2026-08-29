@@ -1,4 +1,4 @@
-FROM nginx:1.27.5-alpine3.21-slim
+FROM nginx:1.31.4-alpine3.24-slim
 RUN rm -rf /usr/share/nginx/html/*
 COPY dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
