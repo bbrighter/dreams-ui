@@ -16,8 +16,25 @@ const findRowByDate = async (date: string): Promise<HTMLElement> => {
 
 window.scrollTo = vi.fn();
 
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: ({ count }: { count: number }) => ({
+    getVirtualItems: () =>
+      Array.from({ length: count }, (_, index) => ({
+        index,
+        key: index,
+        start: index * 35,
+      })),
+    getTotalSize: () => count * 35,
+    measureElement: () => {},
+  }),
+}));
+
 describe("start page is rendered and can be clicked", () => {
   it("everything is rendered", async () => {
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+      configurable: true,
+      value: 500,
+    });
     render(
       <MemoryRouter>
         <Start />
@@ -25,6 +42,7 @@ describe("start page is rendered and can be clicked", () => {
     );
 
     const row = await findRowByDate("01.01.2025");
+
     expect(within(row).getByTitle("Löschen")).toBeInTheDocument();
 
     expect(screen.getByText("Neu")).toBeInTheDocument();
