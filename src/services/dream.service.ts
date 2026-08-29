@@ -1,7 +1,7 @@
-import { useDreams } from "../store";
-import { CategoryType, toEntityCategoryType } from "../types/categories.types";
-import { dreamIdStr } from "./../selectors";
-import { dreamResponseToDream } from "./../types";
+import { dreamIdStr } from "@/store/selectors";
+import { useDreams } from "@/store/store";
+import { dreamResponseToDream } from "@/store/types";
+import { CategoryType, toEntityCategoryType } from "@/store/types/categories.types";
 
 export const dreamService = {
   getDream: async (id: number) => {

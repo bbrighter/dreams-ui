@@ -1,8 +1,11 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { http, HttpResponse } from "msw";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
+
+import { createCategories } from "@/__tests__/fixtures/categories";
+import { createCategoriesCount } from "@/__tests__/fixtures/statistics";
+import { getCountCategoriesHandler } from "@/__tests__/mocks/statisticsHandler";
 
 import { getCategoriesHandler } from "../../../__tests__/mocks/categoryHandlers";
 import { server } from "../../../__tests__/setupTest";
@@ -11,7 +14,19 @@ import Management from "../Management";
 import { clickEditButton, findDeleteButton, getRowByText } from "./utils";
 
 describe("Management is rendered", () => {
+  const cat = { id: 1, name: "Category", type: EntityCategoryType.TypeCategory };
+  const person = { id: 2, name: "Person", type: EntityCategoryType.TypePerson };
+
   it("Tabs work and content is rendered", async () => {
+    server.use(
+      getCategoriesHandler(createCategories([cat, person])),
+      getCountCategoriesHandler(
+        createCategoriesCount([
+          { id: 1, count: 10 },
+          { id: 2, count: 3 },
+        ]),
+      ),
+    );
     render(
       <MemoryRouter>
         <Management />
@@ -37,6 +52,7 @@ describe("Management is rendered", () => {
   });
 
   it("renaming works", async () => {
+    server.use(getCategoriesHandler(createCategories([cat, person])));
     render(
       <MemoryRouter>
         <Management />
@@ -60,22 +76,19 @@ describe("Management is rendered", () => {
 
   it("deleting is disabled", async () => {
     server.use(
-      getCategoriesHandler({
-        categories: [
-          { id: 1, name: "Category", type: EntityCategoryType.TypeCategory },
+      getCategoriesHandler(
+        createCategories([
+          cat,
           { id: 2, name: "Category 2", type: EntityCategoryType.TypeCategory },
-        ],
-      }),
-      http.get("/count-categories", () =>
-        HttpResponse.json({
-          categories: [
-            { id: 1, count: 0 },
-            { id: 2, count: 10 },
-          ],
-        }),
+        ]),
+      ),
+      getCountCategoriesHandler(
+        createCategoriesCount([
+          { id: 1, count: 0 },
+          { id: 2, count: 10 },
+        ]),
       ),
     );
-
     render(
       <MemoryRouter>
         <Management />

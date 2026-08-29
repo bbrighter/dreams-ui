@@ -2,8 +2,9 @@ import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { TagCloud } from "react-tagcloud";
 
+import { statisticsService } from "@/services/statistics.service";
+
 import { useStatistics } from "../../../store/selectors";
-import { statisticsService } from "../../../store/services";
 import { CategoryType } from "../../../store/types/categories.types";
 
 export function Tags({ type }: { type: CategoryType }) {

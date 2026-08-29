@@ -1,7 +1,8 @@
 import Button from "@mui/material/Button";
 import { useState } from "react";
 
-import { dreamService } from "../../../../store/services";
+import { dreamService } from "@/services/dream.service";
+
 import { useDreams } from "../../../../store/store";
 
 export default function FinalizeButton() {

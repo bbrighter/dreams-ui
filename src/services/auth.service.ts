@@ -1,4 +1,4 @@
-import { useDreams } from "../store";
+import { useDreams } from "@/store/store";
 
 export const authService = {
   login: async (password: string): Promise<boolean> => {

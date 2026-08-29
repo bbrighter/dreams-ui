@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 
-import { dreamsService } from "@/store/services";
+import { dreamsService } from "@/services/dreams.service";
 
 import { useNavigateToDream } from "../../../hooks/navigate";
 
