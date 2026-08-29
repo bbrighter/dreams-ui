@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
 import { getDreamsHandler, postDreamsHandler } from "@/__tests__/mocks/dreamsHandlers";

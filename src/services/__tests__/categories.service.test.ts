@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { createCategories } from "@/__tests__/fixtures/categories";
 import { getCategoriesHandler, postCategoryMergeHandler } from "@/__tests__/mocks/categoryHandlers";

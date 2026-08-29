@@ -1,5 +1,3 @@
-import { createStaticHandler } from "react-router-dom";
-
 import { createCategories } from "../fixtures/categories";
 import { createDream, createDreams } from "../fixtures/dreams";
 import { createCategoriesCount, createStatistics } from "../fixtures/statistics";

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { createCategories } from "@/__tests__/fixtures/categories";
 import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
