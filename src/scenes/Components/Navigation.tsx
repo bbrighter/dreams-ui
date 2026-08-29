@@ -1,37 +1,39 @@
-import QueryStatsIcon from "@mui/icons-material/QueryStats"
-import SettingsIcon from "@mui/icons-material/Settings"
-import TableViewIcon from "@mui/icons-material/TableView"
-import BottomNavigation from "@mui/material/BottomNavigation"
-import BottomNavigationAction from "@mui/material/BottomNavigationAction"
-import Paper from "@mui/material/Paper"
-import { useState } from "react"
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import SettingsIcon from "@mui/icons-material/Settings";
+import TableViewIcon from "@mui/icons-material/TableView";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Paper from "@mui/material/Paper";
+import { useState } from "react";
 
-import { useNavigateHomePage, useNavigateStatistics, useNavigateToManagement } from "../../hooks/navigate"
+import {
+  useNavigateHomePage,
+  useNavigateStatistics,
+  useNavigateToManagement,
+} from "../../hooks/navigate";
 
-export function Navigation(props: {
-  activeIndex: number
-}) {
-  const [activeTab, setActiveTab] = useState(props.activeIndex)
-  const goToHome = useNavigateHomePage()
-  const goToStatistics = useNavigateStatistics()
-  const goToManagement = useNavigateToManagement()
+export function Navigation(props: { activeIndex: number }) {
+  const [activeTab, setActiveTab] = useState(props.activeIndex);
+  const goToHome = useNavigateHomePage();
+  const goToStatistics = useNavigateStatistics();
+  const goToManagement = useNavigateToManagement();
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue)
+    setActiveTab(newValue);
     switch (newValue) {
       case 0:
-        goToHome()
-        break
+        goToHome();
+        break;
       case 1:
-        goToStatistics()
-        break
+        goToStatistics();
+        break;
       case 2:
-        goToManagement()
-        break
+        goToManagement();
+        break;
       default:
-        alert("Huch! " + newValue)
+        alert("Huch! " + newValue);
     }
-  }
+  };
 
   return (
     <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}>
@@ -41,5 +43,5 @@ export function Navigation(props: {
         <BottomNavigationAction label="Management" icon={<SettingsIcon />} />
       </BottomNavigation>
     </Paper>
-  )
+  );
 }

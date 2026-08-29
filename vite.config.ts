@@ -1,8 +1,8 @@
 /// <reference types="vitest/config"/>
-import react from "@vitejs/plugin-react"
-import { visualizer } from "rollup-plugin-visualizer"
-import { defineConfig } from "vite"
-import { checker } from "vite-plugin-checker"
+import react from "@vitejs/plugin-react";
+import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
+import { checker } from "vite-plugin-checker";
 
 export default defineConfig({
   base: "/dreams",
@@ -14,6 +14,7 @@ export default defineConfig({
     }),
     checker({
       typescript: true,
+      oxlint: true,
     }),
   ],
   test: {
@@ -24,4 +25,4 @@ export default defineConfig({
       provider: "v8",
     },
   },
-})
+});

@@ -29,9 +29,7 @@ module.exports = {
       severity: "warn",
       from: {},
       to: {
-        dependencyTypes: [
-          "core",
-        ],
+        dependencyTypes: ["core"],
         path: [
           "^v8/tools/codemap$",
           "^v8/tools/consarray$",
@@ -61,9 +59,7 @@ module.exports = {
       severity: "warn",
       from: {},
       to: {
-        dependencyTypes: [
-          "deprecated",
-        ],
+        dependencyTypes: ["deprecated"],
       },
     },
     {
@@ -71,10 +67,7 @@ module.exports = {
       severity: "error",
       from: {},
       to: {
-        dependencyTypes: [
-          "npm-no-pkg",
-          "npm-unknown",
-        ],
+        dependencyTypes: ["npm-no-pkg", "npm-unknown"],
       },
     },
     {
@@ -103,15 +96,9 @@ module.exports = {
         pathNot: "([.]test[.])|(__tests__)|vite-env.d.ts",
       },
       to: {
-        dependencyTypes: [
-          "npm-dev",
-        ],
-        dependencyTypesNot: [
-          "type-only",
-        ],
-        pathNot: [
-          "node_modules/@types/",
-        ],
+        dependencyTypes: ["npm-dev"],
+        dependencyTypesNot: ["type-only"],
+        pathNot: ["node_modules/@types/"],
       },
     },
     {
@@ -119,9 +106,7 @@ module.exports = {
       severity: "info",
       from: {},
       to: {
-        dependencyTypes: [
-          "npm-optional",
-        ],
+        dependencyTypes: ["npm-optional"],
       },
     },
     {
@@ -129,14 +114,11 @@ module.exports = {
       severity: "warn",
       from: {},
       to: {
-        dependencyTypes: [
-          "npm-peer",
-        ],
+        dependencyTypes: ["npm-peer"],
       },
     },
   ],
   options: {
-
     /* Which modules not to follow further when encountered */
     doNotFollow: {
       /* path: an array of regular expressions in strings to match against */
@@ -317,7 +299,8 @@ module.exports = {
            dependency graph reporter (`archi`) you probably want to tweak
            this collapsePattern to your situation.
         */
-        collapsePattern: "^(?:packages|src|lib(s?)|app(s?)|bin|test(s?)|spec(s?))/[^/]+|node_modules/(?:@[^/]+/[^/]+|[^/]+)",
+        collapsePattern:
+          "^(?:packages|src|lib(s?)|app(s?)|bin|test(s?)|spec(s?))/[^/]+|node_modules/(?:@[^/]+/[^/]+|[^/]+)",
 
         /* Options to tweak the appearance of your graph. If you don't specify a
            theme for 'archi' dependency-cruiser will use the one specified in the
@@ -330,5 +313,5 @@ module.exports = {
       },
     },
   },
-}
+};
 // generated: dependency-cruiser@17.0.1 on 2025-09-07T13:51:38.302Z

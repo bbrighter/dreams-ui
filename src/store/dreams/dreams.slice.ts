@@ -1,31 +1,36 @@
-import { StateCreator } from "zustand"
+import { StateCreator } from "zustand";
 
-import { Dreams } from "../types"
-import { DreamsSlice, DreamsState } from "./dreams.interface"
+import { Dreams } from "../types";
+import { DreamsSlice, DreamsState } from "./dreams.interface";
 
 const createInitialState = (): DreamsState => ({
   dreams: [],
   scrollPosition: 0,
   dreamCategoryFilter: null,
-})
+});
 
-export const createDreamsSlice: StateCreator<DreamsState, [["zustand/immer", never]], [], DreamsSlice> = (set) => ({
+export const createDreamsSlice: StateCreator<
+  DreamsState,
+  [["zustand/immer", never]],
+  [],
+  DreamsSlice
+> = (set) => ({
   ...createInitialState(),
   resetDreams: () => set(createInitialState()),
   setDreams: (dreams: Dreams) => {
     set((draft: DreamsState) => {
-      draft.dreams = dreams.sort((a, b) => b.date.valueOf() - a.date.valueOf())
-    })
+      draft.dreams = dreams.sort((a, b) => b.date.valueOf() - a.date.valueOf());
+    });
   },
   setScrollPosition: (pos: number) => {
     set((draft: DreamsState) => {
-      draft.scrollPosition = pos
-    })
+      draft.scrollPosition = pos;
+    });
   },
 
   setDreamCategoryFilter: (catId: number | null) => {
     set((draft: DreamsState) => {
-      draft.dreamCategoryFilter = catId
-    })
+      draft.dreamCategoryFilter = catId;
+    });
   },
-})
+});

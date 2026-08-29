@@ -3,48 +3,51 @@ name: ci
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
     branches:
-      - '**'
+      - "**"
   workflow_dispatch:
 
 env:
-    IMAGE_NAME: dreams-ui
-    DOCKER_USERNAME: bbrighter
+  IMAGE_NAME: dreams-ui
+  DOCKER_USERNAME: bbrighter
 
 jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    
-    - name: pnpm
-      uses: pnpm/action-setup@v5
-      
-    - name: Use node
-      uses: actions/setup-node@v6
-      with:
-        node-version: 24.3.0
-        cache: "pnpm"
+      - name: Checkout
+        uses: actions/checkout@v6
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: pnpm
+        uses: pnpm/action-setup@v5
 
-    - name: Typescript
-      run: pnpm tsc
+      - name: Use node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.3.0
+          cache: "pnpm"
 
-    - name: Lint
-      run: pnpm run lint 
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Knip
-      run: pnpm run knip
+      - name: Typescript
+        run: pnpm tsc
 
-    - name: Dependency cruiser
-      run: pnpm dependencies:ci
+      - name: Lint
+        run: pnpm run lint
 
-    - name: Test
-      run: pnpm test
+      - name: Format
+        run: pnpm run fmt:check
+
+      - name: Knip
+        run: pnpm run knip
+
+      - name: Dependency cruiser
+        run: pnpm dependencies:ci
+
+      - name: Test
+        run: pnpm test
 
   build:
     needs: test
@@ -52,75 +55,73 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    
-    - name: pnpm
-      uses: pnpm/action-setup@v5
+      - name: Checkout
+        uses: actions/checkout@v6
 
-    - name: Use node
-      uses: actions/setup-node@v6
-      with:
-        node-version: 24.3.0
-        cache: "pnpm"
+      - name: pnpm
+        uses: pnpm/action-setup@v5
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Use node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.3.0
+          cache: "pnpm"
 
-    - name: Build
-      run: pnpm build
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v7
-      with:
-        name: dist
-        path: dist
-        retention-days: 1
+      - name: Build
+        run: pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
 
   publish:
     needs: build
     if: startsWith(github.ref, 'refs/tags/v') && success()
     runs-on: ubuntu-24.04
 
-    steps:   
-    - name: Checkout
-      uses: actions/checkout@v6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
-    - name: Download build
-      uses: actions/download-artifact@v8
-      with: 
-        name: dist
-        path: dist
+      - name: Download build
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
 
-    - name: Debug build context
-      run: ls -la
+      - name: Debug build context
+        run: ls -la
 
-    - name: Log in to Docker
-      uses: docker/login-action@v4
-      with:
-        username: ${{ env.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Log in to Docker
+        uses: docker/login-action@v4
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
 
-    - name: Extract metadata (tags, labels) for Docker
-      id: meta
-      uses: docker/metadata-action@v6
-      with:
-        images: bbrighter/${{ env.IMAGE_NAME }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: bbrighter/${{ env.IMAGE_NAME }}
 
-    - name: Build and push Docker image
-      id: push
-      uses: docker/build-push-action@v7
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/arm64
-        cache-from: type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:cache
-        cache-to: type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:cache
-
-
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/arm64
+          cache-from: type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:cache
+          cache-to: type=registry,ref=bbrighter/${{ env.IMAGE_NAME }}:cache

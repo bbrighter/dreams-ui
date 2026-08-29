@@ -1,2 +1,2 @@
-export * from "./statistics.interface"
-export * from "./statistics.slice"
+export * from "./statistics.interface";
+export * from "./statistics.slice";

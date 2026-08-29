@@ -1,11 +1,11 @@
-import { Api } from "../../api/generated_api"
+import { Api } from "../../api/generated_api";
 
 export type ApiState = {
-  api: Api<unknown> | null
-}
+  api: Api<unknown> | null;
+};
 
 interface ApiActions {
-  initApi: () => Promise<void>
+  initApi: () => Promise<void>;
 }
 
-export type ApiSlice = ApiState & ApiActions
+export type ApiSlice = ApiState & ApiActions;

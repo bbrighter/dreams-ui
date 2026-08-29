@@ -1,13 +1,13 @@
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useDreams } from "../store"
-import { statisticsService } from "./statistics.service"
+import { useDreams } from "../store";
+import { statisticsService } from "./statistics.service";
 
 describe("statistics service", () => {
   describe("get statistics", () => {
     beforeEach(() => {
-      vi.resetAllMocks()
-    })
+      vi.resetAllMocks();
+    });
     // it('not logged in', async () => {
     //   const { setToken, api } = useDreams.getState()
     //   const statisticsList = vi.spyOn(api!.countCategories, 'countCategoriesList')
@@ -34,25 +34,25 @@ describe("statistics service", () => {
     // })
 
     it("get count categories", async () => {
-      await statisticsService.getStatistics()
+      await statisticsService.getStatistics();
 
-      const { statistics } = useDreams.getState()
+      const { statistics } = useDreams.getState();
 
-      expect(statistics).toHaveLength(2)
-      expect(statistics[0]).toStrictEqual({ id: 1, count: 10 })
-      expect(statistics[1]).toStrictEqual({ id: 2, count: 3 })
-    })
+      expect(statistics).toHaveLength(2);
+      expect(statistics[0]).toStrictEqual({ id: 1, count: 10 });
+      expect(statistics[1]).toStrictEqual({ id: 2, count: 3 });
+    });
 
     it("get monthly statistics", async () => {
-      await statisticsService.getMonthlyStatistics()
+      await statisticsService.getMonthlyStatistics();
 
-      const { monthlyStatistics } = useDreams.getState()
-      expect(monthlyStatistics).toHaveLength(2)
-      const febStats = monthlyStatistics[0]
-      expect(febStats.month).toBe("02/2022")
-      expect(febStats.numberOfDreams).toBe(10)
-      expect(febStats.categoryCount.get(1)).toBe(7)
-      expect(febStats.categoryCount.get(2)).toBe(3)
-    })
-  })
-})
+      const { monthlyStatistics } = useDreams.getState();
+      expect(monthlyStatistics).toHaveLength(2);
+      const febStats = monthlyStatistics[0];
+      expect(febStats.month).toBe("02/2022");
+      expect(febStats.numberOfDreams).toBe(10);
+      expect(febStats.categoryCount.get(1)).toBe(7);
+      expect(febStats.categoryCount.get(2)).toBe(3);
+    });
+  });
+});

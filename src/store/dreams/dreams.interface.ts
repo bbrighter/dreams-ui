@@ -1,17 +1,16 @@
-import { Dreams } from "../types"
-
+import { Dreams } from "../types";
 
 export interface DreamsState {
-  dreams: Dreams
-  scrollPosition: number
-  dreamCategoryFilter: number | null
+  dreams: Dreams;
+  scrollPosition: number;
+  dreamCategoryFilter: number | null;
 }
 
 interface DreamsActions {
-  resetDreams: () => void
-  setDreams: (dreams: Dreams) => void
-  setScrollPosition: (pos: number) => void
-  setDreamCategoryFilter: (catId: number | null) => void
+  resetDreams: () => void;
+  setDreams: (dreams: Dreams) => void;
+  setScrollPosition: (pos: number) => void;
+  setDreamCategoryFilter: (catId: number | null) => void;
 }
 
-export type DreamsSlice = DreamsState & DreamsActions
+export type DreamsSlice = DreamsState & DreamsActions;
