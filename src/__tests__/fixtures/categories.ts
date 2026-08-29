@@ -4,9 +4,7 @@ import {
   EntityCategoryType,
 } from "@/api/generated_api";
 
-export const createCategory = (
-  overrides?: Partial<EntityCategoryResponse>,
-): EntityCategoryResponse => ({
+const createCategory = (overrides?: Partial<EntityCategoryResponse>): EntityCategoryResponse => ({
   id: 1,
   name: "Category",
   type: EntityCategoryType.TypeCategory,

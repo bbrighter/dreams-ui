@@ -10,9 +10,9 @@ import * as statisticsHandler from "./statisticsHandler";
 export default [
   dreamHandlers.deleteDreamHandler,
   dreamHandlers.getDreamHandler(createDream()),
-  dreamHandlers.getDreamPrivateHandler,
+  dreamHandlers.getDreamPrivateHandler(createDream()),
   dreamHandlers.getDreamsHandler(createDreams()),
-  dreamHandlers.getDreamsPrivateHandler,
+  dreamHandlers.getDreamsPrivateHandler(createDreams()),
   dreamHandlers.patchDreamFinalizeHandler,
   dreamHandlers.patchDreamHandler,
   dreamHandlers.patchPrivateDreamHandler,
