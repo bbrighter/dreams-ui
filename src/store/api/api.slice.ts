@@ -1,19 +1,17 @@
 import { StateCreator } from "zustand";
 
 import { Api, RequestParams } from "../../api/generated_api";
-import { AuthState } from "../auth";
+import { StoreSlice } from "../interface";
 import { ApiSlice, ApiState } from "./api.type";
 
 const initialState = (): ApiState => ({
   api: null,
 });
 
-export const createApiSlice: StateCreator<
-  ApiState & AuthState,
-  [["zustand/immer", never]],
-  [],
-  ApiSlice
-> = (set, get) => ({
+export const createApiSlice: StateCreator<StoreSlice, [["zustand/immer", never]], [], ApiSlice> = (
+  set,
+  get,
+) => ({
   ...initialState(),
 
   initApi: async () => {

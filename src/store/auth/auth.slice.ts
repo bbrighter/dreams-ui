@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 
+import { StoreSlice } from "../interface";
 import { AuthSlice, AuthState } from "./auth.types";
 
 const createInitialState = (): AuthState => ({
@@ -7,10 +8,12 @@ const createInitialState = (): AuthState => ({
   user: "Benni",
 });
 
-export const createAuthSlice: StateCreator<AuthState, [["zustand/immer", never]], [], AuthSlice> = (
-  set,
-  _get,
-) => ({
+export const createAuthSlice: StateCreator<
+  StoreSlice,
+  [["zustand/immer", never]],
+  [],
+  AuthSlice
+> = (set, _get) => ({
   ...createInitialState(),
   setToken: (token: string) =>
     set((state: AuthState) => {

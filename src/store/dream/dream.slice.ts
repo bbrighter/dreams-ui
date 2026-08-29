@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 
+import { StoreSlice } from "../interface";
 import { Dream, hashDream } from "../types";
 
 interface DreamActions {
@@ -32,7 +33,7 @@ const createInitialState = (): DreamState => ({
 export type DreamSlice = DreamActions & DreamState;
 
 export const createDreamSlice: StateCreator<
-  DreamState,
+  StoreSlice,
   [["zustand/immer", never]],
   [],
   DreamSlice

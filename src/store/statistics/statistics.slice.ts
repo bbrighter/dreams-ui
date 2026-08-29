@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 
+import { StoreSlice } from "../interface";
 import { StatisticsSlice, StatisticState } from "./statistics.interface";
 import { MonthlyStatistics, Statistics } from "./statistics.types";
 
@@ -9,7 +10,7 @@ const setInitialState = (): StatisticState => ({
 });
 
 export const createStatisticSlice: StateCreator<
-  StatisticState,
+  StoreSlice,
   [["zustand/immer", never]],
   [],
   StatisticsSlice

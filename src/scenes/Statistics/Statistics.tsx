@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 import { categoriesService, CategoryType, useIsLoggedIn } from "../../store";
 import { Bar, Navigation } from "../Components";
@@ -10,7 +10,7 @@ export default function Statistics() {
   const loggedIn = useIsLoggedIn();
 
   const [selectedOption, setSelectedOption] = useState<CategoryType>("person");
-  const onChangeToggleOption = (_, v: CategoryType) => {
+  const onChangeToggleOption = (_: MouseEvent, v: CategoryType) => {
     setSelectedOption(v);
   };
 

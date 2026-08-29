@@ -14,7 +14,12 @@ beforeAll(() => {
   server.listen({ onUnhandledRequest: "warn" });
 });
 beforeEach(async () => {
-  useDreams.getState().resetState();
+  const store = useDreams.getState();
+  store.resetAuth();
+  store.resetCategories();
+  store.resetDream();
+  store.resetDreams();
+  store.resetStatistics();
   const init = useDreams.getState().initApi;
   await init();
 });
