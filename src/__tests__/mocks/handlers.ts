@@ -1,3 +1,5 @@
+import { createCategories } from "../fixtures/categories";
+import { createDream, createDreams } from "../fixtures/dreams";
 import * as authHandlers from "./authHandlers";
 import * as categoryHandlers from "./categoryHandlers";
 import * as dreamCategoriesHandlers from "./dreamCategoriesHandler";
@@ -6,9 +8,9 @@ import * as statisticsHandler from "./statisticsHandler";
 
 export default [
   dreamHandlers.deleteDreamHandler,
-  dreamHandlers.getDreamHandler(),
+  dreamHandlers.getDreamHandler(createDream()),
   dreamHandlers.getDreamPrivateHandler,
-  dreamHandlers.getDreamsHandler(),
+  dreamHandlers.getDreamsHandler(createDreams()),
   dreamHandlers.getDreamsPrivateHandler,
   dreamHandlers.patchDreamFinalizeHandler,
   dreamHandlers.patchDreamHandler,
@@ -21,7 +23,7 @@ export default [
   dreamCategoriesHandlers.postDreamCategory(),
 
   categoryHandlers.deleteCategory,
-  categoryHandlers.getCategoriesHandler(),
+  categoryHandlers.getCategoriesHandler(createCategories()),
   categoryHandlers.patchCategoryName,
   categoryHandlers.patchCategoryType,
   categoryHandlers.postCategoryMergeHandler(),

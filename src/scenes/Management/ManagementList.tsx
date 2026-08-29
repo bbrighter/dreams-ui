@@ -13,7 +13,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import React from "react";
 
-import { categoriesService } from "@/store/services";
+import { categoriesService } from "@/services/categories.service";
 
 import { usePersons, useTags } from "../../store/selectors";
 

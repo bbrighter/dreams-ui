@@ -1,6 +1,6 @@
-import { isLoggedIn } from "../selectors";
-import { useDreams } from "../store";
-import { dreamsResponseToDreams } from "../types";
+import { isLoggedIn } from "@/store/selectors";
+import { useDreams } from "@/store/store";
+import { dreamsResponseToDreams } from "@/store/types";
 
 export const dreamsService = {
   async getDreams() {

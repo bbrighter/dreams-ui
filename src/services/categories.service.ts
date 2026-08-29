@@ -1,7 +1,7 @@
-import { EntityCategoryType } from "../../api/generated_api";
-import { selectCategory } from "../selectors/category.selectors";
-import { useDreams } from "../store";
-import { categoriesResponseToCategories } from "../types/categories.types";
+import { EntityCategoryType } from "@/api/generated_api";
+import { selectCategory } from "@/store/selectors";
+import { useDreams } from "@/store/store";
+import { categoriesResponseToCategories } from "@/store/types/categories.types";
 
 export const categoriesService = {
   async list() {

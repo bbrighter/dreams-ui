@@ -2,8 +2,9 @@ import Box from "@mui/material/Box";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useEffect, useMemo, useState } from "react";
 
+import { statisticsService } from "@/services/statistics.service";
+
 import { usePersons, useTags } from "../../../store/selectors";
-import { statisticsService } from "../../../store/services";
 import { useDreams } from "../../../store/store";
 import { CategoryType } from "../../../store/types/categories.types";
 import SelectData from "./SelectData";

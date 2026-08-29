@@ -1,7 +1,7 @@
 import "regenerator-runtime/runtime";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { setupServer } from "msw/node";
-import { afterAll, afterEach, beforeAll, beforeEach, expect } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
 
 import { useDreams } from "../store/store";
 import handlers from "./mocks/handlers";
@@ -14,6 +14,7 @@ beforeAll(() => {
   server.listen({ onUnhandledRequest: "warn" });
 });
 beforeEach(async () => {
+  vi.resetAllMocks();
   const store = useDreams.getState();
   store.resetAuth();
   store.resetCategories();

@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { postLoginHandler } from "../../__tests__/mocks/authHandlers";
-import { server } from "../../__tests__/setupTest";
-import { isLoggedIn } from "../selectors";
-import { useDreams } from "../store";
-import { authService } from "./auth.service";
+import { postLoginHandler } from "@/__tests__/mocks/authHandlers";
+import { server } from "@/__tests__/setupTest";
+import { isLoggedIn } from "@/store/selectors";
+import { useDreams } from "@/store/store";
+
+import { authService } from "../auth.service";
 
 describe("auth service", () => {
   describe("login", () => {

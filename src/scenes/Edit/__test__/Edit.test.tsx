@@ -3,6 +3,13 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
+import { createCategories } from "@/__tests__/fixtures/categories";
+import { createDream } from "@/__tests__/fixtures/dreams";
+import { getCategoriesHandler } from "@/__tests__/mocks/categoryHandlers";
+import { getDreamHandler } from "@/__tests__/mocks/dreamsHandlers";
+import { server } from "@/__tests__/setupTest";
+import { EntityCategoryType } from "@/api/generated_api";
+
 import { useDreams } from "../../../store/store";
 import Edit from "../Edit";
 import {
@@ -25,7 +32,20 @@ const rendering = () =>
   );
 
 describe("viewing and editing a single dream", () => {
+  const cat = { id: 1, name: "Category", type: EntityCategoryType.TypeCategory };
+  const person = { id: 2, name: "Person", type: EntityCategoryType.TypePerson };
+
   it("everything is rendered", async () => {
+    server.use(
+      getDreamHandler(
+        createDream({
+          date: "2025-01-01T10:00:00Z",
+          description: "description",
+          categories: [cat, person],
+        }),
+      ),
+      getCategoriesHandler(createCategories([cat, person])),
+    );
     rendering();
 
     await waitFor(() => {
@@ -90,6 +110,10 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("remove category", async () => {
+    server.use(
+      getDreamHandler(createDream({ categories: [cat] })),
+      getCategoriesHandler(createCategories([cat])),
+    );
     rendering();
 
     const category = (await screen.findByText("Category")).closest("div")!;
@@ -100,6 +124,10 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("add category", async () => {
+    server.use(
+      getDreamHandler(createDream({ categories: [] })),
+      getCategoriesHandler(createCategories([cat])),
+    );
     rendering();
 
     const categoryInput = await waitFor(() => getCategoryInput());
@@ -109,6 +137,10 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("remove person", async () => {
+    server.use(
+      getDreamHandler(createDream({ categories: [person] })),
+      getCategoriesHandler(createCategories([person])),
+    );
     rendering();
 
     const personChip = (await screen.findByText("Person")).closest("div")!;
@@ -119,6 +151,10 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("add person", async () => {
+    server.use(
+      getDreamHandler(createDream({ categories: [] })),
+      getCategoriesHandler(createCategories([person])),
+    );
     rendering();
 
     const personInput = await waitFor(() => getPersonInput());
@@ -127,6 +163,7 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("rate and finalize", async () => {
+    server.use(getDreamHandler(createDream()));
     rendering();
 
     const rating = await screen.findByTitle("Bewertung");
@@ -176,6 +213,7 @@ describe("viewing and editing a single dream", () => {
   // })
 
   it("set stars", async () => {
+    server.use(getDreamHandler(createDream()));
     rendering();
 
     const ratingBar = await screen.findByTitle("Bewertung");
@@ -189,6 +227,7 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("finalize", async () => {
+    server.use(getDreamHandler(createDream({ rating: undefined })));
     rendering();
 
     const finalizeButton = await waitFor(() => getFinalizeButton());
@@ -203,6 +242,7 @@ describe("viewing and editing a single dream", () => {
   });
 
   it("hide", async () => {
+    server.use(getDreamHandler(createDream()));
     await act(async () => {
       useDreams.getState().setToken("token");
       rendering();

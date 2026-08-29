@@ -4,9 +4,11 @@ import TextField from "@mui/material/TextField";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { categoriesService } from "@/services/categories.service";
+import { dreamService } from "@/services/dream.service";
+
 import { useSimpleDebounce } from "../../hooks/simpleDebounce";
 import { useIsSaved } from "../../store/selectors";
-import { categoriesService, dreamService } from "../../store/services";
 import { useDreams } from "../../store/store";
 import { EditFooter, EditHeader, TagInputs } from "./Components";
 

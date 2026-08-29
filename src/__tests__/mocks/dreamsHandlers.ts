@@ -1,17 +1,17 @@
 import { http, HttpResponse } from "msw";
 
-import { EntityDreamResponse } from "../../api/generated_api";
-import { dream1, initialDreams, initialPrivateDreams, privateDream } from "./initialValues";
+import { EntityDreamResponse, EntityDreamsResponse } from "../../api/generated_api";
+import { initialPrivateDreams, privateDream } from "./initialValues";
 
-export const getDreamsHandler = (overrides?: EntityDreamResponse[]) =>
-  http.get("/dreams", () => HttpResponse.json({ dreams: initialDreams(overrides) }));
+export const getDreamsHandler = (resp: EntityDreamsResponse) =>
+  http.get("/dreams", () => HttpResponse.json(resp));
 export const postDreamsHandler = (overrides?: number) =>
   http.post("/dreams", () => HttpResponse.json(overrides || 4));
 export const getDreamsPrivateHandler = http.get("/dreams/private", () =>
   HttpResponse.json({ dreams: initialPrivateDreams }),
 );
-export const getDreamHandler = (overrides?: Partial<EntityDreamResponse>) =>
-  http.get("/dreams/:id", () => HttpResponse.json(dream1(overrides)));
+export const getDreamHandler = (resp: EntityDreamResponse) =>
+  http.get("/dreams/:id", () => HttpResponse.json(resp));
 export const getDreamPrivateHandler = http.get("/dreams/private/:id", () =>
   HttpResponse.json(privateDream()),
 );

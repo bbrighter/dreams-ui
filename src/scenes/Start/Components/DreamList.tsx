@@ -3,8 +3,9 @@ import List from "@mui/material/List";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useRef } from "react";
 
+import { dreamsService } from "@/services/dreams.service";
+
 import { useFilteredDreams } from "../../../store/selectors";
-import { dreamsService } from "../../../store/services";
 import { DreamItem } from "./DreamItem";
 
 export const DreamList = () => {

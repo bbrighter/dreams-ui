@@ -1,7 +1,7 @@
 import Rating from "@mui/material/Rating";
 
-import { dreamService } from "../../../../store/services";
-import { useDreams } from "../../../../store/store";
+import { dreamService } from "@/services/dream.service";
+import { useDreams } from "@/store/store";
 
 export default function DreamRating() {
   const rating = useDreams((state) => state.dream.rating);

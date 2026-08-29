@@ -3,6 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
+import { createCategories } from "@/__tests__/fixtures/categories";
+import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
+import { getCategoriesHandler } from "@/__tests__/mocks/categoryHandlers";
+import { EntityCategoryType } from "@/api/generated_api";
+
 import { getDreamsHandler } from "../../__tests__/mocks/dreamsHandlers";
 import { server } from "../../__tests__/setupTest";
 import Start from "./Start";
@@ -30,11 +35,14 @@ vi.mock("@tanstack/react-virtual", () => ({
 }));
 
 describe("start page is rendered and can be clicked", () => {
+  Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+    configurable: true,
+    value: 500,
+  });
+
   it("everything is rendered", async () => {
-    Object.defineProperty(HTMLElement.prototype, "clientHeight", {
-      configurable: true,
-      value: 500,
-    });
+    server.use(getDreamsHandler(createDreams({ date: "2025-01-01T12:00:00Z" })));
+
     render(
       <MemoryRouter>
         <Start />
@@ -53,6 +61,14 @@ describe("start page is rendered and can be clicked", () => {
   });
 
   it("finalized and rating is rendered", async () => {
+    server.use(
+      getDreamsHandler(
+        createDreams([
+          createDream({ date: "2025-01-01T12:00:00Z", finalized: false }),
+          createDream({ date: "2025-02-01T13:00:00Z", finalized: true, rating: 3 }),
+        ]),
+      ),
+    );
     render(
       <MemoryRouter>
         <Start />
@@ -75,6 +91,7 @@ describe("start page is rendered and can be clicked", () => {
   });
 
   it("deletion works", async () => {
+    server.use(getDreamsHandler(createDreams({ date: "2025-01-01T12:00:00Z" })));
     render(
       <MemoryRouter>
         <Start />
@@ -89,7 +106,7 @@ describe("start page is rendered and can be clicked", () => {
   });
 
   it("empty list", async () => {
-    server.use(getDreamsHandler([]));
+    server.use(getDreamsHandler(createDreams([])));
     render(
       <MemoryRouter>
         <Start />
@@ -100,31 +117,42 @@ describe("start page is rendered and can be clicked", () => {
     expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
   });
 
-  it("private dream not visible", { skip: true }, async () => {
-    // Testing the wrong thing. If the API returns it, it is shown! We must check that not being logged in doesn't query the API
-    server.use(
-      getDreamsHandler([
-        {
-          id: 1,
-          date: "2025-01-01T12:30:00Z",
-          finalized: false,
-          visible: false,
-          description: "",
-          categories: [],
-        },
-      ]),
-    );
-    render(
-      <MemoryRouter>
-        <Start />
-      </MemoryRouter>,
-    );
+  //   it("private dream not visible", { skip: true }, async () => {
+  //     // Testing the wrong thing. If the API returns it, it is shown! We must check that not being logged in doesn't query the API
+  //     server.use(
+  //       getDreamsHandler([
+  //         {
+  //           id: 1,
+  //           date: "2025-01-01T12:30:00Z",
+  //           finalized: false,
+  //           visible: false,
+  //           description: "",
+  //           categories: [],
+  //         },
+  //       ]),
+  //     );
+  //     render(
+  //       <MemoryRouter>
+  //         <Start />
+  //       </MemoryRouter>,
+  //     );
 
-    expect(await screen.findByText("Neu")).toBeInTheDocument();
-    expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
-  });
+  //     expect(await screen.findByText("Neu")).toBeInTheDocument();
+  //     expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
+  //   });
 
   it("filtering by category", async () => {
+    server.use(
+      getDreamsHandler(
+        createDreams([
+          createDream({
+            categories: [{ id: 1, name: "Category", type: EntityCategoryType.TypeCategory }],
+          }),
+          createDream({ id: 2 }),
+        ]),
+      ),
+      getCategoriesHandler(createCategories({ name: "Category", id: 1 })),
+    );
     render(
       <MemoryRouter>
         <Start />
@@ -159,6 +187,7 @@ describe("start page is rendered and can be clicked", () => {
   });
 
   it("navigate to dream via list item click", async () => {
+    server.use(getDreamsHandler(createDreams({ date: "2025-01-01T14:00:00Z" })));
     render(
       <MemoryRouter initialEntries={["/"]}>
         <Routes>

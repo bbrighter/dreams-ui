@@ -3,7 +3,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 
-import { dreamService } from "@/store/services";
+import { dreamService } from "@/services/dream.service";
 import { useDreams } from "@/store/store";
 
 import { useNavigateHomePage } from "../../../../hooks/navigate";

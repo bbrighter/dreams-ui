@@ -2,7 +2,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useEffect, useMemo } from "react";
 
-import { categoriesService } from "@/store/services";
+import { categoriesService } from "@/services/categories.service";
 import { useDreams } from "@/store/store";
 
 export const CategoryFilter = () => {

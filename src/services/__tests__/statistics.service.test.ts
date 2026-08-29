@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useDreams } from "../store";
-import { statisticsService } from "./statistics.service";
+import { useDreams } from "@/store/store";
+
+import { statisticsService } from "../statistics.service";
 
 describe("statistics service", () => {
   describe("get statistics", () => {

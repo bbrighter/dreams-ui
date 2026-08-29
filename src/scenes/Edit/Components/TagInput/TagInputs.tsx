@@ -2,7 +2,7 @@ import Autocomplete, { AutocompleteChangeReason } from "@mui/material/Autocomple
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 
-import { dreamService } from "@/store/services";
+import { dreamService } from "@/services/dream.service";
 import { Category, CategoryType } from "@/store/types/categories.types";
 
 import { useDreamCategories, usePersons, useTags } from "../../../../store/selectors";

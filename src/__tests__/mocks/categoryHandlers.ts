@@ -1,11 +1,10 @@
 import { http, HttpResponse } from "msw";
 
 import { EntityCategoriesResponse } from "../../api/generated_api";
-import { initialCategories } from "./initialValues";
 
-export const getCategoriesHandler = (overrides?: EntityCategoriesResponse) =>
+export const getCategoriesHandler = (resp?: EntityCategoriesResponse) =>
   http.get("/categories", () => {
-    return HttpResponse.json(initialCategories(overrides));
+    return HttpResponse.json(resp);
   });
 
 export const patchCategoryName = http.patch("/categories/:catId/name", () => HttpResponse.json({}));

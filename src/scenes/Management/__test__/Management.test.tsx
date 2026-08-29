@@ -4,6 +4,8 @@ import { http, HttpResponse } from "msw";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
+import { createCategories } from "@/__tests__/fixtures/categories";
+
 import { getCategoriesHandler } from "../../../__tests__/mocks/categoryHandlers";
 import { server } from "../../../__tests__/setupTest";
 import { EntityCategoryType } from "../../../api/generated_api";
@@ -11,7 +13,11 @@ import Management from "../Management";
 import { clickEditButton, findDeleteButton, getRowByText } from "./utils";
 
 describe("Management is rendered", () => {
+  const cat = { id: 1, name: "Category", type: EntityCategoryType.TypeCategory };
+  const person = { id: 2, name: "Person", type: EntityCategoryType.TypePerson };
+
   it("Tabs work and content is rendered", async () => {
+    server.use(getCategoriesHandler(createCategories([cat, person])));
     render(
       <MemoryRouter>
         <Management />
@@ -37,6 +43,7 @@ describe("Management is rendered", () => {
   });
 
   it("renaming works", async () => {
+    server.use(getCategoriesHandler(createCategories([cat, person])));
     render(
       <MemoryRouter>
         <Management />
@@ -60,12 +67,13 @@ describe("Management is rendered", () => {
 
   it("deleting is disabled", async () => {
     server.use(
-      getCategoriesHandler({
-        categories: [
-          { id: 1, name: "Category", type: EntityCategoryType.TypeCategory },
+      getCategoriesHandler(
+        createCategories([
+          cat,
           { id: 2, name: "Category 2", type: EntityCategoryType.TypeCategory },
-        ],
-      }),
+        ]),
+      ),
+
       http.get("/count-categories", () =>
         HttpResponse.json({
           categories: [
@@ -75,7 +83,6 @@ describe("Management is rendered", () => {
         }),
       ),
     );
-
     render(
       <MemoryRouter>
         <Management />

@@ -2,7 +2,8 @@ import RemoveModeratorIcon from "@mui/icons-material/RemoveModerator";
 import ShieldIcon from "@mui/icons-material/Shield";
 import IconButton from "@mui/material/IconButton";
 
-import { dreamService } from "../../../../store/services";
+import { dreamService } from "@/services/dream.service";
+
 import { useDreams } from "../../../../store/store";
 
 export default function Hide() {
