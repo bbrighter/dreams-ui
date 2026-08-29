@@ -1,5 +1,8 @@
+import { createStaticHandler } from "react-router-dom";
+
 import { createCategories } from "../fixtures/categories";
 import { createDream, createDreams } from "../fixtures/dreams";
+import { createCategoriesCount, createStatistics } from "../fixtures/statistics";
 import * as authHandlers from "./authHandlers";
 import * as categoryHandlers from "./categoryHandlers";
 import * as dreamCategoriesHandlers from "./dreamCategoriesHandler";
@@ -31,6 +34,6 @@ export default [
   authHandlers.postLoginHandler(),
   authHandlers.postLogoutHandler(),
 
-  statisticsHandler.getCountCategoriesHandler(),
-  statisticsHandler.getCountCategoriesMonthlyHandler(),
+  statisticsHandler.getCountCategoriesHandler(createCategoriesCount()),
+  statisticsHandler.getCountCategoriesMonthlyHandler(createStatistics()),
 ];

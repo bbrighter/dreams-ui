@@ -11,9 +11,9 @@ export const patchCategoryName = http.patch("/categories/:catId/name", () => Htt
 
 export const patchCategoryType = http.patch("/categories/:catId/type", () => HttpResponse.json({}));
 
-export const postCategoryMergeHandler = (overrides?: EntityCategoriesResponse) =>
+export const postCategoryMergeHandler = (resp?: EntityCategoriesResponse) =>
   http.post("/categories/merge", async () => {
-    return HttpResponse.json(overrides);
+    return HttpResponse.json(resp);
   });
 
 export const deleteCategory = http.delete("/categories/:catId", () => HttpResponse.json({}));

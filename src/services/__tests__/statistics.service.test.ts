@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { createCategoriesCount, createStatistics } from "@/__tests__/fixtures/statistics";
+import {
+  getCountCategoriesHandler,
+  getCountCategoriesMonthlyHandler,
+} from "@/__tests__/mocks/statisticsHandler";
+import { server } from "@/__tests__/setupTest";
 import { useDreams } from "@/store/store";
 
 import { statisticsService } from "../statistics.service";
@@ -35,6 +41,14 @@ describe("statistics service", () => {
     // })
 
     it("get count categories", async () => {
+      server.use(
+        getCountCategoriesHandler(
+          createCategoriesCount([
+            { id: 1, count: 10 },
+            { id: 2, count: 3 },
+          ]),
+        ),
+      );
       await statisticsService.getStatistics();
 
       const { statistics } = useDreams.getState();
@@ -45,6 +59,21 @@ describe("statistics service", () => {
     });
 
     it("get monthly statistics", async () => {
+      server.use(
+        getCountCategoriesMonthlyHandler(
+          createStatistics([
+            {
+              month: "02/2022",
+              dreamCount: 10,
+              categories: [
+                { id: 1, count: 7 },
+                { id: 2, count: 3 },
+              ],
+            },
+            { month: "03/2022", dreamCount: 1, categories: [{ id: 1, count: 1 }] },
+          ]),
+        ),
+      );
       await statisticsService.getMonthlyStatistics();
 
       const { monthlyStatistics } = useDreams.getState();
