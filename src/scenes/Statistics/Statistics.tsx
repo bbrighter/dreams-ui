@@ -1,22 +1,24 @@
-import Container from "@mui/material/Container"
-import { useEffect, useState } from "react"
+import Container from "@mui/material/Container";
+import { MouseEvent, useEffect, useState } from "react";
 
-import { categoriesService, CategoryType, useIsLoggedIn } from "../../store"
-import { Bar, Navigation } from "../Components"
-import { BackButton } from "../Edit/Components/Header/EditHeader"
-import { MonthlyChart, StatisticsToggleOption, Tags } from "./Components"
+import { useIsLoggedIn } from "../../store/selectors";
+import { categoriesService } from "../../store/services";
+import { CategoryType } from "../../store/types/categories.types";
+import { Bar, Navigation } from "../Components";
+import { BackButton } from "../Edit/Components/Header/EditHeader";
+import { MonthlyChart, StatisticsToggleOption, Tags } from "./Components";
 
 export default function Statistics() {
-  const loggedIn = useIsLoggedIn()
+  const loggedIn = useIsLoggedIn();
 
-  const [selectedOption, setSelectedOption] = useState<CategoryType>("person")
-  const onChangeToggleOption = (_, v: CategoryType) => {
-    setSelectedOption(v)
-  }
+  const [selectedOption, setSelectedOption] = useState<CategoryType>("person");
+  const onChangeToggleOption = (_: MouseEvent, v: CategoryType) => {
+    setSelectedOption(v);
+  };
 
   useEffect(() => {
-    categoriesService.list()
-  }, [loggedIn])
+    categoriesService.list();
+  }, [loggedIn]);
 
   return (
     <>
@@ -28,6 +30,5 @@ export default function Statistics() {
         <Navigation activeIndex={1} />
       </Container>
     </>
-
-  )
+  );
 }

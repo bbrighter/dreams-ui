@@ -1,3 +1,3 @@
-export * from "./MonthlyChart"
-export * from "./StatisticsToggleOption"
-export * from "./Tags"
+export * from "./MonthlyChart";
+export * from "./StatisticsToggleOption";
+export * from "./Tags";

@@ -1,25 +1,24 @@
-import "regenerator-runtime/runtime"
+import "regenerator-runtime/runtime";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import * as React from "react";
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 
-import CssBaseline from "@mui/material/CssBaseline"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import * as React from "react"
-import { createRoot } from "react-dom/client"
-import { RouterProvider } from "react-router-dom"
-
-import scenes from "./scenes"
-import { useDreams } from "./store"
+import scenes from "./scenes";
+import { useDreams } from "./store/store";
 
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
-})
+});
 
-const init = useDreams.getState().initApi
-await init()
+const init = useDreams.getState().initApi;
+await init();
 
-const container = document.getElementById("root")!
-const root = createRoot(container)
+const container = document.getElementById("root")!;
+const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={darkTheme}>
@@ -27,4 +26,4 @@ root.render(
       <RouterProvider router={scenes} />
     </ThemeProvider>
   </React.StrictMode>,
-)
+);

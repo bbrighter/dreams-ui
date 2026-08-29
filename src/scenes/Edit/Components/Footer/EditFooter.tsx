@@ -1,15 +1,15 @@
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward"
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward"
-import ButtonGroup from "@mui/material/ButtonGroup"
-import IconButton from "@mui/material/IconButton"
-import { useEffect, useState } from "react"
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import IconButton from "@mui/material/IconButton";
+import { useEffect, useState } from "react";
 
-import { useNavigateToDream } from "../../../../hooks/navigate"
-import { useDreams } from "../../../../store"
-import { useIsSaved } from "../../../../store/selectors"
-import { Bar } from "../../../Components"
-import DreamRating from "./DreamRating"
-import FinalizeButton from "./FinalizeButton"
+import { useNavigateToDream } from "../../../../hooks/navigate";
+import { useIsSaved } from "../../../../store/selectors";
+import { useDreams } from "../../../../store/store";
+import { Bar } from "../../../Components";
+import DreamRating from "./DreamRating";
+import FinalizeButton from "./FinalizeButton";
 
 export function EditFooter() {
   return (
@@ -19,30 +19,30 @@ export function EditFooter() {
       position="bottom"
       optionalMiddleAction={<NextOrPreviousDream />}
     />
-
-  )
+  );
 }
 
 function NextOrPreviousDream() {
-  const navigate = useNavigateToDream()
-  const dreams = useDreams(state => state.dreams)
-  const currentDreamId = useDreams(state => state.dream.id)
-  const isSaved = useIsSaved()
+  const navigate = useNavigateToDream();
+  const dreams = useDreams((state) => state.dreams);
+  const currentDreamId = useDreams((state) => state.dream.id);
+  const isSaved = useIsSaved();
 
-  const [nextDreamIndex, setNextDreamIndex] = useState(-1)
-  const [prevDreamIndex, setPrevDreamIndex] = useState(-1)
+  const [nextDreamIndex, setNextDreamIndex] = useState(-1);
+  const [prevDreamIndex, setPrevDreamIndex] = useState(-1);
 
   useEffect(() => {
-    const currentDreamIndex = dreams.findIndex(d => d.id == currentDreamId)
-    setNextDreamIndex(currentDreamIndex - 1)
-    setPrevDreamIndex(currentDreamIndex < dreams.length - 1 ? currentDreamIndex + 1 : -1)
-  }, [currentDreamId, dreams])
+    const currentDreamIndex = dreams.findIndex((d) => d.id == currentDreamId);
+    // oxlint-disable-next-line react/set-state-in-effect
+    setNextDreamIndex(currentDreamIndex - 1);
+    setPrevDreamIndex(currentDreamIndex < dreams.length - 1 ? currentDreamIndex + 1 : -1);
+  }, [currentDreamId, dreams]);
 
   const onClick = (index: number) => {
-    if (index == -1) return
-    const dreamId = dreams[index].id
-    navigate(dreamId)
-  }
+    if (index == -1) return;
+    const dreamId = dreams[index].id;
+    navigate(dreamId);
+  };
 
   return (
     <ButtonGroup>
@@ -61,5 +61,5 @@ function NextOrPreviousDream() {
         <ArrowDownwardIcon />
       </IconButton>
     </ButtonGroup>
-  )
+  );
 }

@@ -1,2 +1,4 @@
+allowBuilds:
+  msw: false
 blockExoticSubdeps: true
 minimumReleaseAge: 2880

@@ -1,22 +1,29 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import SaveIcon from "@mui/icons-material/Save"
-import IconButton from "@mui/material/IconButton"
-import Input from "@mui/material/Input"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SaveIcon from "@mui/icons-material/Save";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
 
-import { useNavigateHomePage } from "../../../../hooks/navigate"
-import { dreamService, useDreams } from "../../../../store"
-import { useIsLoggedIn, useIsSaved } from "../../../../store/selectors"
-import { Bar } from "../../../Components"
-import Hide from "./Hide"
+import { dreamService } from "@/store/services";
+import { useDreams } from "@/store/store";
+
+import { useNavigateHomePage } from "../../../../hooks/navigate";
+import { useIsLoggedIn, useIsSaved } from "../../../../store/selectors";
+import { Bar } from "../../../Components";
+import Hide from "./Hide";
+
+const HideOrShow = () => {
+  const loggedIn = useIsLoggedIn();
+  return loggedIn ? <Hide /> : <></>;
+};
 
 export function EditHeader() {
-  const date = useDreams(state => state.dream.date)
-  const setDate = useDreams(state => state.setDate)
-  const loggedIn = useIsLoggedIn()
+  const date = useDreams((state) => state.dream.date);
+  const setDate = useDreams((state) => state.setDate);
+
   const onChangeDate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setDate(new Date(e.currentTarget.value))
-    dreamService.saveDream()
-  }
+    setDate(new Date(e.currentTarget.value));
+    dreamService.saveDream();
+  };
 
   const DateInput = (
     <Input
@@ -25,61 +32,46 @@ export function EditHeader() {
       onChange={onChangeDate}
       title="Datum"
     />
-  )
-  const HideOrShow = () => {
-    return (
-      loggedIn ? <Hide /> : <></>
-    )
-  }
+  );
 
   return (
     <Bar
       mainAction={<BackButton />}
-      secondaryAction={[
-        <SaveButton key={1} />,
-        <HideOrShow key={2} />,
-      ]}
+      secondaryAction={[<SaveButton key={1} />, <HideOrShow key={2} />]}
       optionalMiddleAction={DateInput}
       position="top"
       showAuth
     />
-  )
+  );
 }
 
 function SaveButton() {
-  const isSaved = useIsSaved()
+  const isSaved = useIsSaved();
 
   const saveDream = () => {
-    dreamService.saveDream()
-  }
+    dreamService.saveDream();
+  };
 
-  const color = isSaved ? "success" : "error"
+  const color = isSaved ? "success" : "error";
   return (
-    <IconButton
-      color={color}
-      onClick={saveDream}
-      title="Speichern"
-    >
+    <IconButton color={color} onClick={saveDream} title="Speichern">
       <SaveIcon />
     </IconButton>
-  )
+  );
 }
 
 export function BackButton() {
-  const navigate = useNavigateHomePage()
-  const resetDream = useDreams(state => state.resetDream)
+  const navigate = useNavigateHomePage();
+  const resetDream = useDreams((state) => state.resetDream);
 
   const handleClick = () => {
-    navigate()
-    resetDream()
-  }
+    navigate();
+    resetDream();
+  };
 
   return (
-    <IconButton
-      onClick={handleClick}
-      title="Zurück"
-    >
+    <IconButton onClick={handleClick} title="Zurück">
       <ArrowBackIcon />
     </IconButton>
-  )
+  );
 }

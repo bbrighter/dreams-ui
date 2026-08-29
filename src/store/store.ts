@@ -1,22 +1,22 @@
-import { create } from "zustand"
-import { immer } from "zustand/middleware/immer"
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
-import { createApiSlice } from "./api"
-import { createAuthSlice } from "./auth"
-import { createCategoriesSlice } from "./categories"
-import { createDreamSlice } from "./dream"
-import { createDreamsSlice } from "./dreams"
-import { StoreSlice } from "./interface"
-import { createStatisticSlice } from "./statistics"
+import { createApiSlice } from "./api/api.slice";
+import { createAuthSlice } from "./auth/auth.slice";
+import { createCategoriesSlice } from "./categories/categories.slice";
+import { createDreamSlice } from "./dream/dream.slice";
+import { createDreamsSlice } from "./dreams/dreams.slice";
+import { StoreSlice } from "./interface";
+import { createStatisticSlice } from "./statistics/statistics.slice";
 
-export const useDreams = create<StoreSlice & { resetState: () => void }>()(
-  immer((set, get, store) => {
-    const categories = createCategoriesSlice(set, get, store)
-    const dream = createDreamSlice(set, get, store)
-    const dreams = createDreamsSlice(set, get, store)
-    const auth = createAuthSlice(set, get, store)
-    const statistics = createStatisticSlice(set, get, store)
-    const api = createApiSlice(set, get, store)
+export const useDreams = create<StoreSlice>()(
+  immer((...a) => {
+    const categories = createCategoriesSlice(...a);
+    const dream = createDreamSlice(...a);
+    const dreams = createDreamsSlice(...a);
+    const auth = createAuthSlice(...a);
+    const statistics = createStatisticSlice(...a);
+    const api = createApiSlice(...a);
 
     return {
       ...categories,
@@ -25,12 +25,6 @@ export const useDreams = create<StoreSlice & { resetState: () => void }>()(
       ...auth,
       ...statistics,
       ...api,
-      resetState: () => {
-        get().resetDream()
-        get().resetDreams()
-        get().resetStatistics()
-        get().resetCategories()
-        get().resetAuth()
-      },
-    }
-  }))
+    };
+  }),
+);

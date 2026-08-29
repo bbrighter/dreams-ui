@@ -1,8 +1,10 @@
 /// <reference types="vitest/config"/>
-import react from "@vitejs/plugin-react"
-import { visualizer } from "rollup-plugin-visualizer"
-import { defineConfig } from "vite"
-import { checker } from "vite-plugin-checker"
+import path from "node:path";
+
+import react from "@vitejs/plugin-react";
+import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
+import { checker } from "vite-plugin-checker";
 
 export default defineConfig({
   base: "/dreams",
@@ -14,8 +16,14 @@ export default defineConfig({
     }),
     checker({
       typescript: true,
+      oxlint: true,
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "./src"),
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",
@@ -24,4 +32,4 @@ export default defineConfig({
       provider: "v8",
     },
   },
-})
+});

@@ -1,51 +1,54 @@
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import Box from "@mui/material/Box"
-import Container from "@mui/material/Container"
-import TextField from "@mui/material/TextField"
-import { useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useSimpleDebounce } from "../../hooks/simpleDebounce";
+import { useIsSaved } from "../../store/selectors";
+import { categoriesService, dreamService } from "../../store/services";
+import { useDreams } from "../../store/store";
+import { EditFooter, EditHeader, TagInputs } from "./Components";
 
-import { useSimpleDebounce } from "../../hooks/simpleDebounce"
-import { categoriesService, dreamService, useDreams } from "../../store"
-import { useIsSaved } from "../../store/selectors"
-import { EditFooter, EditHeader, TagInputs } from "./Components"
-
-const DEBOUNCE_TIME = 2_000
+const DEBOUNCE_TIME = 2_000;
 
 export default function Edit() {
-  const navigate = useNavigate()
-  const { dream, setDescription } = useDreams()
-  const { description } = dream
-  const { id: urlId } = useParams()
+  const navigate = useNavigate();
+  const { dream, setDescription } = useDreams();
+  const { description } = dream;
+  const { id: urlId } = useParams();
 
-  const isSaved = useIsSaved()
+  const isSaved = useIsSaved();
 
   useEffect(() => {
-    const numericId = Number(urlId)
+    const numericId = Number(urlId);
     if (!urlId || isNaN(numericId)) {
-      navigate("/")
-      return
+      navigate("/");
+      return;
     }
     dreamService.getDream(numericId).catch((err) => {
       if (err.status == 404) {
-        navigate("/")
-        return
+        navigate("/");
+        return;
       }
-    })
-    categoriesService.list()
-  }, [urlId])
+    });
+    categoriesService.list();
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlId]);
 
   const debouncedSave = useSimpleDebounce(async () => {
     if (!isSaved) {
-      await dreamService.saveDream()
+      await dreamService.saveDream();
     }
-  }, DEBOUNCE_TIME)
+  }, DEBOUNCE_TIME);
 
-  const onChangeDescriptionDebounce = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    const value = e.currentTarget.value
-    setDescription(value)
-    debouncedSave()
-  }
+  const onChangeDescriptionDebounce = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    const value = e.currentTarget.value;
+    setDescription(value);
+    debouncedSave();
+  };
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -69,5 +72,5 @@ export default function Edit() {
       </Container>
       <EditFooter />
     </Box>
-  )
+  );
 }

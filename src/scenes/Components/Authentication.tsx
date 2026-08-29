@@ -1,15 +1,16 @@
-import LockIcon from "@mui/icons-material/Lock"
-import LockOpenIcon from "@mui/icons-material/LockOpen"
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Fade from "@mui/material/Fade"
-import IconButton from "@mui/material/IconButton"
-import Modal from "@mui/material/Modal"
-import { SxProps } from "@mui/material/styles"
-import TextField from "@mui/material/TextField"
-import { useEffect, useState } from "react"
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Fade from "@mui/material/Fade";
+import IconButton from "@mui/material/IconButton";
+import Modal from "@mui/material/Modal";
+import { SxProps } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import { useEffect, useState } from "react";
 
-import { authService, useIsLoggedIn } from "../../store"
+import { useIsLoggedIn } from "../../store/selectors";
+import { authService } from "../../store/services";
 
 const modalStyle: SxProps = {
   position: "absolute",
@@ -19,47 +20,39 @@ const modalStyle: SxProps = {
   bgcolor: "background.paper",
   width: 300,
   padding: "3rem",
-
-}
+};
 
 export function Authentication() {
-  const [open, setOpen] = useState(false)
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [isWrong, setIsWrong] = useState(false)
-  const loggedIn = useIsLoggedIn()
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isWrong, setIsWrong] = useState(false);
+  const loggedIn = useIsLoggedIn();
 
-  const onClick = () => loggedIn ? authService.logout() : setOpen(true)
+  const onClick = () => (loggedIn ? authService.logout() : setOpen(true));
   const onClose = () => {
-    setOpen(false)
-    setPassword("")
-    setIsWrong(false)
-  }
+    setOpen(false);
+    setPassword("");
+    setIsWrong(false);
+  };
 
   useEffect(() => {
     if (loggedIn) {
-      setTimeout(() => setOpen(false), 500)
+      setTimeout(() => setOpen(false), 500);
     }
-  }, [loggedIn])
+  }, [loggedIn]);
 
   const loginClick = async () => {
-    setLoading(true)
-    const ok = await authService.login(password)
-    setIsWrong(!ok)
-    setLoading(false)
-  }
+    setLoading(true);
+    const ok = await authService.login(password);
+    setIsWrong(!ok);
+    setLoading(false);
+  };
 
   return (
     <>
-      <IconButton
-        onClick={onClick}
-      >
-        {loggedIn ? <LockOpenIcon /> : <LockIcon />}
-      </IconButton>
-      <Modal
-        open={open}
-        onClose={onClose}
-      >
+      <IconButton onClick={onClick}>{loggedIn ? <LockOpenIcon /> : <LockIcon />}</IconButton>
+      <Modal open={open} onClose={onClose}>
         <Fade in={open}>
           <Box sx={modalStyle}>
             <TextField
@@ -67,20 +60,14 @@ export function Authentication() {
               type="password"
               label="Passwort"
               error={isWrong}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <Button
-              variant="contained"
-              sx={{ mt: "1rem" }}
-              onClick={loginClick}
-              loading={loading}
-            >
+            <Button variant="contained" sx={{ mt: "1rem" }} onClick={loginClick} loading={loading}>
               Login
             </Button>
           </Box>
         </Fade>
       </Modal>
-
     </>
-  )
+  );
 }
