@@ -1,3 +1,4 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { renderHook } from "@testing-library/react";
 import { expect, it } from "vitest";
 
@@ -13,11 +14,10 @@ it("useDreamCategories", () => {
   ]);
   setDream({
     id: 1,
-    date: new Date(),
+    date: Temporal.Now.instant(),
     description: "",
     finalized: false,
     rating: null,
-    visible: true,
     categories: [1, 3],
   });
 

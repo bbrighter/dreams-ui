@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
+import { Temporal } from "@js-temporal/polyfill";
 import CloudIcon from "@mui/icons-material/Cloud";
-import CloudOffIcon from "@mui/icons-material/CloudOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
@@ -20,9 +20,8 @@ const StyledListItem = styled(ListItem)`
 
 type DreamListItemType = {
   id: number;
-  date: Date;
+  date: Temporal.Instant;
   finalized: boolean;
-  visible: boolean;
   rating: number | null;
 };
 
@@ -51,10 +50,13 @@ export function DreamItem(props: { dream: DreamListItemType }) {
       }
     >
       <ListItemAvatar data-testid="dream-icon">
-        {props.dream.visible ? <CloudIcon color={color} /> : <CloudOffIcon color={color} />}
+        <CloudIcon color={color} />
       </ListItemAvatar>
       <ListItemText>
-        {props.dream.date.toLocaleDateString("de-DE", { dateStyle: "medium" })}
+        {props.dream.date
+          .toZonedDateTimeISO(Temporal.Now.timeZoneId())
+          .toPlainDate()
+          .toLocaleString("de-DE", { dateStyle: "medium" })}
       </ListItemText>
       <Rating
         title="Bewertung"

@@ -1,15 +1,15 @@
 import { http, HttpResponse } from "msw";
 
-import { EntityCategoriesCountResponse, EntityStatistics } from "../../api/generated_api";
+import { ControllerCategoryListResponse, ControllerStatistics } from "@/api/generated_api";
 
-export const getCountCategoriesHandler = (resp: EntityCategoriesCountResponse) =>
+export const getCountCategoriesHandler = (resp: ControllerCategoryListResponse) =>
   http.get("/count-categories", () => HttpResponse.json(resp));
 
 //   categories: [
 //     { id: 1, count: 10 },
 //     { id: 2, count: 3 },
 
-export const getCountCategoriesMonthlyHandler = (resp: EntityStatistics) =>
+export const getCountCategoriesMonthlyHandler = (resp: ControllerStatistics) =>
   http.get("/count-categories/monthly", () => HttpResponse.json(resp));
 
 // statistics: [

@@ -6,7 +6,6 @@ import { describe, expect, it, vi } from "vitest";
 import { createCategories } from "@/__tests__/fixtures/categories";
 import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
 import { getCategoriesHandler } from "@/__tests__/mocks/categoryHandlers";
-import { EntityCategoryType } from "@/api/generated_api";
 
 import { getDreamsHandler } from "../../__tests__/mocks/dreamsHandlers";
 import { server } from "../../__tests__/setupTest";
@@ -146,7 +145,7 @@ describe("start page is rendered and can be clicked", () => {
       getDreamsHandler(
         createDreams([
           createDream({
-            categories: [{ id: 1, name: "Category", type: EntityCategoryType.TypeCategory }],
+            categories: [{ id: 1, name: "Category", type: "category" }],
           }),
           createDream({ id: 2 }),
         ]),

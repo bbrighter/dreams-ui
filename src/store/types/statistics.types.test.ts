@@ -1,13 +1,14 @@
 import { expect, test } from "vitest";
 
-import { EntityCategoriesCountResponse, EntityStatistics } from "../../api/generated_api";
+import { ControllerCategoryListResponse, ControllerStatistics } from "@/api/generated_api";
+
 import { controllerCountsResponseToStatistic, respToMonthlyStatistics } from "./statistics.types";
 
 test("ControllerCategoriesCountToStatistics", () => {
-  const resp: EntityCategoriesCountResponse = {
+  const resp: ControllerCategoryListResponse = {
     categories: [
-      { id: 1, count: 100 },
-      { id: 2, count: 300 },
+      { id: 1, count: 100, name: "cat1", type: "person" },
+      { id: 2, count: 300, name: "cat2", type: "categroy" },
     ],
   };
 
@@ -18,17 +19,17 @@ test("ControllerCategoriesCountToStatistics", () => {
 });
 
 test("respToMonthlyStatistics", () => {
-  const resp: EntityStatistics = {
+  const resp: ControllerStatistics = {
     statistics: [
       {
         month: "02/2022",
         dreamCount: 10,
         categories: [
-          { id: 1, count: 9 },
-          { id: 2, count: 1 },
+          { count: 9, categoryId: 1 },
+          { count: 1, categoryId: 2 },
         ],
       },
-      { month: "03/2022", dreamCount: 3, categories: [{ id: 1, count: 3 }] },
+      { month: "03/2022", dreamCount: 3, categories: [{ categoryId: 1, count: 3 }] },
     ],
   };
 

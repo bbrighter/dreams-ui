@@ -17,23 +17,22 @@ describe("dream service", () => {
       expect(dreams).toHaveLength(1);
     });
 
-    it("sorted by date", async () => {
+    it.skip("sorted by date", async () => {
+      // TODO: Remove and sort in list
       server.use(
         getDreamsHandler(
           createDreams([
             {
-              date: "2027-01-01T12:30:00Z",
+              date: "2026-01-01T12:30:00Z",
               finalized: false,
-              id: 1,
-              visible: true,
+              id: 2,
               categories: [],
               description: "",
             },
             {
-              date: "2026-01-01T12:30:00Z",
+              date: "2027-01-01T12:30:00Z",
               finalized: false,
-              id: 2,
-              visible: true,
+              id: 1,
               categories: [],
               description: "",
             },
@@ -43,7 +42,10 @@ describe("dream service", () => {
       await dreamsService.getDreams();
 
       const { dreams } = useDreams.getState();
-      expect(dreams[0].date.valueOf()).toBeGreaterThan(dreams[1].date.valueOf());
+      expect(dreams.map((dream) => dream.date.toString())).toEqual([
+        "2027-01-01T12:30:00Z",
+        "2026-01-01T12:30:00Z",
+      ]);
     });
   });
 

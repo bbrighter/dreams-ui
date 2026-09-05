@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -10,13 +9,20 @@ import { dreamService } from "@/services/dream.service";
 import { useSimpleDebounce } from "../../hooks/simpleDebounce";
 import { useIsSaved } from "../../store/selectors";
 import { useDreams } from "../../store/store";
-import { EditFooter, EditHeader, TagInputs } from "./Components";
+import { DreamDescription } from "./DreamDescription/DreamDescription";
+import { EditFooter } from "./Footer/Footer";
+import { useFooterProps } from "./Footer/useFooterProps";
+import { Header } from "./Header/Header";
+import { useHeaderProps } from "./Header/useHeaderProps";
+import { TagInputs } from "./TagInput/TagInputs";
+import { useCategoryInput, usePersonInput } from "./TagInput/useTagInputs";
 
 const DEBOUNCE_TIME = 2_000;
 
 export default function Edit() {
   const navigate = useNavigate();
-  const { dream, setDescription } = useDreams();
+  const dream = useDreams((state) => state.dream);
+  const setDescription = useDreams((state) => state.setDescription);
   const { description } = dream;
   const { id: urlId } = useParams();
 
@@ -52,27 +58,20 @@ export default function Edit() {
     debouncedSave();
   };
 
+  const headerProps = useHeaderProps();
+  const personTagProps = usePersonInput();
+  const categoryTagProps = useCategoryInput();
+  const footerProps = useFooterProps();
+
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <EditHeader />
+      <Header {...headerProps} />
       <Container sx={{ marginBottom: "1rem", flexGrow: 1 }} component="form">
-        <TextField
-          sx={{
-            width: "100%",
-            marginTop: "1rem",
-            height: "80%",
-          }}
-          label="Beschreibung"
-          multiline
-          minRows={5}
-          maxRows={18}
-          value={description}
-          onChange={onChangeDescriptionDebounce}
-        />
-        <TagInputs type="category" />
-        <TagInputs type="person" />
+        <DreamDescription description={description} onChange={onChangeDescriptionDebounce} />
+        <TagInputs {...categoryTagProps} />
+        <TagInputs {...personTagProps} />
       </Container>
-      <EditFooter />
+      <EditFooter {...footerProps} />
     </Box>
   );
 }

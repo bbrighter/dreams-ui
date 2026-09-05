@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { createCategories } from "@/__tests__/fixtures/categories";
 import { getCategoriesHandler, postCategoryMergeHandler } from "@/__tests__/mocks/categoryHandlers";
 import { server } from "@/__tests__/setupTest";
-import { EntityCategoryType } from "@/api/generated_api";
 import { useDreams } from "@/store/store";
 
 import { categoriesService } from "../categories.service";
@@ -14,8 +13,8 @@ describe("categories service", () => {
       server.use(
         getCategoriesHandler(
           createCategories([
-            { id: 1, type: EntityCategoryType.TypeCategory, name: "Category" },
-            { id: 2, type: EntityCategoryType.TypePerson, name: "Person" },
+            { id: 1, type: "category", name: "Category" },
+            { id: 2, type: "person", name: "Person" },
           ]),
         ),
       );
@@ -51,9 +50,7 @@ describe("categories service", () => {
 
   describe("delete", () => {
     it("delete person", async () => {
-      server.use(
-        getCategoriesHandler(createCategories({ id: 2, type: EntityCategoryType.TypePerson })),
-      );
+      server.use(getCategoriesHandler(createCategories({ id: 2, type: "person" })));
       await categoriesService.list();
 
       await categoriesService.delete(2);
@@ -63,9 +60,7 @@ describe("categories service", () => {
     });
 
     it("delete category", async () => {
-      server.use(
-        getCategoriesHandler(createCategories({ id: 1, type: EntityCategoryType.TypeCategory })),
-      );
+      server.use(getCategoriesHandler(createCategories({ id: 1, type: "category" })));
       await categoriesService.list();
 
       await categoriesService.delete(1);
@@ -87,9 +82,7 @@ describe("categories service", () => {
 
   describe("change type", () => {
     it("change category", async () => {
-      server.use(
-        getCategoriesHandler(createCategories({ id: 1, type: EntityCategoryType.TypeCategory })),
-      );
+      server.use(getCategoriesHandler(createCategories({ id: 1, type: "category" })));
       await categoriesService.list();
 
       await categoriesService.changeType(1);
@@ -101,9 +94,7 @@ describe("categories service", () => {
     });
 
     it("change person", async () => {
-      server.use(
-        getCategoriesHandler(createCategories({ id: 1, type: EntityCategoryType.TypePerson })),
-      );
+      server.use(getCategoriesHandler(createCategories({ id: 1, type: "person" })));
       await categoriesService.list();
 
       await categoriesService.changeType(1);
@@ -130,13 +121,11 @@ describe("categories service", () => {
       server.use(
         getCategoriesHandler(
           createCategories([
-            { id: 1, name: "Cat", type: EntityCategoryType.TypeCategory },
-            { id: 2, name: "Person", type: EntityCategoryType.TypePerson },
+            { id: 1, name: "Cat", type: "category" },
+            { id: 2, name: "Person", type: "person" },
           ]),
         ),
-        postCategoryMergeHandler(
-          createCategories({ id: 1, name: "new name", type: EntityCategoryType.TypeCategory }),
-        ),
+        postCategoryMergeHandler(createCategories({ id: 1, name: "new name", type: "category" })),
       );
       await categoriesService.list();
 

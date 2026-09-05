@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { dreamsService } from "@/services/dreams.service";
 
@@ -10,6 +10,10 @@ import { DreamItem } from "./DreamItem";
 
 export const DreamList = () => {
   const dreams = useFilteredDreams();
+  const sortedDreams = useMemo(
+    () => [...dreams].sort((a, b) => b.date.since(a.date).milliseconds),
+    [dreams],
+  );
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +23,7 @@ export const DreamList = () => {
 
   // oxlint-disable-next-line react/incompatible-library
   const rowVirtualizer = useVirtualizer({
-    count: dreams.length,
+    count: sortedDreams.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 35,
   });
@@ -39,7 +43,7 @@ export const DreamList = () => {
         }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem) => {
-          const dream = dreams[virtualItem.index];
+          const dream = sortedDreams[virtualItem.index];
 
           return (
             <Box

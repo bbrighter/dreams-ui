@@ -1,3 +1,4 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -11,19 +12,17 @@ describe("useFilteredDreams", () => {
       {
         id: 1,
         categories: [1],
-        date: new Date(),
+        date: Temporal.Now.instant(),
         description: "",
         finalized: false,
-        visible: true,
         rating: null,
       },
       {
         id: 2,
         categories: [1, 2, 3],
-        date: new Date(),
+        date: Temporal.Now.instant(),
         description: "",
         finalized: false,
-        visible: true,
         rating: null,
       },
     ]);

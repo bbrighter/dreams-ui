@@ -1,4 +1,3 @@
-import { EntityCategoryType } from "@/api/generated_api";
 import { selectCategory } from "@/store/selectors";
 import { useDreams } from "@/store/store";
 import { categoriesResponseToCategories } from "@/store/types/categories.types";
@@ -47,10 +46,7 @@ export const categoriesService = {
     const { setCategoryType: changeCategoryType, api } = useDreams.getState();
     if (!api) return;
 
-    const invertedType =
-      selectCategory(id)?.type == "category"
-        ? EntityCategoryType.TypePerson
-        : EntityCategoryType.TypeCategory;
+    const invertedType = selectCategory(id)?.type == "category" ? "person" : "category";
 
     const resp = await api.categories.idTypePartialUpdate(id.toString(), { type: invertedType });
     if (!resp.ok) {

@@ -19,7 +19,7 @@ export const createDreamsSlice: StateCreator<
   resetDreams: () => set(createInitialState()),
   setDreams: (dreams: Dreams) => {
     set((draft: DreamsState) => {
-      draft.dreams = dreams.sort((a, b) => b.date.valueOf() - a.date.valueOf());
+      draft.dreams = dreams.sort((a, b) => b.date.since(a.date).milliseconds);
     });
   },
   setScrollPosition: (pos: number) => {

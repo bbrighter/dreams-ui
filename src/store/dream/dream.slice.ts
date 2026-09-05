@@ -1,3 +1,4 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { StateCreator } from "zustand";
 
 import { DreamSlice, DreamState, StoreSlice } from "../interface";
@@ -5,12 +6,11 @@ import { Dream, hashDream } from "../types";
 
 const createInitialState = (): DreamState => ({
   dream: {
-    date: new Date(),
+    date: Temporal.Now.instant(),
     description: "",
     finalized: false,
     id: 0,
     categories: [],
-    visible: true,
     rating: null,
   },
   hash: "",
@@ -25,7 +25,7 @@ export const createDreamSlice: StateCreator<
   ...createInitialState(),
   resetDream: () => set(createInitialState()),
 
-  setDate: (date: Date) => {
+  setDate: (date: Temporal.Instant) => {
     set((draft: DreamState) => {
       draft.dream.date = date;
     });
@@ -33,11 +33,6 @@ export const createDreamSlice: StateCreator<
   setDescription: (description: string) => {
     set((draft: DreamState) => {
       draft.dream.description = description;
-    });
-  },
-  setVisibility: (isVisible: boolean) => {
-    set((draft: DreamState) => {
-      draft.dream.visible = isVisible;
     });
   },
   setRating: (rating: number) => {

@@ -1,8 +1,8 @@
 import { http, HttpResponse } from "msw";
 
-import { EntityCategoriesResponse } from "../../api/generated_api";
+import { ControllerCategoryListResponse } from "@/api/generated_api";
 
-export const getCategoriesHandler = (resp?: EntityCategoriesResponse) =>
+export const getCategoriesHandler = (resp?: ControllerCategoryListResponse) =>
   http.get("/categories", () => {
     return HttpResponse.json(resp);
   });
@@ -11,7 +11,7 @@ export const patchCategoryName = http.patch("/categories/:catId/name", () => Htt
 
 export const patchCategoryType = http.patch("/categories/:catId/type", () => HttpResponse.json({}));
 
-export const postCategoryMergeHandler = (resp?: EntityCategoriesResponse) =>
+export const postCategoryMergeHandler = (resp?: ControllerCategoryListResponse) =>
   http.post("/categories/merge", async () => {
     return HttpResponse.json(resp);
   });

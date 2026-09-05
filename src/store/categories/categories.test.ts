@@ -1,13 +1,14 @@
 import { expect, test } from "vitest";
 
-import { EntityCategoriesResponse, EntityCategoryType } from "../../api/generated_api";
+import { ControllerCategoryListResponse } from "@/api/generated_api";
+
 import { categoriesResponseToCategories } from "../types/categories.types";
 
 test("categoriesResponseToCategories", () => {
-  const resp: EntityCategoriesResponse = {
+  const resp: ControllerCategoryListResponse = {
     categories: [
-      { id: 1, name: "Title", type: EntityCategoryType.TypeCategory },
-      { id: 2, name: "Title 2", type: EntityCategoryType.TypePerson },
+      { id: 1, name: "Title", type: "category" },
+      { id: 2, name: "Title 2", type: "person" },
     ],
   };
 

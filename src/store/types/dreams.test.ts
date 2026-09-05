@@ -1,15 +1,16 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { expect, test } from "vitest";
 
-import { EntityDreamsResponse } from "../../api/generated_api";
+import { ControllerDreamListResponse } from "@/api/generated_api";
+
 import { dreamsResponseToDreams } from "./dreams.types";
 
 test("dreamsResponseToDreams", () => {
-  const resp: EntityDreamsResponse = {
+  const resp: ControllerDreamListResponse = {
     dreams: [
       {
         id: 1,
         date: "2024-01-04T19:54:20.113Z",
-        visible: true,
         finalized: false,
         categories: [],
         description: "",
@@ -21,8 +22,6 @@ test("dreamsResponseToDreams", () => {
 
   expect(dreams).toHaveLength(1);
   expect(dreams[0].id).toBe(1);
-  expect(dreams[0].date.getDate()).toBe(4);
-  expect(dreams[0].date.getMonth()).toBe(0); // 0 is January
-  expect(dreams[0].date.getFullYear()).toBe(2024);
-  expect(dreams[0].finalized).toBeFalsy();
+  expect(dreams[0].date.equals(Temporal.Instant.from("2024-01-04T19:54:20.113Z"))).toBe(true);
+  expect(dreams[0].finalized).toBe(false);
 });

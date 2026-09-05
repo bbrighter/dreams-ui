@@ -9,7 +9,7 @@ import { CategoryType } from "../../../store/types/categories.types";
 
 export function Tags({ type }: { type: CategoryType }) {
   useEffect(() => {
-    statisticsService.getStatistics(40);
+    statisticsService.getStatistics();
   }, []);
 
   const counts = useStatistics(type);

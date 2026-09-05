@@ -16,7 +16,9 @@ export default defineConfig({
     }),
     checker({
       typescript: true,
-      oxlint: true,
+      oxlint: {
+        lintCommand: "pnpm exec oxlint",
+      },
     }),
   ],
   resolve: {
