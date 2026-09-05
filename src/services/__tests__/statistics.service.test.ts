@@ -44,8 +44,8 @@ describe("statistics service", () => {
       server.use(
         getCountCategoriesHandler(
           createCategoriesCount([
-            { id: 1, count: 10 },
-            { id: 2, count: 3 },
+            { id: 1, count: 10, name: "Cat", type: "category" },
+            { id: 2, count: 3, name: "Pers", type: "person" },
           ]),
         ),
       );
@@ -66,11 +66,11 @@ describe("statistics service", () => {
               month: "02/2022",
               dreamCount: 10,
               categories: [
-                { id: 1, count: 7 },
-                { id: 2, count: 3 },
+                { categoryId: 1, count: 7 },
+                { categoryId: 2, count: 3 },
               ],
             },
-            { month: "03/2022", dreamCount: 1, categories: [{ id: 1, count: 1 }] },
+            { month: "03/2022", dreamCount: 1, categories: [{ categoryId: 1, count: 1 }] },
           ]),
         ),
       );

@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { createApiSlice } from "./api/api.slice";
-import { createAuthSlice } from "./auth/auth.slice";
 import { createCategoriesSlice } from "./categories/categories.slice";
 import { createDreamSlice } from "./dream/dream.slice";
 import { createDreamsSlice } from "./dreams/dreams.slice";
@@ -14,7 +13,6 @@ export const useDreams = create<StoreSlice>()(
     const categories = createCategoriesSlice(...a);
     const dream = createDreamSlice(...a);
     const dreams = createDreamsSlice(...a);
-    const auth = createAuthSlice(...a);
     const statistics = createStatisticSlice(...a);
     const api = createApiSlice(...a);
 
@@ -22,7 +20,6 @@ export const useDreams = create<StoreSlice>()(
       ...categories,
       ...dream,
       ...dreams,
-      ...auth,
       ...statistics,
       ...api,
     };

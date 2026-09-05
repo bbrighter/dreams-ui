@@ -1,15 +1,12 @@
+import { Temporal } from "@js-temporal/polyfill";
+
 import { Api } from "../api/generated_api";
 import { Categories, CategoryType } from "./types/categories.types";
 import { Dream } from "./types/dream.types";
 import { Dreams } from "./types/dreams.types";
 import { MonthlyStatistics, Statistics } from "./types/statistics.types";
 
-export type StoreSlice = CategorySlice &
-  DreamsSlice &
-  DreamSlice &
-  AuthSlice &
-  StatisticsSlice &
-  ApiSlice;
+export type StoreSlice = CategorySlice & DreamsSlice & DreamSlice & StatisticsSlice & ApiSlice;
 
 export type ApiState = {
   api: Api<unknown> | null;
@@ -21,17 +18,6 @@ interface ApiActions {
 
 export type ApiSlice = ApiState & ApiActions;
 
-export type AuthState = {
-  user: string;
-  token: string;
-};
-
-interface AuthActions {
-  setToken: (token: string) => void;
-  resetAuth: () => void;
-}
-
-export interface AuthSlice extends AuthState, AuthActions {}
 export interface CategoryState {
   categories: Categories;
   categoriesLoaded: boolean;
@@ -49,10 +35,9 @@ export type CategorySlice = CategoryState & CategoryActions;
 
 interface DreamActions {
   resetDream: () => void;
-  setDate: (date: Date) => void;
+  setDate: (date: Temporal.Instant) => void;
   setDescription: (desc: string) => void;
   setFinalized: () => void;
-  setVisibility: (isVisible: boolean) => void;
   setRating: (rating: number) => void;
   setDreamCategories: (cats: Array<number>) => void;
   setDream: (dream: Dream) => void;

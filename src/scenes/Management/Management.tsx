@@ -16,7 +16,7 @@ export default function Management() {
   const tagStatistics = useStatistics("category");
 
   useEffect(() => {
-    statisticsService.getStatistics(0);
+    statisticsService.getStatistics();
     categoriesService.list();
   }, []);
 

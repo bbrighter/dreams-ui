@@ -1,7 +1,7 @@
 import { dreamIdStr } from "@/store/selectors";
 import { useDreams } from "@/store/store";
 import { dreamResponseToDream } from "@/store/types";
-import { CategoryType, toEntityCategoryType } from "@/store/types/categories.types";
+import { CategoryType } from "@/store/types/categories.types";
 
 export const dreamService = {
   getDream: async (id: number) => {
@@ -20,7 +20,7 @@ export const dreamService = {
     const { api, dream, setHash } = useDreams.getState();
     if (!api) return;
     const resp = await api.dreams.dreamsPartialUpdate(dreamIdStr(), {
-      date: dream.date.toISOString(),
+      date: dream.date.toString({ timeZone: "UTC" }),
       description: dream.description,
       rating: dream.rating ? dream.rating : undefined,
     });
@@ -36,7 +36,7 @@ export const dreamService = {
     if (!api) return;
     const resp = await api.dreams.categoriesCreate(dreamIdStr(), {
       name: name,
-      categoryType: toEntityCategoryType(type),
+      categoryType: type,
     });
     if (!resp.ok) {
       console.error("error");
@@ -81,16 +81,5 @@ export const dreamService = {
       return;
     }
     setFinalized();
-  },
-
-  changeVisibility: async () => {
-    const { api, setVisibility, dream } = useDreams.getState();
-    if (!api) return;
-    const resp = await api.dreams.privatePartialUpdate(dreamIdStr());
-    if (!resp.ok) {
-      console.error("error");
-      return;
-    }
-    setVisibility(!dream.visible);
   },
 };

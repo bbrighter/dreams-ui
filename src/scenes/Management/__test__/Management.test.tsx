@@ -9,21 +9,20 @@ import { getCountCategoriesHandler } from "@/__tests__/mocks/statisticsHandler";
 
 import { getCategoriesHandler } from "../../../__tests__/mocks/categoryHandlers";
 import { server } from "../../../__tests__/setupTest";
-import { EntityCategoryType } from "../../../api/generated_api";
 import Management from "../Management";
 import { clickEditButton, findDeleteButton, getRowByText } from "./utils";
 
 describe("Management is rendered", () => {
-  const cat = { id: 1, name: "Category", type: EntityCategoryType.TypeCategory };
-  const person = { id: 2, name: "Person", type: EntityCategoryType.TypePerson };
+  const cat = { id: 1, name: "Category", type: "category" };
+  const person = { id: 2, name: "Person", type: "person" };
 
   it("Tabs work and content is rendered", async () => {
     server.use(
       getCategoriesHandler(createCategories([cat, person])),
       getCountCategoriesHandler(
         createCategoriesCount([
-          { id: 1, count: 10 },
-          { id: 2, count: 3 },
+          { ...cat, count: 10 },
+          { ...person, count: 3 },
         ]),
       ),
     );
@@ -75,17 +74,13 @@ describe("Management is rendered", () => {
   });
 
   it("deleting is disabled", async () => {
+    const cat2 = { id: 2, name: "Category 2", type: "category" };
     server.use(
-      getCategoriesHandler(
-        createCategories([
-          cat,
-          { id: 2, name: "Category 2", type: EntityCategoryType.TypeCategory },
-        ]),
-      ),
+      getCategoriesHandler(createCategories([cat, cat2])),
       getCountCategoriesHandler(
         createCategoriesCount([
-          { id: 1, count: 0 },
-          { id: 2, count: 10 },
+          { ...cat, count: 0 },
+          { ...cat2, count: 10 },
         ]),
       ),
     );

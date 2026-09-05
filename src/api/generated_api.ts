@@ -10,14 +10,33 @@
  * ---------------------------------------------------------------
  */
 
-export enum EntityCategoryType {
-  TypePerson = "person",
-  TypeCategory = "category",
+export interface ControllerCategoryListResponse {
+  categories: ControllerCategoryResponse[];
 }
 
-export interface ControllerLoginRequest {
+export interface ControllerCategoryResponse {
+  count?: number;
+  id: number;
   name: string;
-  password: string;
+  type: string;
+}
+
+export interface ControllerCountByCat {
+  categoryId: number;
+  count: number;
+}
+
+export interface ControllerDreamListResponse {
+  dreams: ControllerDreamResponse[];
+}
+
+export interface ControllerDreamResponse {
+  categories: ControllerCategoryResponse[];
+  date: string;
+  description: string;
+  finalized: boolean;
+  id: number;
+  rating?: number;
 }
 
 export interface ControllerMergeCategoriesParams {
@@ -27,66 +46,29 @@ export interface ControllerMergeCategoriesParams {
 }
 
 export interface ControllerPostCategoryRequestBody {
-  categoryType: EntityCategoryType;
+  categoryType: string;
   name: string;
 }
 
 export interface ControllerPostDreamRequest {
   date: string;
-  description?: string;
+  description: string;
+}
+
+export interface ControllerStatistic {
+  categories: ControllerCountByCat[];
+  dreamCount: number;
+  month: string;
+}
+
+export interface ControllerStatistics {
+  statistics: ControllerStatistic[];
 }
 
 export interface ControllerUpdateDreamRequest {
   date?: string;
   description?: string;
   rating?: number;
-}
-
-export interface EntityCategoriesCountResponse {
-  categories: EntityCountByCat[];
-}
-
-export interface EntityCategoriesResponse {
-  categories: EntityCategoryResponse[];
-}
-
-export interface EntityCategoryResponse {
-  id: number;
-  name: string;
-  type: EntityCategoryType;
-}
-
-export interface EntityCountByCat {
-  count: number;
-  id: number;
-}
-
-export interface EntityDreamResponse {
-  categories: EntityCategoryResponse[];
-  date: string;
-  description: string;
-  finalized: boolean;
-  id: number;
-  rating?: number;
-  visible: boolean;
-}
-
-export interface EntityDreamsResponse {
-  dreams: EntityDreamResponse[];
-}
-
-export interface EntityLoginResponse {
-  token: string;
-}
-
-export interface EntityStatistic {
-  categories: EntityCountByCat[];
-  dreamCount: number;
-  month: string;
-}
-
-export interface EntityStatistics {
-  statistics: EntityStatistic[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -111,7 +93,10 @@ export interface FullRequestParams extends Omit<RequestInit, "body"> {
   cancelToken?: CancelToken;
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
+>;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
@@ -122,7 +107,8 @@ export interface ApiConfig<SecurityDataType = unknown> {
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
+export interface HttpResponse<D extends unknown, E extends unknown = unknown>
+  extends Response {
   data: D;
   error: E;
 }
@@ -142,7 +128,8 @@ export class HttpClient<SecurityDataType = unknown> {
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
-  private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams);
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
+    fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
     credentials: "same-origin",
@@ -175,7 +162,9 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
+    const keys = Object.keys(query).filter(
+      (key) => "undefined" !== typeof query[key],
+    );
     return keys
       .map((key) =>
         Array.isArray(query[key])
@@ -200,7 +189,9 @@ export class HttpClient<SecurityDataType = unknown> {
         ? JSON.stringify(input)
         : input,
     [ContentType.Text]: (input: any) =>
-      input !== null && typeof input !== "string" ? JSON.stringify(input) : input,
+      input !== null && typeof input !== "string"
+        ? JSON.stringify(input)
+        : input,
     [ContentType.FormData]: (input: any) => {
       if (input instanceof FormData) {
         return input;
@@ -222,7 +213,10 @@ export class HttpClient<SecurityDataType = unknown> {
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   };
 
-  protected mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
+  protected mergeRequestParams(
+    params1: RequestParams,
+    params2?: RequestParams,
+  ): RequestParams {
     return {
       ...this.baseApiParams,
       ...params1,
@@ -235,7 +229,9 @@ export class HttpClient<SecurityDataType = unknown> {
     };
   }
 
-  protected createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
+  protected createAbortSignal = (
+    cancelToken: CancelToken,
+  ): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
       const abortController = this.abortControllers.get(cancelToken);
       if (abortController) {
@@ -285,10 +281,18 @@ export class HttpClient<SecurityDataType = unknown> {
         ...requestParams,
         headers: {
           ...(requestParams.headers || {}),
-          ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
+          ...(type && type !== ContentType.FormData
+            ? { "Content-Type": type }
+            : {}),
         },
-        signal: (cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal) || null,
-        body: typeof body === "undefined" || body === null ? null : payloadFormatter(body),
+        signal:
+          (cancelToken
+            ? this.createAbortSignal(cancelToken)
+            : requestParams.signal) || null,
+        body:
+          typeof body === "undefined" || body === null
+            ? null
+            : payloadFormatter(body),
       },
     ).then(async (response) => {
       const r = response as HttpResponse<T, E>;
@@ -326,7 +330,9 @@ export class HttpClient<SecurityDataType = unknown> {
  * @title No title
  * @contact
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown,
+> extends HttpClient<SecurityDataType> {
   categories = {
     /**
      * @description Get all categories
@@ -335,7 +341,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/categories
      */
     categoriesList: (params: RequestParams = {}) =>
-      this.request<EntityCategoriesResponse, any>({
+      this.request<ControllerCategoryListResponse, any>({
         path: `/categories`,
         method: "GET",
         format: "json",
@@ -407,7 +413,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       mergeCategoriesParams: ControllerMergeCategoriesParams,
       params: RequestParams = {},
     ) =>
-      this.request<EntityCategoriesCountResponse, any>({
+      this.request<ControllerCategoryListResponse, any>({
         path: `/categories/merge`,
         method: "POST",
         body: mergeCategoriesParams,
@@ -423,17 +429,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CountCategoriesList
      * @request GET:/count-categories
      */
-    countCategoriesList: (
-      query?: {
-        /** Limit of returned results */
-        limit?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<EntityCategoriesCountResponse, any>({
+    countCategoriesList: (params: RequestParams = {}) =>
+      this.request<ControllerCategoryListResponse, any>({
         path: `/count-categories`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -445,7 +444,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/count-categories/monthly
      */
     monthlyList: (params: RequestParams = {}) =>
-      this.request<EntityStatistics, any>({
+      this.request<ControllerStatistics, any>({
         path: `/count-categories/monthly`,
         method: "GET",
         format: "json",
@@ -460,7 +459,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/dreams
      */
     dreamsList: (params: RequestParams = {}) =>
-      this.request<EntityDreamsResponse, any>({
+      this.request<ControllerDreamListResponse, any>({
         path: `/dreams`,
         method: "GET",
         format: "json",
@@ -473,7 +472,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name DreamsCreate
      * @request POST:/dreams
      */
-    dreamsCreate: (postDreamRequest: ControllerPostDreamRequest, params: RequestParams = {}) =>
+    dreamsCreate: (
+      postDreamRequest: ControllerPostDreamRequest,
+      params: RequestParams = {},
+    ) =>
       this.request<number, void>({
         path: `/dreams`,
         method: "POST",
@@ -484,60 +486,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Get all dreams - including private
-     *
-     * @name PrivateList
-     * @request GET:/dreams/private
-     * @secure
-     */
-    privateList: (params: RequestParams = {}) =>
-      this.request<EntityDreamsResponse, any>({
-        path: `/dreams/private`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Get one private dream
-     *
-     * @name PrivateDetail
-     * @request GET:/dreams/private/{dreamId}
-     * @secure
-     */
-    privateDetail: (dreamId: string, params: RequestParams = {}) =>
-      this.request<EntityDreamResponse, void>({
-        path: `/dreams/private/${dreamId}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Toggle visibility of a dream
-     *
-     * @name PrivatePartialUpdate
-     * @request PATCH:/dreams/private/{dreamId}
-     * @secure
-     */
-    privatePartialUpdate: (dreamId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/dreams/private/${dreamId}`,
-        method: "PATCH",
-        secure: true,
-        ...params,
-      }),
-
-    /**
      * @description Get one dream
      *
      * @name DreamsDetail
      * @request GET:/dreams/{dreamId}
      */
     dreamsDetail: (dreamId: string, params: RequestParams = {}) =>
-      this.request<EntityDreamResponse, void>({
+      this.request<ControllerDreamResponse, void>({
         path: `/dreams/${dreamId}`,
         method: "GET",
         format: "json",
@@ -602,7 +557,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CategoriesUpdate
      * @request PUT:/dreams/{dreamId}/categories/{categoryId}
      */
-    categoriesUpdate: (dreamId: string, categoryId: string, params: RequestParams = {}) =>
+    categoriesUpdate: (
+      dreamId: string,
+      categoryId: string,
+      params: RequestParams = {},
+    ) =>
       this.request<void, void>({
         path: `/dreams/${dreamId}/categories/${categoryId}`,
         method: "PUT",
@@ -615,7 +574,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CategoriesDelete
      * @request DELETE:/dreams/{dreamId}/categories/{categoryId}
      */
-    categoriesDelete: (dreamId: string, categoryId: string, params: RequestParams = {}) =>
+    categoriesDelete: (
+      dreamId: string,
+      categoryId: string,
+      params: RequestParams = {},
+    ) =>
       this.request<void, void>({
         path: `/dreams/${dreamId}/categories/${categoryId}`,
         method: "DELETE",
@@ -632,37 +595,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, void>({
         path: `/dreams/${dreamId}/finalize`,
         method: "PATCH",
-        ...params,
-      }),
-  };
-  login = {
-    /**
-     * @description Login
-     *
-     * @name LoginCreate
-     * @request POST:/login
-     */
-    loginCreate: (loginRequest: ControllerLoginRequest, params: RequestParams = {}) =>
-      this.request<EntityLoginResponse, void>({
-        path: `/login`,
-        method: "POST",
-        body: loginRequest,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  logout = {
-    /**
-     * @description Logout
-     *
-     * @name LogoutCreate
-     * @request POST:/logout
-     */
-    logoutCreate: (params: RequestParams = {}) =>
-      this.request<void, void>({
-        path: `/logout`,
-        method: "POST",
         ...params,
       }),
   };

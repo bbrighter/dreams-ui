@@ -1,10 +1,6 @@
-import { EntityCategoriesResponse, EntityCategoryType } from "../../api/generated_api";
+import { ControllerCategoryListResponse } from "@/api/generated_api";
 
-export type CategoryType = `${EntityCategoryType}`;
-
-export const toEntityCategoryType = (t: CategoryType): EntityCategoryType => {
-  return t == "category" ? EntityCategoryType.TypeCategory : EntityCategoryType.TypePerson;
-};
+export type CategoryType = "person" | "category";
 
 export type Category = {
   id: number;
@@ -14,10 +10,12 @@ export type Category = {
 
 export type Categories = Array<Category>;
 
-export function categoriesResponseToCategories(resp: EntityCategoriesResponse): Array<Category> {
+export function categoriesResponseToCategories(
+  resp: ControllerCategoryListResponse,
+): Array<Category> {
   return resp.categories.map((c) => ({
     id: c.id,
     name: c.name,
-    type: c.type,
+    type: c.type === "person" ? "person" : "category",
   }));
 }

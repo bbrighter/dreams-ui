@@ -16,7 +16,6 @@ beforeAll(() => {
 beforeEach(async () => {
   vi.resetAllMocks();
   const store = useDreams.getState();
-  store.resetAuth();
   store.resetCategories();
   store.resetDream();
   store.resetDreams();

@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 
-import { Api, RequestParams } from "../../api/generated_api";
+import { Api } from "../../api/generated_api";
 import { ApiSlice, ApiState, StoreSlice } from "../interface";
 
 const initialState = (): ApiState => ({
@@ -30,12 +30,8 @@ export const createApiSlice: StateCreator<StoreSlice, [["zustand/immer", never]]
     }
 
     const api = new Api({
-      securityWorker: (): RequestParams => {
-        const token = get().token;
-        return { headers: { Authorization: token } };
-      },
+      baseUrl: baseUrl,
     });
-    api.baseUrl = baseUrl;
     set((draft) => {
       draft.api = api;
     });

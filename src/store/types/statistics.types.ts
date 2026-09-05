@@ -1,4 +1,4 @@
-import { EntityCategoriesCountResponse, EntityStatistics } from "../../api/generated_api";
+import { ControllerCategoryListResponse, ControllerStatistics } from "@/api/generated_api";
 
 export type Statistic = {
   id: number;
@@ -8,9 +8,9 @@ export type Statistic = {
 export type Statistics = Array<Statistic>;
 
 export function controllerCountsResponseToStatistic(
-  resp: EntityCategoriesCountResponse,
+  resp: ControllerCategoryListResponse,
 ): Array<Statistic> {
-  return resp.categories.map((c) => ({ id: c.id, count: c.count }));
+  return resp.categories.map((c) => ({ id: c.id, count: c.count ?? 0 }));
 }
 
 export type MonthlyStatistics = Array<{
@@ -19,10 +19,10 @@ export type MonthlyStatistics = Array<{
   categoryCount: Map<number, number>;
 }>;
 
-export const respToMonthlyStatistics = (resp: EntityStatistics): MonthlyStatistics => {
+export const respToMonthlyStatistics = (resp: ControllerStatistics): MonthlyStatistics => {
   return resp.statistics.map((s) => {
     const catMap = new Map<number, number>();
-    s.categories.forEach((c) => catMap.set(c.id, c.count));
+    s.categories.forEach((c) => catMap.set(c.categoryId, c.count));
 
     return {
       month: s.month,

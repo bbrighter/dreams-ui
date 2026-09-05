@@ -2,8 +2,6 @@ import AppBar from "@mui/material/AppBar";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Toolbar from "@mui/material/Toolbar";
 
-import { Authentication } from "./Authentication";
-
 export function Bar(props: {
   mainAction: React.ReactNode;
   secondaryAction?: Array<React.ReactNode>;
@@ -30,10 +28,7 @@ export function Bar(props: {
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {props.mainAction}
         {props.optionalMiddleAction}
-        <ButtonGroup variant="outlined">
-          {SecondaryActions}
-          {props.showAuth && <Authentication />}
-        </ButtonGroup>
+        <ButtonGroup variant="outlined">{SecondaryActions}</ButtonGroup>
       </Toolbar>
     </AppBar>
   );

@@ -1,4 +1,5 @@
-import { isLoggedIn } from "@/store/selectors";
+import { Temporal } from "@js-temporal/polyfill";
+
 import { useDreams } from "@/store/store";
 import { dreamsResponseToDreams } from "@/store/types";
 
@@ -6,8 +7,7 @@ export const dreamsService = {
   async getDreams() {
     const { setDreams, api } = useDreams.getState();
     if (!api) return;
-    const loggedIn = isLoggedIn();
-    const resp = loggedIn ? await api.dreams.privateList() : await api.dreams.dreamsList();
+    const resp = await api.dreams.dreamsList();
     if (!resp.ok) {
       console.error("error");
       return;
@@ -30,8 +30,11 @@ export const dreamsService = {
   async postDream(): Promise<number> {
     const { setDreams, dreams, api } = useDreams.getState();
     if (!api) return 0;
-    const date = new Date();
-    const resp = await api.dreams.dreamsCreate({ date: date.toISOString() });
+    const date = Temporal.Now.instant();
+    const resp = await api.dreams.dreamsCreate({
+      date: date.toString({ timeZone: "UTC" }),
+      description: "",
+    });
 
     if (!resp.ok) {
       console.error("error");
