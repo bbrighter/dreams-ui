@@ -421,22 +421,22 @@ export class Api<
         format: "json",
         ...params,
       }),
-  };
-  countCategories = {
+
     /**
      * @description Get count per category and person
      *
-     * @name CountCategoriesList
-     * @request GET:/count-categories
+     * @name WithCountList
+     * @request GET:/categories/with-count
      */
-    countCategoriesList: (params: RequestParams = {}) =>
+    withCountList: (params: RequestParams = {}) =>
       this.request<ControllerCategoryListResponse, any>({
-        path: `/count-categories`,
+        path: `/categories/with-count`,
         method: "GET",
         format: "json",
         ...params,
       }),
-
+  };
+  countCategories = {
     /**
      * @description Get count per month
      *
