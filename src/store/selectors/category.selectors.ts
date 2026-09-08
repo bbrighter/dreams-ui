@@ -20,16 +20,19 @@ export const selectCategory = (id: number): Category | undefined => {
 
 type CategoryCount = Category & { count: number };
 
-export const useStatistics = (type: CategoryType): Array<CategoryCount> => {
+export const useStatistics = (type: CategoryType, limit: number = 40): Array<CategoryCount> => {
   const categories = useDreams((state) => state.categories).filter((c) => c.type == type);
   const statistics = useDreams((state) => state.statistics);
 
   return useMemo(
     () =>
-      categories.map((c) => {
-        const count = statistics.find((s) => s.id == c.id)?.count ?? 0;
-        return { ...c, count: count };
-      }),
-    [categories, statistics],
+      categories
+        .map((c) => {
+          const count = statistics.find((s) => s.id == c.id)?.count ?? 0;
+          return { ...c, count: count };
+        })
+        .sort((a, b) => a.count - b.count)
+        .slice(0, limit),
+    [categories, statistics, limit],
   );
 };

@@ -8,11 +8,7 @@ export const statisticsService = {
   getStatistics: async () => {
     const { setStatistics, api } = useDreams.getState();
     if (!api) return;
-    // const loggedIn = selectLoggedIn(useDreams.getState())
-    // const resp = loggedIn
-    //   ? await api.private.statisticsList({ limit: STATISTICS_LIMITS })
-    //   : await api.statistics.statisticsList({ limit: STATISTICS_LIMITS })
-    const resp = await api.countCategories.countCategoriesList();
+    const resp = await api.categories.withCountList();
     if (!resp.ok) {
       console.error("error");
       return;
