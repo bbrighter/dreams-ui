@@ -1,0 +1,16 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Lint
+      run: pnpm lint
+    - name: Typescript
+      run: pnpm tsc
+    - name: Detect deadcode
+      run: pnpm knip
+    - name: Format
+      run: pnpm fmt:check
+
+pre-push:
+  jobs:
+    - name: Test
+      run: pnpm test:once
