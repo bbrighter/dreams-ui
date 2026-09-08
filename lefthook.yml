@@ -9,6 +9,10 @@ pre-commit:
       run: pnpm knip
     - name: Format
       run: pnpm fmt:check
+    - name: Dependencies
+      run: pnpm dependencies:ci
+    - name: Licenses
+      run: pnpm licenses:check
 
 pre-push:
   jobs:

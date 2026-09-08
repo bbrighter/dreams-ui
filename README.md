@@ -11,3 +11,7 @@ You can adapt the API URL via `public/config.json` with content like
   "apiUrl": "http://localhost:5000"
 }
 ```
+
+# License and copyright
+
+Licenses under MIT by Benjamin Heller, 2026
