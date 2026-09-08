@@ -3,7 +3,7 @@ import { http, HttpResponse } from "msw";
 import { ControllerCategoryListResponse, ControllerStatistics } from "@/api/generated_api";
 
 export const getCountCategoriesHandler = (resp: ControllerCategoryListResponse) =>
-  http.get("/count-categories", () => HttpResponse.json(resp));
+  http.get("/categories/with-count", () => HttpResponse.json(resp));
 
 //   categories: [
 //     { id: 1, count: 10 },
