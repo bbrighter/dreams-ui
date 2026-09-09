@@ -5,6 +5,7 @@ const config: KnipConfig = {
     "src/api/generated_api.ts", // Auto-generated api client
   ],
   ignoreBinaries: ["dot"],
+  ignoreDependencies: ["@lizenz/checker"],
 };
 
 export default config;
