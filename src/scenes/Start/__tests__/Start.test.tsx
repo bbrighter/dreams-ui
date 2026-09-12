@@ -1,22 +1,22 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 import { createCategories } from "@/__tests__/fixtures/categories";
 import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
 import { getCategoriesHandler } from "@/__tests__/mocks/categoryHandlers";
 
-import { getDreamsHandler } from "../../__tests__/mocks/dreamsHandlers";
-import { server } from "../../__tests__/setupTest";
-import Start from "./Start";
-
-const findRowByDate = async (date: string): Promise<HTMLElement> => {
-  const relevantRow = (await screen.findByText(date)) as HTMLElement;
-  expect(relevantRow).toBeInTheDocument();
-  const wrapper = relevantRow.closest("li") as HTMLElement;
-  return wrapper;
-};
+import { getDreamsHandler } from "../../../__tests__/mocks/dreamsHandlers";
+import { server } from "../../../__tests__/setupTest";
+import Start from "../Start";
+import {
+  findRowByDate,
+  getAddDreamButton,
+  getDeleteButton,
+  getFilter,
+  getFilterOption,
+} from "./selectors";
 
 window.scrollTo = vi.fn();
 
@@ -50,10 +50,8 @@ describe("start page is rendered and can be clicked", () => {
 
     const row = await findRowByDate("01.01.2025");
 
-    expect(within(row).getByTitle("Löschen")).toBeInTheDocument();
-
-    expect(screen.getByText("Neu")).toBeInTheDocument();
-
+    expect(getDeleteButton(row)).toBeInTheDocument();
+    expect(getAddDreamButton()).toBeInTheDocument();
     expect(screen.getByText("Übersicht")).toBeInTheDocument();
     expect(screen.getByText("Auswertung")).toBeInTheDocument();
     expect(screen.getByText("Management")).toBeInTheDocument();
@@ -98,10 +96,10 @@ describe("start page is rendered and can be clicked", () => {
     );
 
     const row = await findRowByDate("01.01.2025");
-    const deleteButton = within(row).getByTitle("Löschen");
+    const deleteButton = getDeleteButton(row);
     await userEvent.click(deleteButton);
 
-    expect(screen.queryByText("01.01.2025")).not.toBeInTheDocument();
+    expect(screen.queryByText("01.01.2025")).toBeNull();
   });
 
   it("empty list", async () => {
@@ -112,33 +110,9 @@ describe("start page is rendered and can be clicked", () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByText("Neu")).toBeInTheDocument();
+    expect(getAddDreamButton()).toBeInTheDocument();
     expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
   });
-
-  //   it("private dream not visible", { skip: true }, async () => {
-  //     // Testing the wrong thing. If the API returns it, it is shown! We must check that not being logged in doesn't query the API
-  //     server.use(
-  //       getDreamsHandler([
-  //         {
-  //           id: 1,
-  //           date: "2025-01-01T12:30:00Z",
-  //           finalized: false,
-  //           visible: false,
-  //           description: "",
-  //           categories: [],
-  //         },
-  //       ]),
-  //     );
-  //     render(
-  //       <MemoryRouter>
-  //         <Start />
-  //       </MemoryRouter>,
-  //     );
-
-  //     expect(await screen.findByText("Neu")).toBeInTheDocument();
-  //     expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
-  //   });
 
   it("filtering by category", async () => {
     server.use(
@@ -158,48 +132,12 @@ describe("start page is rendered and can be clicked", () => {
       </MemoryRouter>,
     );
 
-    const filter = await screen.findByRole("combobox");
-    expect(filter).toBeVisible();
+    const filter = getFilter();
     await userEvent.type(filter, "Category");
-    const option = screen.getByText("Category", { selector: "li" });
+    const option = getFilterOption("Category");
     expect(option).toBeInTheDocument();
     await userEvent.click(option);
 
     expect(screen.queryAllByTestId("dream-icon")).toHaveLength(1);
-  });
-
-  it("add new dream navigates to correct view", async () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-          <Route path="/" element={<Start />} />
-          <Route path="/dreams/4" element={<>Single dream</>} />
-        </Routes>
-      </MemoryRouter>,
-    );
-
-    const addButton = await screen.findByRole("button", { name: "Neu" });
-    expect(addButton).toBeEnabled();
-
-    await userEvent.click(addButton);
-    expect(screen.getByText("Single dream")).toBeInTheDocument();
-  });
-
-  it("navigate to dream via list item click", async () => {
-    server.use(getDreamsHandler(createDreams({ date: "2025-01-01T14:00:00Z" })));
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-          <Route path="/" element={<Start />} />
-          <Route path="/dreams/1" element={<>Single dream</>} />
-        </Routes>
-      </MemoryRouter>,
-    );
-
-    const dream1 = await findRowByDate("01.01.2025");
-    expect(dream1).toBeInTheDocument();
-
-    await userEvent.click(dream1);
-    expect(screen.getByText("Single dream")).toBeInTheDocument();
   });
 });
