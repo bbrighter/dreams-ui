@@ -1,24 +1,48 @@
+import { Temporal } from "@js-temporal/polyfill";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useMemo, useRef } from "react";
 
-import { dreamsService } from "@/services/dreams.service";
+import { Dream } from "@/store/types";
 
-import { useFilteredDreams } from "../../../store/selectors";
 import { DreamItem } from "./DreamItem";
 
-export const DreamList = () => {
-  const dreams = useFilteredDreams();
+type DreamListProps = {
+  dreams: Array<Dream>;
+  onClick: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
+};
+
+export const DreamList = ({ dreams, onClick, onDelete }: DreamListProps) => {
+  const parentRef = useRef<HTMLDivElement>(null);
   const sortedDreams = useMemo(
-    () => [...dreams].sort((a, b) => b.date.since(a.date).milliseconds),
+    () => [...dreams].sort((a, b) => Temporal.Instant.compare(b.date, a.date)),
     [dreams],
   );
 
-  const parentRef = useRef<HTMLDivElement>(null);
+  const SCROLL_POSITION_KEY = "start-scroll-position";
 
   useEffect(() => {
-    dreamsService.getDreams();
+    const savedPosition = sessionStorage.getItem(SCROLL_POSITION_KEY);
+
+    if (savedPosition !== null && parentRef.current !== null) {
+      parentRef.current.scrollTop = Number(savedPosition);
+    }
+
+    const handleScroll = () => {
+      if (parentRef.current) {
+        sessionStorage.setItem(SCROLL_POSITION_KEY, String(parentRef.current.scrollTop));
+      }
+    };
+
+    const element = parentRef.current;
+
+    element?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      element?.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // oxlint-disable-next-line react/incompatible-library
@@ -58,7 +82,7 @@ export const DreamList = () => {
                 transform: `translateY(${virtualItem.start}px)`,
               }}
             >
-              <DreamItem dream={dream} />
+              <DreamItem onClick={onClick} onDelete={onDelete} {...dream} />
             </Box>
           );
         })}

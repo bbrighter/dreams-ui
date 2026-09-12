@@ -7,9 +7,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Rating from "@mui/material/Rating";
-import { useNavigate } from "react-router-dom";
-
-import { dreamsService } from "@/services/dreams.service";
 
 const StyledListItem = styled(ListItem)`
   :hover {
@@ -18,30 +15,26 @@ const StyledListItem = styled(ListItem)`
   }
 `;
 
-type DreamListItemType = {
+type DreamListItemProps = {
   id: number;
   date: Temporal.Instant;
   finalized: boolean;
   rating: number | null;
+  onClick: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
 };
 
-export function DreamItem(props: { dream: DreamListItemType }) {
-  const navigate = useNavigate();
-
-  const navigateTo = (dreamId: number) => {
-    navigate("/dreams/" + dreamId);
-  };
-
-  const color = props.dream.finalized ? "inherit" : "warning";
+export function DreamItem({ id, date, finalized, rating, onClick, onDelete }: DreamListItemProps) {
+  const color = finalized ? "inherit" : "warning";
 
   return (
     <StyledListItem
-      onClick={() => navigateTo(props.dream.id)}
+      onClick={() => onClick(id)}
       secondaryAction={
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
-            dreamsService.deleteDream(props.dream.id);
+            onDelete(id);
           }}
           title="Löschen"
         >
@@ -53,18 +46,12 @@ export function DreamItem(props: { dream: DreamListItemType }) {
         <CloudIcon color={color} />
       </ListItemAvatar>
       <ListItemText>
-        {props.dream.date
+        {date
           .toZonedDateTimeISO(Temporal.Now.timeZoneId())
           .toPlainDate()
           .toLocaleString("de-DE", { dateStyle: "medium" })}
       </ListItemText>
-      <Rating
-        title="Bewertung"
-        value={props.dream.rating}
-        readOnly
-        size="small"
-        sx={{ pr: 2, pl: 2 }}
-      />
+      <Rating title="Bewertung" value={rating} readOnly size="small" sx={{ pr: 2, pl: 2 }} />
     </StyledListItem>
   );
 }
