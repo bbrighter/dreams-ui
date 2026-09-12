@@ -24,18 +24,7 @@ export const CategoryFilter = ({ options, onFilterChange }: CategoryFilterProps)
       getOptionKey={(v) => v.id}
       groupBy={(v) => v.displayType}
       onChange={(_e, v) => onFilterChange(v?.id ?? null)}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Filtere Kategorien..."
-          slotProps={{
-            input: {
-              ...params.InputProps,
-              type: "search",
-            },
-          }}
-        />
-      )}
+      renderInput={(params) => <TextField {...params} label="Filtere Kategorien..." />}
     />
   );
 };
