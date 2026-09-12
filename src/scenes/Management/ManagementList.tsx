@@ -141,9 +141,7 @@ const CustomStack: React.FC<React.PropsWithChildren<CustomStackProps>> = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      sx={{ width: "100%" }}
+      sx={{ width: "100%", alignItems: "center", justifyContent: "space-between" }}
       {...stackProps}
     >
       {left}
