@@ -9,7 +9,7 @@ import { statisticsService } from "@/services/statistics.service";
 
 import { useStatistics } from "../../store/selectors";
 import { Navigation } from "../Components";
-import ManagementList from "./ManagementList";
+import ManagementList from "./ManagementList/ManagementList";
 
 export default function Management() {
   const personStatistics = useStatistics("person");
