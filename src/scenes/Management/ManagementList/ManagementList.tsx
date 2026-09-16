@@ -15,7 +15,7 @@ import React from "react";
 
 import { categoriesService } from "@/services/categories.service";
 
-import { usePersons, useTags } from "../../store/selectors";
+import { usePersons, useTags } from "../../../store/selectors";
 
 export default function ManagementList(props: {
   listItems: Array<{ id: number; name: string; count?: number }>;

@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
@@ -10,7 +10,13 @@ import { getCountCategoriesHandler } from "@/__tests__/mocks/statisticsHandler";
 import { getCategoriesHandler } from "../../../__tests__/mocks/categoryHandlers";
 import { server } from "../../../__tests__/setupTest";
 import Management from "../Management";
-import { clickEditButton, findDeleteButton, getRowByText } from "./utils";
+import {
+  getConfirmButton,
+  getDeleteButton,
+  getMergeButton,
+  getRenameButton,
+  selectOption,
+} from "./helpers";
 
 describe("Management is rendered", () => {
   const cat = { id: 1, name: "Category", type: "category" };
@@ -32,39 +38,34 @@ describe("Management is rendered", () => {
       </MemoryRouter>,
     );
 
-    const categoryTab = await screen.findByText("Kategorien");
-    const personTab = screen.getByText("Personen");
-
-    const categoryRow = getRowByText("Category");
+    const categoryRow = (await screen.findByText("Category")).closest("li")!;
     expect(within(categoryRow).getByText(10)).toBeInTheDocument();
     expect(screen.queryAllByText("Person")).toHaveLength(0);
 
+    const personTab = screen.getByRole("tab", { name: "Personen" });
     await userEvent.click(personTab);
 
-    const personRow = getRowByText("Person");
+    const personRow = screen.getByText("Person").closest("li")!;
     expect(within(personRow).getByText(3)).toBeInTheDocument();
     expect(screen.queryAllByAltText("Category")).toHaveLength(0);
 
+    const categoryTab = screen.getByRole("tab", { name: "Kategorien" });
     await userEvent.click(categoryTab);
     expect(screen.getByText("Category")).toBeInTheDocument();
     expect(screen.queryAllByText("Person")).toHaveLength(0);
   });
 
   it("renaming works", async () => {
-    server.use(getCategoriesHandler(createCategories([cat, person])));
+    server.use(getCategoriesHandler(createCategories([cat])));
     render(
       <MemoryRouter>
         <Management />
       </MemoryRouter>,
     );
 
-    await clickEditButton("Category");
+    const renameButton = await waitFor(() => getRenameButton());
+    await userEvent.click(renameButton);
 
-    expect(screen.queryByTitle("Bearbeiten")).not.toBeInTheDocument();
-    const cancelButton = screen.getByTitle("Abbrechen");
-
-    await userEvent.click(cancelButton);
-    await clickEditButton("Category");
     const input = screen.getByDisplayValue("Category");
     await userEvent.clear(input);
     await userEvent.type(input, "New category");
@@ -73,14 +74,14 @@ describe("Management is rendered", () => {
     expect(screen.getByText("New category")).toBeInTheDocument();
   });
 
-  it("deleting is disabled", async () => {
-    const cat2 = { id: 2, name: "Category 2", type: "category" };
+  it("Merging works", async () => {
+    const cat2 = { id: 20, name: "Other category", type: "category" };
     server.use(
       getCategoriesHandler(createCategories([cat, cat2])),
       getCountCategoriesHandler(
         createCategoriesCount([
-          { ...cat, count: 0 },
-          { ...cat2, count: 10 },
+          { ...cat, count: 10 },
+          { ...cat2, count: 5 },
         ]),
       ),
     );
@@ -90,32 +91,40 @@ describe("Management is rendered", () => {
       </MemoryRouter>,
     );
 
-    const disabledDeleteButton = await findDeleteButton("Category 2");
-    expect(disabledDeleteButton).toBeDisabled();
+    const row = (await screen.findByText("Category")).closest("li")!;
+    const mergeButton = getMergeButton(row);
+    await userEvent.click(mergeButton);
 
-    const deleteButton = await findDeleteButton("Category");
-    await userEvent.click(deleteButton);
+    await selectOption("Other category");
 
-    expect(screen.getByTitle("Abbrechen")).toBeInTheDocument();
-    const confirmButton = screen.getByTitle("Bestätigen");
+    const confirmButton = getConfirmButton();
     await userEvent.click(confirmButton);
 
-    expect(screen.queryByText("Category")).not.toBeInTheDocument();
+    const rows = screen.getAllByRole("listitem");
+    expect(rows).toHaveLength(1);
+    expect(screen.queryByText("Other category")).toBeNull();
+    screen.getByText("Category");
+    screen.getByText("15");
   });
 
-  it("merging works", { skip: true }, async () => {
+  it("Deleting works", async () => {
+    server.use(
+      getCategoriesHandler(createCategories([cat])),
+      getCountCategoriesHandler(createCategoriesCount([{ ...cat, count: 0 }])),
+    );
+
     render(
       <MemoryRouter>
         <Management />
       </MemoryRouter>,
     );
 
-    const mergeButton = await screen.findByTitle("Merge");
-    await userEvent.click(mergeButton);
-
-    expect(screen.getByTitle("Abbrechen")).toBeInTheDocument();
-    const confirmButton = screen.getByTitle("Bestätigen");
+    const deleteButton = await waitFor(() => getDeleteButton());
+    await userEvent.click(deleteButton);
+    const confirmButton = getConfirmButton();
     await userEvent.click(confirmButton);
-    // TODO: Select and merge
+
+    const entries = screen.queryAllByRole("listitem");
+    expect(entries).toHaveLength(0);
   });
 });
