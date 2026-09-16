@@ -74,7 +74,7 @@ describe("Management is rendered", () => {
     expect(screen.getByText("New category")).toBeInTheDocument();
   });
 
-  it("merging works", async () => {
+  it("Merging works", async () => {
     const cat2 = { id: 20, name: "Other category", type: "category" };
     server.use(
       getCategoriesHandler(createCategories([cat, cat2])),
@@ -103,6 +103,8 @@ describe("Management is rendered", () => {
     const rows = screen.getAllByRole("listitem");
     expect(rows).toHaveLength(1);
     expect(screen.queryByText("Other category")).toBeNull();
+    screen.getByText("Category");
+    screen.getByText("15");
   });
 
   it("Deleting works", async () => {

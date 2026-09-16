@@ -57,7 +57,7 @@ export const categoriesService = {
   },
 
   async merge(sourceId: number, targetId: number, newName: string) {
-    const { setCategories, api, categories } = useDreams.getState();
+    const { setCategories, setStatistics, api, categories, statistics } = useDreams.getState();
     if (!api) return;
     const resp = await api.categories.mergeCreate({
       sourceCategoryId: sourceId,
@@ -76,5 +76,14 @@ export const categoriesService = {
       .filter((c) => c.id != sourceId);
 
     setCategories(newCategories);
+
+    const newStatistics = statistics
+      .map((c) => {
+        return c.id == targetId
+          ? { ...c, count: c.count + (statistics.find((s) => s.id == sourceId)?.count ?? 0) }
+          : c;
+      })
+      .filter((c) => c.id != sourceId);
+    setStatistics(newStatistics);
   },
 };
