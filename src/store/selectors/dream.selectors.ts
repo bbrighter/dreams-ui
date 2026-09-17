@@ -12,7 +12,7 @@ export const dreamIdStr = (): string => {
 export const useIsSaved = (): boolean => {
   const dream = useDreams((state) => state.dream);
   const hash = useDreams((state) => state.hash);
-  return hash == hashDream(dream);
+  return hash === hashDream(dream);
 };
 
 export const useDreamCategories = (): { categories: Categories; persons: Categories } => {
@@ -21,11 +21,11 @@ export const useDreamCategories = (): { categories: Categories; persons: Categor
   return useMemo(() => {
     return dreamCategories.reduce(
       (prev, curr) => {
-        const cat = categories.find((c) => c.id == curr);
+        const cat = categories.find((c) => c.id === curr);
         if (!cat) {
           return { categories: prev.categories, persons: prev.persons };
         }
-        if (cat.type == "person") {
+        if (cat.type === "person") {
           return { categories: prev.categories, persons: [...prev.persons, cat] };
         } else {
           return { categories: [...prev.categories, cat], persons: prev.persons };

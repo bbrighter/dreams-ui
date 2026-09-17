@@ -13,7 +13,7 @@ export const useWordCloud = (type: string, limit: number = 40) => {
           const count = statistics.find((s) => s.id === c.id)?.count ?? 0;
           return { ...c, count: count };
         })
-        .sort((a, b) => b.count - a.count)
+        .toSorted((a, b) => b.count - a.count)
         .slice(0, limit),
     [categories, statistics, limit],
   );

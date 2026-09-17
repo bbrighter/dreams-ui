@@ -69,7 +69,7 @@ export const dreamService = {
       return;
     }
 
-    setDreamCategories(dream.categories.filter((c) => c != catId));
+    setDreamCategories(dream.categories.filter((c) => c !== catId));
   },
 
   finalize: async () => {

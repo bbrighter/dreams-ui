@@ -25,7 +25,7 @@ export const Header = ({
   return (
     <Bar
       mainAction={<NavigateBackButton navigateBack={navigateHome} />}
-      secondaryAction={[<SaveButton key={1} onSave={onSave} isSaved={isSaved} />]}
+      secondaryAction={[{ key: "save", action: <SaveButton onSave={onSave} isSaved={isSaved} /> }]}
       optionalMiddleAction={<DateInput date={date} onChangeDate={onChangeDate} />}
       position="top"
       showAuth

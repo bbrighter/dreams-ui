@@ -29,7 +29,7 @@ export const createCategoriesSlice: StateCreator<
   },
 
   renameCategory: (id: number, newName: string) => {
-    const categoryIndex = get().categories.findIndex((c) => c.id == id);
+    const categoryIndex = get().categories.findIndex((c) => c.id === id);
     if (categoryIndex < 0) return;
     set((draft: CategoryState) => {
       draft.categories[categoryIndex].name = newName;
@@ -37,7 +37,7 @@ export const createCategoriesSlice: StateCreator<
   },
 
   setCategoryType: (id: number, type: CategoryType) => {
-    const categoryIndex = get().categories.findIndex((c) => c.id == id);
+    const categoryIndex = get().categories.findIndex((c) => c.id === id);
     if (categoryIndex < 0) return;
     set((draft: CategoryState) => {
       draft.categories[categoryIndex].type = type;

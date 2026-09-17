@@ -35,7 +35,7 @@ export default function Edit() {
       return;
     }
     dreamService.getDream(numericId).catch((err) => {
-      if (err.status == 404) {
+      if (err.status === 404) {
         navigate("/");
         return;
       }

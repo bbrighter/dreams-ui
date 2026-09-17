@@ -9,7 +9,7 @@ export type DreamRatingProps = {
 export default function DreamRating({ rating, setRating, onSave }: DreamRatingProps) {
   const onChange = (_: React.SyntheticEvent, v: number | null) => {
     console.log("MUI rating value:", v);
-    if (v != null) {
+    if (v !== null) {
       setRating(v);
       onSave();
     }

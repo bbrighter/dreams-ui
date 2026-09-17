@@ -24,7 +24,7 @@ export const dreamsService = {
       console.error("error");
       return;
     }
-    setDreams(dreams.filter((d) => d.id != dreamId));
+    setDreams(dreams.filter((d) => d.id !== dreamId));
   },
 
   async postDream(): Promise<number> {

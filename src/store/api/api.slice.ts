@@ -18,7 +18,7 @@ export const createApiSlice: StateCreator<StoreSlice, [["zustand/immer", never]]
 
     let baseUrl: string;
 
-    if (import.meta.env.DEV && import.meta.env.MODE == "test") {
+    if (import.meta.env.DEV && import.meta.env.MODE === "test") {
       baseUrl = "";
     } else if (import.meta.env.DEV) {
       baseUrl = "http://localhost:5000";

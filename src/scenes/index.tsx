@@ -38,11 +38,12 @@ const rawRoutes: Array<RawRoute> = [
   { path: "management", element: Management, name: "Management" },
 ];
 
-const routes: Array<Route> = rawRoutes.map((v) => ({
-  ...v,
-  element: withSuspense(v.element),
-  errorElement: <ErrorBoundary />,
-}));
+const routes: Array<Route> = rawRoutes.map((v) =>
+  Object.assign(v, {
+    element: withSuspense(v.element),
+    errorElement: <ErrorBoundary />,
+  }),
+);
 
 export default createBrowserRouter(routes, {
   basename: "/dreams",

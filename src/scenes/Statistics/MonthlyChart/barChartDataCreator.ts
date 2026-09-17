@@ -4,7 +4,7 @@ export const createSeries = (
   selectedId: number,
 ) => {
   const series = [{ dataKey: "selected", label: label, stack: "all", color: "#0b22f7" }];
-  if (categories.some((d) => d.id == selectedId)) {
+  if (categories.some((d) => d.id === selectedId)) {
     series.push({ dataKey: "unselected", label: "Sonstige", stack: "all", color: "#9c9c9c" });
   }
   return series;

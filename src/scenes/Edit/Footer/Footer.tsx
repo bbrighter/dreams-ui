@@ -28,12 +28,17 @@ export const EditFooter = ({
     <Bar
       mainAction={<DreamRating rating={rating} setRating={setRating} onSave={onSave} />}
       secondaryAction={[
-        <FinalizeButton
-          key="finalize"
-          finalize={finalize}
-          isFinalized={isFinalized}
-          isRated={isRated}
-        />,
+        {
+          key: "finalize",
+          action: (
+            <FinalizeButton
+              key="finalize"
+              finalize={finalize}
+              isFinalized={isFinalized}
+              isRated={isRated}
+            />
+          ),
+        },
       ]}
       position="bottom"
       optionalMiddleAction={

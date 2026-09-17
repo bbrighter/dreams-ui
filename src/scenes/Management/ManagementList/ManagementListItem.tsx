@@ -53,7 +53,7 @@ export const ManagementListItem = ({
 
   return (
     <ListItem>
-      {mode == "default" && (
+      {mode === "default" && (
         <DefaultMode
           count={count}
           name={name}
@@ -62,7 +62,7 @@ export const ManagementListItem = ({
           setMergeMode={setMergeMode}
         />
       )}
-      {mode == "edit" && (
+      {mode === "edit" && (
         <EditMode
           name={editName}
           onCancel={setDefaultMode}
@@ -70,10 +70,10 @@ export const ManagementListItem = ({
           onConfirm={saveEditChange}
         />
       )}
-      {mode == "delete" && (
+      {mode === "delete" && (
         <DeleteMode name={name} onCancel={setDefaultMode} onDelete={saveDelete} />
       )}
-      {mode == "merge" && (
+      {mode === "merge" && (
         <MergeMode
           value={mergeValue}
           persons={persons}
