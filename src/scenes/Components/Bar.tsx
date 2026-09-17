@@ -2,19 +2,24 @@ import AppBar from "@mui/material/AppBar";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Toolbar from "@mui/material/Toolbar";
 
+type SecondaryActionProp = {
+  key: string;
+  action: React.ReactNode;
+};
+
 export function Bar(props: {
   mainAction: React.ReactNode;
-  secondaryAction?: Array<React.ReactNode>;
+  secondaryAction?: Array<SecondaryActionProp>;
   optionalMiddleAction?: React.ReactNode;
   position: "top" | "bottom";
   showAuth?: boolean;
 }) {
   let SecondaryActions = [<div key={0}></div>] as Array<React.ReactNode>;
   if (props.secondaryAction) {
-    SecondaryActions = props.secondaryAction.map((v, i) => <div key={i}>{v}</div>);
+    SecondaryActions = props.secondaryAction.map((v) => <div key={v.key}>{v.action}</div>);
   }
 
-  const isTop = props.position == "top";
+  const isTop = props.position === "top";
 
   return (
     <AppBar

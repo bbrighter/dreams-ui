@@ -7,7 +7,7 @@ export const useFilteredDreams = () => {
   const catId = useDreams((state) => state.dreamCategoryFilter);
 
   return useMemo(() => {
-    if (catId == null) return dreams;
+    if (catId === null) return dreams;
 
     return dreams.filter((d) => d.categories?.includes(catId));
   }, [dreams, catId]);

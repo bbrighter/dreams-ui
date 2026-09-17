@@ -20,7 +20,7 @@ import { usePersons, useTags } from "../../../store/selectors";
 export default function ManagementList(props: {
   listItems: Array<{ id: number; name: string; count?: number }>;
 }) {
-  const sortedItems = [...props.listItems].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedItems = props.listItems.toSorted((a, b) => a.name.localeCompare(b.name));
 
   return (
     <List>
@@ -59,7 +59,7 @@ function ManagementListItem(props: { listItem: { id: number; name: string; count
 
   return (
     <ListItem>
-      {mode == "default" && (
+      {mode === "default" && (
         <CustomStack>
           <ListItemText primary={props.listItem.name} secondary={count} />
           <IconButton onClick={() => setMode("edit")} title="Umbenennen">
@@ -73,7 +73,7 @@ function ManagementListItem(props: { listItem: { id: number; name: string; count
           </IconButton>
         </CustomStack>
       )}
-      {mode == "edit" && (
+      {mode === "edit" && (
         <CustomStack>
           <TextField value={name} onChange={(e) => setName(e.target.value)}></TextField>
           <IconButton title="Bestätigen" onClick={onConfirmRename}>
@@ -84,7 +84,7 @@ function ManagementListItem(props: { listItem: { id: number; name: string; count
           </IconButton>
         </CustomStack>
       )}
-      {mode == "delete" && (
+      {mode === "delete" && (
         <CustomStack>
           <ListItemText primary="Wirklich löschen?" secondary={props.listItem.name} />
           <IconButton title="Bestätigen" onClick={onConfirmDelete}>
@@ -95,7 +95,7 @@ function ManagementListItem(props: { listItem: { id: number; name: string; count
           </IconButton>
         </CustomStack>
       )}
-      {mode == "merge" && (
+      {mode === "merge" && (
         <CustomStack>
           <Select
             value={mergeValue}

@@ -20,12 +20,7 @@ export const TagInputs = ({
   onAddExisting,
   onRemove,
 }: TagInputProps) => {
-  const pickableOptions = options.filter((o) => !values.some((v) => v.id == o.id));
-  //   const options = allOptions
-
-  const getValue = (option: Tag | string): string => {
-    return typeof option == "string" ? option : option.name;
-  };
+  const pickableOptions = options.filter((o) => !values.some((v) => v.id === o.id));
 
   const onChange = (
     _: React.SyntheticEvent,
@@ -65,4 +60,8 @@ export const TagInputs = ({
       renderInput={(params) => <TextField {...params} label={label} />}
     />
   );
+};
+
+const getValue = (option: Tag | string): string => {
+  return typeof option === "string" ? option : option.name;
 };

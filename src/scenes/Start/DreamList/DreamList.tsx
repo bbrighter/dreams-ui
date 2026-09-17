@@ -17,7 +17,7 @@ type DreamListProps = {
 export const DreamList = ({ dreams, onClick, onDelete }: DreamListProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const sortedDreams = useMemo(
-    () => [...dreams].sort((a, b) => Temporal.Instant.compare(b.date, a.date)),
+    () => dreams.toSorted((a, b) => Temporal.Instant.compare(b.date, a.date)),
     [dreams],
   );
 

@@ -19,7 +19,7 @@ export const getCategoryInput = (): HTMLElement => {
 
 export const getStarButton = (stars: number): HTMLElement => {
   const ratingBar = screen.getByTitle("Bewertung");
-  const labelText = stars == 1 ? "1 Star" : `${stars} Stars`;
+  const labelText = stars === 1 ? "1 Star" : `${stars} Stars`;
   return within(ratingBar).getByLabelText(labelText)!;
 };
 

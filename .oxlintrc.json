@@ -5,9 +5,14 @@
     "typeAware": false
   },
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
   },
-  "rules": {},
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "eqeqeq": "error"
+  },
   "env": {
     "builtin": true
   }

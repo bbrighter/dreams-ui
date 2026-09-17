@@ -9,11 +9,11 @@ type CategoryFilterProps = {
 
 export const CategoryFilter = ({ options, onFilterChange }: CategoryFilterProps) => {
   const sortedCategories = useMemo(() => {
-    const niceNames = [...options].map((c) => ({
+    const niceNames = options.map((c) => ({
       ...c,
-      displayType: c.type == "category" ? "Kategorie" : "Person",
+      displayType: c.type === "category" ? "Kategorie" : "Person",
     }));
-    return niceNames.sort((a, b) => a.displayType.localeCompare(b.displayType));
+    return niceNames.toSorted((a, b) => a.displayType.localeCompare(b.displayType));
   }, [options]);
 
   return (

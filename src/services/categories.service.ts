@@ -39,14 +39,14 @@ export const categoriesService = {
     const resp = await api.categories.deleteCategories(id.toString());
     if (!resp.ok) return;
 
-    setCategories(categories.filter((c) => c.id != id));
+    setCategories(categories.filter((c) => c.id !== id));
   },
 
   async changeType(id: number) {
     const { setCategoryType: changeCategoryType, api } = useDreams.getState();
     if (!api) return;
 
-    const invertedType = selectCategory(id)?.type == "category" ? "person" : "category";
+    const invertedType = selectCategory(id)?.type === "category" ? "person" : "category";
 
     const resp = await api.categories.idTypePartialUpdate(id.toString(), { type: invertedType });
     if (!resp.ok) {
@@ -70,20 +70,22 @@ export const categoriesService = {
     }
 
     const newCategories = categories
+      // oxlint-disable-next-line oxc/no-map-spread : c is not mutable
       .map((c) => {
-        return c.id == targetId ? { ...c, name: newName } : c;
+        return c.id === targetId ? { ...c, name: newName } : c;
       })
-      .filter((c) => c.id != sourceId);
+      .filter((c) => c.id !== sourceId);
 
     setCategories(newCategories);
 
     const newStatistics = statistics
+      // oxlint-disable-next-line oxc/no-map-spread : c is not mutable
       .map((c) => {
-        return c.id == targetId
-          ? { ...c, count: c.count + (statistics.find((s) => s.id == sourceId)?.count ?? 0) }
+        return c.id === targetId
+          ? { ...c, count: c.count + (statistics.find((s) => s.id === sourceId)?.count ?? 0) }
           : c;
       })
-      .filter((c) => c.id != sourceId);
+      .filter((c) => c.id !== sourceId);
     setStatistics(newStatistics);
   },
 };
