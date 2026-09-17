@@ -1,13 +1,10 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-import { CategoryType } from "../../../store/types/categories.types";
-
 export default function SelectData(props: {
   options: Array<{ id: number; name: string }>;
   value: number;
   onChange: (value: number) => void;
-  type: CategoryType;
 }) {
   const options = props.options.slice().sort((a, b) => a.name.trim().localeCompare(b.name.trim()));
 

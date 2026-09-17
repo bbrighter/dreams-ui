@@ -6,6 +6,10 @@
   },
   "categories": {
     "correctness": "error"
+    // "suspicious": "warn"
+    // "perf": "warn",
+    // "pedantic": "warn",
+    // "style": "warn"
   },
   "rules": {},
   "env": {
