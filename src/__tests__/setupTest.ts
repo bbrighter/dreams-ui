@@ -9,7 +9,7 @@ import handlers from "./mocks/handlers";
 export const server = setupServer(...handlers);
 
 beforeAll(() => {
-  server.listen({ onUnhandledRequest: "warn" });
+  server.listen({ onUnhandledFrame: "warn" });
 });
 beforeEach(async () => {
   const store = useDreams.getState();

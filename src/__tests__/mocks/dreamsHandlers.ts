@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 
 import { ControllerDreamListResponse, ControllerDreamResponse } from "@/api/generated_api";
 
