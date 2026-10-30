@@ -4,20 +4,30 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 import { createCategories } from "@/__tests__/fixtures/categories";
-import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
+import { createDream, createDreams, createRecording } from "@/__tests__/fixtures/dreams";
 import { getCategoriesHandler } from "@/__tests__/mocks/categoryHandlers";
-import { getDreamHandler, getDreamsHandler } from "@/__tests__/mocks/dreamsHandlers";
+import {
+  getDreamHandler,
+  getDreamsHandler,
+  postRecordingHandler,
+  postTranscriptionHandler,
+} from "@/__tests__/mocks/dreamsHandlers";
 import { server } from "@/__tests__/setupTest";
+import { EntitiesRecordingState } from "@/api/generated_api";
 
 import Edit from "../Edit";
+import { MediaRecorderMock } from "./MediaRecorderMock";
 import {
+  clickRecordingButton,
   getCategoryInput,
+  queryDeleteRecordingButton,
   getDescriptionInput,
   getFinalizeButton,
   getHeaderBar,
   getPersonInput,
   getSaveButton,
   getStarButton,
+  getTranscribeButton,
 } from "./utils";
 
 const rendering = () =>
@@ -184,38 +194,59 @@ describe("viewing and editing a single dream", () => {
     expect(finalizeButton).toBeDisabled();
   });
 
-  // it('recording button works', async () => {
-  //     vi.mock(import('react-speech-recognition'), async (importOriginal) => {
-  //         const actual = await importOriginal()
-  //         return {
-  //             ...actual,
-  //             useSpeechRecognition: vi.fn(() => ({
-  //                 transcript: '',
-  //                 finalTranscript: '',
-  //                 listening: false,
-  //                 resetTranscript: vi.fn(),
-  //                 browserSupportsSpeechRecognition: true,
-  //                 isMicrophoneAvailable: true,
-  //             } as SpeechRecognitionOptions)),
-  //         }
-  //     })
+  it("Record and delete recording", async () => {
+    vi.stubGlobal("MediaRecorder", MediaRecorderMock);
 
-  //     render(
-  //         <MemoryRouter initialEntries={['/dreams/1']}>
-  //             <Routes>
-  //                 <Route path="/dreams/:id" element={<Edit />} />
-  //             </Routes>
-  //         </MemoryRouter>)
+    const mockStream = {
+      getTracks: () => [{ stop: vi.fn() }],
+    } as unknown as MediaStream;
 
-  //     const recordButton = await screen.findByTitle('Aufnehmen')
-  //     expect(recordButton.getAttribute('class')).match(/MuiFab-primary/)
-  //     await userEvent.click(recordButton)
-  //     // The following fails for whatever reason, probably because of the mocked react-speech-recognition
-  //     // await waitFor(() => {
-  //     //     const recordButtonWarn = screen.getByTitle('Aufnehmen')
-  //     //     expect(recordButtonWarn.getAttribute('class')).match(/MuiFab-warning/)
-  //     // })
-  // })
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue(mockStream),
+      },
+    });
+
+    server.use(getDreamHandler(createDream()), postRecordingHandler());
+    rendering();
+
+    await clickRecordingButton();
+    await clickRecordingButton();
+
+    const deleteRecordingButton = queryDeleteRecordingButton()!;
+    getTranscribeButton();
+    await userEvent.click(deleteRecordingButton);
+
+    expect(queryDeleteRecordingButton()).toBeNull();
+  });
+
+  it("Transcription transcribes, opens modal and saving writes it into the dream", async () => {
+    server.use(
+      getDreamHandler(
+        createDream({
+          recording: createRecording({
+            transcript: "",
+            recordingState: EntitiesRecordingState.RecordingStateStored,
+          }),
+        }),
+      ),
+      postTranscriptionHandler({ transcript: "Here is a text" }),
+    );
+    rendering();
+
+    const transcriptionButton = await waitFor(() => getTranscribeButton());
+    await userEvent.click(transcriptionButton);
+
+    const modal = screen.getByRole("dialog");
+    expect(modal).toHaveTextContent("Here is a text");
+
+    const saveButton = within(modal).getByRole("button", { name: "Speichern" });
+    await userEvent.click(saveButton);
+    expect(modal).not.toBeVisible();
+
+    expect(screen.getByRole("textbox")).toHaveTextContent("Here is a text");
+  });
 
   it("set stars", async () => {
     server.use(getDreamHandler(createDream()));

@@ -1,8 +1,8 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { StateCreator } from "zustand";
 
-import { DreamSlice, DreamState, StoreSlice } from "../interface";
-import { Dream, hashDream } from "../types";
+import { DreamSlice, DreamState, StoreSlice } from "./interface";
+import { Dream, hashDream } from "./types";
 
 const createInitialState = (): DreamState => ({
   dream: {
@@ -12,6 +12,7 @@ const createInitialState = (): DreamState => ({
     id: 0,
     categories: [],
     rating: null,
+    recordingId: null,
   },
   hash: "",
 });
@@ -58,6 +59,12 @@ export const createDreamSlice: StateCreator<
   setHash: (dream: Dream) => {
     set((draft: DreamState) => {
       draft.hash = hashDream(dream);
+    });
+  },
+
+  updateDream: (upd: Partial<Dream>) => {
+    set((draft: DreamState) => {
+      Object.assign(draft.dream, upd);
     });
   },
 });

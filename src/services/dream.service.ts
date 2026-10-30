@@ -1,11 +1,15 @@
+import { MIME_TYPE } from "@/constants";
 import { dreamIdStr } from "@/store/selectors";
 import { useDreams } from "@/store/store";
 import { dreamResponseToDream } from "@/store/types";
 import { CategoryType } from "@/store/types/categories.types";
+import { respToRecording } from "@/store/types/recording.types";
+
+import { getApiErrorMessage } from "./error";
 
 export const dreamService = {
   getDream: async (id: number) => {
-    const { api, setDream, setHash } = useDreams.getState();
+    const { api, setDream, setHash, setRecording } = useDreams.getState();
     if (!api) return;
     const resp = await api.dreams.dreamsDetail(id.toString());
     if (!resp.ok) {
@@ -13,6 +17,7 @@ export const dreamService = {
     }
     const dream = dreamResponseToDream(resp.data);
     setDream(dream);
+    setRecording(respToRecording(resp.data.recording));
     setHash(dream);
   },
 
@@ -81,5 +86,50 @@ export const dreamService = {
       return;
     }
     setFinalized();
+  },
+
+  startTranscription: async () => {
+    const { api, setRecording } = useDreams.getState();
+    if (!api) return;
+
+    try {
+      const resp = await api.dreams.transcribeCreate(dreamIdStr());
+      setRecording(respToRecording(resp.data));
+    } catch (err: unknown) {
+      const message = getApiErrorMessage(err);
+      throw new Error(message, { cause: err });
+    }
+  },
+
+  updateDescription: async (description: string) => {
+    const { api, setDescription } = useDreams.getState();
+    if (!api) return;
+
+    const resp = await api.dreams.dreamsPartialUpdate(dreamIdStr(), {
+      description: description,
+    });
+    if (!resp.ok) {
+      console.error("error");
+      return;
+    }
+    setDescription(description);
+  },
+
+  postRecording: async (blob: Blob) => {
+    const { api, setRecording, updateDream } = useDreams.getState();
+    if (!api) return;
+
+    const file = new File([blob], "file", { type: MIME_TYPE });
+
+    const resp = await api.dreams.recordingCreate(dreamIdStr(), { file: file });
+    if (!resp.ok) {
+      console.error("error");
+      return;
+    }
+
+    const rec = respToRecording(resp.data);
+    setRecording(rec);
+
+    updateDream({ recordingId: rec?.id });
   },
 };

@@ -1,11 +1,17 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createCategories } from "@/__tests__/fixtures/categories";
-import { createDream, createDreams } from "@/__tests__/fixtures/dreams";
+import { createDream, createDreams, createRecording } from "@/__tests__/fixtures/dreams";
 import { getCategoriesHandler } from "@/__tests__/mocks/categoryHandlers";
-import { getDreamHandler, getDreamsHandler } from "@/__tests__/mocks/dreamsHandlers";
+import {
+  getDreamHandler,
+  getDreamsHandler,
+  postRecordingHandler,
+  postTranscriptionHandler,
+} from "@/__tests__/mocks/dreamsHandlers";
 import { server } from "@/__tests__/setupTest";
+import { EntitiesRecordingState, EntitiesTranscriptionState } from "@/api/generated_api";
 import { useDreams } from "@/store/store";
 
 import { categoriesService } from "../categories.service";
@@ -13,7 +19,7 @@ import { dreamService } from "../dream.service";
 import { dreamsService } from "../dreams.service";
 describe("dream service", () => {
   describe("get dream", () => {
-    it("not logged in", async () => {
+    it("get dream without recording", async () => {
       server.use(getDreamHandler(createDream({ id: 1 })));
       const { api } = useDreams.getState();
       const dreamsDetail = vi.spyOn(api!.dreams, "dreamsDetail");
@@ -21,7 +27,20 @@ describe("dream service", () => {
 
       const { dream } = useDreams.getState();
       expect(dream.id).toBe(1);
+      expect(dream.recordingId).toBeNull();
       expect(dreamsDetail).toHaveBeenCalled();
+    });
+
+    it("get dream with recording", async () => {
+      server.use(getDreamHandler(createDream({ id: 1, recording: createRecording({ id: 2 }) })));
+      await dreamService.getDream(1);
+
+      const { dream, recording } = useDreams.getState();
+      expect(dream.id).toBe(1);
+      expect(dream.recordingId).toBe(2);
+
+      expect(recording).not.toBeNull();
+      expect(recording!.id).toBe(2);
     });
   });
 
@@ -174,6 +193,94 @@ describe("dream service", () => {
       const { dream, categories } = useDreams.getState();
       expect(dream.categories).toHaveLength(0);
       expect(categories).toHaveLength(1);
+    });
+  });
+
+  describe("startTranscription", () => {
+    it("Ok", async () => {
+      server.use(
+        getDreamHandler(createDream({ recording: createRecording() })),
+        postTranscriptionHandler(
+          createRecording({
+            transcript: "Finished",
+            transcriptionState: EntitiesTranscriptionState.TranscriptionStateCompleted,
+          }),
+        ),
+      );
+      await dreamService.getDream(1);
+
+      await dreamService.startTranscription();
+
+      const { recording } = useDreams.getState();
+      expect(recording?.transcription).toBe("Finished");
+      expect(recording?.transcriptionState).toBe("completed");
+    });
+
+    it("Error", async () => {
+      server.use(
+        getDreamHandler(createDream({ recording: createRecording() })),
+        postTranscriptionHandler({}, { message: "Error message", code: "400", status: 400 }),
+      );
+      await dreamService.getDream(1);
+
+      await expect(dreamService.startTranscription()).rejects.toThrow("Error message");
+    });
+  });
+
+  describe("Update description", () => {
+    beforeEach(() => {
+      const { setDream } = useDreams.getState();
+      setDream({
+        categories: [],
+        date: Temporal.Now.instant(),
+        description: "Description",
+        finalized: false,
+        id: 1,
+        rating: null,
+        recordingId: null,
+      });
+    });
+
+    it("Ok", async () => {
+      await dreamService.updateDescription("New description");
+
+      const { dream } = useDreams.getState();
+      expect(dream.description).toBe("New description");
+    });
+  });
+
+  describe("Post recording", () => {
+    beforeEach(() => {
+      const { setDream } = useDreams.getState();
+      setDream({
+        categories: [],
+        date: Temporal.Now.instant(),
+        description: "Description",
+        finalized: false,
+        id: 1,
+        rating: null,
+        recordingId: null,
+      });
+    });
+
+    it("Recording updates dream and recording", async () => {
+      server.use(
+        postRecordingHandler(
+          createRecording({
+            id: 10,
+            recordingState: EntitiesRecordingState.RecordingStateStored,
+            transcriptionState: EntitiesTranscriptionState.TranscriptionStatePending,
+          }),
+        ),
+      );
+
+      await dreamService.postRecording(new Blob());
+
+      const { recording, dream } = useDreams.getState();
+      expect(dream.recordingId).toBe(10);
+      expect(recording?.id).toBe(10);
+      expect(recording?.recordingState).toBe("stored");
+      expect(recording?.transcriptionState).toBe("pending");
     });
   });
 });

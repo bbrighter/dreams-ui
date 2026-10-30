@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { Dream } from "@/store/types";
+import { Dreams } from "@/store/types";
 
 import { DreamList } from "../DreamList/DreamList";
 import { getDeleteButton } from "./selectors";
@@ -24,7 +24,7 @@ vi.mock("@tanstack/react-virtual", () => ({
 describe("DreamList component", () => {
   const onClick = vi.fn();
   const onDelete = vi.fn();
-  const renderDreamList = (dreams: Array<Dream> = []) =>
+  const renderDreamList = (dreams: Dreams = []) =>
     render(<DreamList dreams={dreams} onClick={onClick} onDelete={onDelete} />);
 
   it("Renders dreams in a sorted way", () => {

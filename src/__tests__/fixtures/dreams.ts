@@ -1,4 +1,10 @@
-import { ControllerDreamListResponse, ControllerDreamResponse } from "@/api/generated_api";
+import {
+  ControllerDreamListResponse,
+  ControllerDreamResponse,
+  ControllerRecordingResponse,
+  EntitiesRecordingState,
+  EntitiesTranscriptionState,
+} from "@/api/generated_api";
 
 export const createDreams = (
   overrides: Array<ControllerDreamResponse> | Partial<ControllerDreamResponse> = [],
@@ -14,5 +20,16 @@ export const createDream = (
   categories: [],
   description: "",
   finalized: false,
+  ...overrides,
+});
+
+export const createRecording = (
+  overrides: Partial<ControllerRecordingResponse> = {},
+): ControllerRecordingResponse => ({
+  id: 1,
+  mimeType: "audio/webm;codecs=opus",
+  recordingState: EntitiesRecordingState.RecordingStateStored,
+  transcriptionState: EntitiesTranscriptionState.TranscriptionStatePending,
+  transcript: "",
   ...overrides,
 });

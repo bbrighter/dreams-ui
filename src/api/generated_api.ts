@@ -10,6 +10,18 @@
  * ---------------------------------------------------------------
  */
 
+export enum EntitiesTranscriptionState {
+  TranscriptionStatePending = "pending",
+  TranscriptionStateProcessing = "processing",
+  TranscriptionStateCompleted = "completed",
+  TranscriptionStateFailed = "failed",
+}
+
+export enum EntitiesRecordingState {
+  RecordingStateCreating = "creating",
+  RecordingStateStored = "stored",
+}
+
 export interface ControllerCategoryListResponse {
   categories: ControllerCategoryResponse[];
 }
@@ -37,6 +49,12 @@ export interface ControllerDreamResponse {
   finalized: boolean;
   id: number;
   rating?: number;
+  recording?: ControllerRecordingResponse;
+}
+
+export interface ControllerErrorResponse {
+  code: string;
+  message: string;
 }
 
 export interface ControllerMergeCategoriesParams {
@@ -53,6 +71,14 @@ export interface ControllerPostCategoryRequestBody {
 export interface ControllerPostDreamRequest {
   date: string;
   description: string;
+}
+
+export interface ControllerRecordingResponse {
+  id: number;
+  mimeType: string;
+  recordingState: EntitiesRecordingState;
+  transcript: string;
+  transcriptionState: EntitiesTranscriptionState;
 }
 
 export interface ControllerStatistic {
@@ -595,6 +621,73 @@ export class Api<
       this.request<void, void>({
         path: `/dreams/${dreamId}/finalize`,
         method: "PATCH",
+        ...params,
+      }),
+
+    /**
+     * @description Add a recording to a dream
+     *
+     * @name RecordingCreate
+     * @request POST:/dreams/{dreamId}/recording
+     */
+    recordingCreate: (
+      dreamId: string,
+      data: {
+        /**
+         * Audio recording
+         * @format binary
+         */
+        file: File;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ControllerRecordingResponse, ControllerErrorResponse>({
+        path: `/dreams/${dreamId}/recording`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Transcribe a recording
+     *
+     * @name TranscribeCreate
+     * @request POST:/dreams/{dreamId}/transcribe
+     */
+    transcribeCreate: (dreamId: string, params: RequestParams = {}) =>
+      this.request<ControllerRecordingResponse, ControllerErrorResponse>({
+        path: `/dreams/${dreamId}/transcribe`,
+        method: "POST",
+        format: "json",
+        ...params,
+      }),
+  };
+  recordings = {
+    /**
+     * @description Get a recording
+     *
+     * @name RecordingsDetail
+     * @request GET:/recordings/{id}
+     */
+    recordingsDetail: (id: string, params: RequestParams = {}) =>
+      this.request<Blob, ControllerErrorResponse>({
+        path: `/recordings/${id}`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * @description Delete a recording
+     *
+     * @name RecordingsDelete
+     * @request DELETE:/recordings/{id}
+     */
+    recordingsDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, ControllerErrorResponse>({
+        path: `/recordings/${id}`,
+        method: "DELETE",
         ...params,
       }),
   };

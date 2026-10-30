@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 
 export const putDreamCategory = () =>
   http.put("/dreams/:dreamId/categories/:categoryId", () => {

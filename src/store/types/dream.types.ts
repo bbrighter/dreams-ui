@@ -9,6 +9,7 @@ export type Dream = {
   categories: Array<number>;
   finalized: boolean;
   rating: number | null;
+  recordingId: number | null;
 };
 
 export function dreamResponseToDream(resp: ControllerDreamResponse): Dream {
@@ -19,6 +20,7 @@ export function dreamResponseToDream(resp: ControllerDreamResponse): Dream {
     categories: resp.categories?.map((c) => c.id) || [],
     finalized: resp.finalized,
     rating: resp.rating ?? null,
+    recordingId: resp.recording?.id ?? null,
   };
 }
 

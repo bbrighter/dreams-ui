@@ -4,12 +4,12 @@ import List from "@mui/material/List";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useMemo, useRef } from "react";
 
-import { Dream } from "@/store/types";
+import { Dreams } from "@/store/types";
 
 import { DreamItem } from "./DreamItem";
 
 type DreamListProps = {
-  dreams: Array<Dream>;
+  dreams: Dreams;
   onClick: (id: number) => void;
   onDelete: (id: number) => Promise<void>;
 };
