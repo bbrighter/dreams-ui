@@ -4,7 +4,7 @@ import { ControllerDreamListResponse } from "@/api/generated_api";
 
 import { Dream } from "./dream.types";
 
-export type Dreams = Array<Dream>;
+export type Dreams = Array<Omit<Dream, "recordingId">>;
 
 export function dreamsResponseToDreams(resp: ControllerDreamListResponse): Dreams {
   return resp.dreams.map((d) => {

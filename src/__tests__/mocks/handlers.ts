@@ -4,6 +4,7 @@ import { createCategoriesCount, createStatistics } from "../fixtures/statistics"
 import * as categoryHandlers from "./categoryHandlers";
 import * as dreamCategoriesHandlers from "./dreamCategoriesHandler";
 import * as dreamHandlers from "./dreamsHandlers";
+import * as recordingsHandler from "./recordingsHandler";
 import * as statisticsHandler from "./statisticsHandler";
 
 export default [
@@ -13,6 +14,8 @@ export default [
   dreamHandlers.patchDreamFinalizeHandler,
   dreamHandlers.patchDreamHandler,
   dreamHandlers.postDreamsHandler(),
+  dreamHandlers.postRecordingHandler(),
+  dreamHandlers.postTranscriptionHandler(),
 
   dreamCategoriesHandlers.deleteDreamCategory,
   dreamCategoriesHandlers.deleteDreamPerson,
@@ -24,6 +27,9 @@ export default [
   categoryHandlers.patchCategoryName,
   categoryHandlers.patchCategoryType,
   categoryHandlers.postCategoryMergeHandler(),
+
+  recordingsHandler.deleteRecordingHandler(),
+  recordingsHandler.getRecordingHandler(),
 
   statisticsHandler.getCountCategoriesHandler(createCategoriesCount()),
   statisticsHandler.getCountCategoriesMonthlyHandler(createStatistics()),

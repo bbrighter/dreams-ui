@@ -50,6 +50,7 @@ export const dreamsService = {
       visible: true,
       rating: null,
       categories: [],
+      recordingId: null,
     };
     setDreams([dream, ...dreams]);
     return resp.data;

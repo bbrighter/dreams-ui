@@ -9,7 +9,7 @@ import handlers from "./mocks/handlers";
 export const server = setupServer(...handlers);
 
 beforeAll(() => {
-  server.listen({ onUnhandledFrame: "warn" });
+  server.listen({ onUnhandledFrame: "error" });
 });
 beforeEach(async () => {
   const store = useDreams.getState();
@@ -17,6 +17,7 @@ beforeEach(async () => {
   store.resetDream();
   store.resetDreams();
   store.resetStatistics();
+  store.resetRecording();
   const init = useDreams.getState().initApi;
   await init();
 });

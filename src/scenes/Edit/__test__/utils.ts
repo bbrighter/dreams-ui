@@ -1,4 +1,5 @@
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 export const getSaveButton = (): HTMLElement => {
   const header = getHeaderBar();
@@ -30,3 +31,18 @@ export const getFinalizeButton = (): HTMLElement => {
 export const getHeaderBar = (): HTMLElement => {
   return screen.getByTestId("app-bar-top");
 };
+
+export const clickRecordingButton = async () => {
+  const button = await screen.findByRole("button", { name: "Aufnehmen" });
+  await userEvent.click(button);
+};
+
+export const queryDeleteRecordingButton = () =>
+  screen.queryByRole("button", { name: "Aufnahme löschen" });
+
+export const clickDeleteRecordingButton = async () => {
+  const button = await waitFor(() => queryDeleteRecordingButton());
+  await userEvent.click(button!);
+};
+
+export const getTranscribeButton = () => screen.getByRole("button", { name: "Transkribieren" });

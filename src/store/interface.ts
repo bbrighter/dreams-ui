@@ -4,9 +4,15 @@ import { Api } from "../api/generated_api";
 import { Categories, CategoryType } from "./types/categories.types";
 import { Dream } from "./types/dream.types";
 import { Dreams } from "./types/dreams.types";
+import { Recording } from "./types/recording.types";
 import { MonthlyStatistics, Statistics } from "./types/statistics.types";
 
-export type StoreSlice = CategorySlice & DreamsSlice & DreamSlice & StatisticsSlice & ApiSlice;
+export type StoreSlice = CategorySlice &
+  DreamsSlice &
+  DreamSlice &
+  StatisticsSlice &
+  ApiSlice &
+  RecordingSlice;
 
 export type ApiState = {
   api: Api<unknown> | null;
@@ -42,6 +48,7 @@ interface DreamActions {
   setDreamCategories: (cats: Array<number>) => void;
   setDream: (dream: Dream) => void;
   setHash: (dream: Dream) => void;
+  updateDream: (upd: Partial<Dream>) => void;
 }
 
 export type DreamState = { dream: Dream; hash: string };
@@ -75,3 +82,15 @@ interface StatisticActions {
 }
 
 export type StatisticsSlice = StatisticState & StatisticActions;
+
+interface RecordingActions {
+  resetRecording: () => void;
+  setRecording: (rec: Recording) => void;
+  updateRecording: (upd: Partial<Recording>) => void;
+}
+
+export type RecordingState = {
+  recording: Recording | null;
+};
+
+export type RecordingSlice = RecordingActions & RecordingState;

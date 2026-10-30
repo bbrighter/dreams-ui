@@ -35,3 +35,12 @@ export const useDreamCategories = (): { categories: Categories; persons: Categor
     );
   }, [categories, dreamCategories]);
 };
+
+export const useDreamWithRecording = () => {
+  const dream = useDreams((state) => state.dream);
+  const recording = useDreams((state) => state.recording);
+
+  const doesRecordingFit = recording !== null && dream.recordingId === recording.id;
+
+  return { dream, recording: doesRecordingFit ? recording : null };
+};

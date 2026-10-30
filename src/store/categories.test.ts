@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { ControllerCategoryListResponse } from "@/api/generated_api";
 
-import { categoriesResponseToCategories } from "../types/categories.types";
+import { categoriesResponseToCategories } from "./types/categories.types";
 
 test("categoriesResponseToCategories", () => {
   const resp: ControllerCategoryListResponse = {

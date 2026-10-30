@@ -19,6 +19,7 @@ it("useDreamCategories", () => {
     finalized: false,
     rating: null,
     categories: [1, 3],
+    recordingId: null,
   });
 
   const { result } = renderHook(() => useDreamCategories());
