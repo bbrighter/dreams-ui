@@ -148,6 +148,7 @@ describe("viewing and editing a single dream", () => {
     const categoryInput = await waitFor(() => getCategoryInput());
     await userEvent.type(categoryInput, "New category{enter}");
 
+    expect(within(getCategoryInput().parentElement!).getByText("New category"));
     expect(screen.getByRole("button", { name: "New category" })).toBeInTheDocument();
   });
 
@@ -174,7 +175,7 @@ describe("viewing and editing a single dream", () => {
 
     const personInput = await waitFor(() => getPersonInput());
     await userEvent.type(personInput, "Somebody{enter}");
-    expect(screen.getByText("Somebody")).toBeInTheDocument();
+    expect(within(getPersonInput().parentElement!).getByText("Somebody")).toBeInTheDocument();
   });
 
   it("rate and finalize", async () => {
